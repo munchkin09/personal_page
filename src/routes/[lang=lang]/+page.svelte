@@ -1693,6 +1693,10 @@
       border-color 0.3s,
       transform 0.3s,
       box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
   .strength-card:hover {
     border-color: rgba(99, 102, 241, 0.5);
