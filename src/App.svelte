@@ -20,13 +20,13 @@
   ];
 
   const techStack = [
-    { name: 'TypeScript & Node.js',    pct: 32, color: '#6366f1', glow: 'rgba(99,102,241,0.5)',   icon: '⚡', category: 'Frontend'     },
-    { name: 'AI / LLM',      pct: 22, color: '#8b5cf6', glow: 'rgba(139,92,246,0.5)',   icon: '🤖', category: 'AI'           },
-    { name: 'System Design', pct: 20, color: '#f59e0b', glow: 'rgba(245,158,11,0.5)',   icon: '🏗️', category: 'Architecture' },
-    { name: 'Frontend',  pct: 10, color: '#06b6d4', glow: 'rgba(6,182,212,0.5)',    icon: '🎨', category: 'Frontend'     },
-    { name: 'Python',        pct:  8, color: '#3b82f6', glow: 'rgba(59,130,246,0.5)',   icon: '🐍', category: 'Backend'      },
-    { name: 'Cloud & Infra',    pct:  5, color: '#ec4899', glow: 'rgba(236,72,153,0.5)',   icon: '🐳', category: 'DevOps'       },
-    { name: 'Data Management',    pct:  3, color: '#64748b', glow: 'rgba(100,116,139,0.5)',  icon: '🗄️', category: 'Data'         },
+    { name: 'TypeScript & Node.js',    pct: 25, color: '#6366f1', glow: 'rgba(99,102,241,0.5)',   icon: '⚡', category: 'Frontend'     },
+    { name: 'AI / LLM',      pct: 20, color: '#8b5cf6', glow: 'rgba(139,92,246,0.5)',   icon: '🤖', category: 'AI'           },
+    { name: 'System Design', pct: 13, color: '#f59e0b', glow: 'rgba(245,158,11,0.5)',   icon: '🏗️', category: 'Architecture' },
+    { name: 'Frontend',  pct: 5, color: '#06b6d4', glow: 'rgba(6,182,212,0.5)',    icon: '🎨', category: 'Frontend'     },
+    { name: 'Python',        pct:  4, color: '#3b82f6', glow: 'rgba(59,130,246,0.5)',   icon: '🐍', category: 'Backend'      },
+    { name: 'Cloud & Infra',    pct:  20, color: '#ec4899', glow: 'rgba(236,72,153,0.5)',   icon: '🐳', category: 'DevOps'       },
+    { name: 'Data Management',    pct:  13, color: '#64748b', glow: 'rgba(100,116,139,0.5)',  icon: '🗄️', category: 'Data'         },
   ];
 
   // ─── Pie chart helpers ────────────────────────────────────────────────────────
