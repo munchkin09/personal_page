@@ -11,6 +11,38 @@
   let typewriterText = $state('');
   let hoveredSlice = $state<number | null>(null);
 
+  // ─── Blog ────────────────────────────────────────────────────────────────────
+  interface Post { id: string; title: string; content: string; date: string; }
+  let posts = $state<Post[]>([]);
+  let postsLoading = $state(false);
+
+  const WORKER_URL = import.meta.env.VITE_BLOG_WORKER_URL ?? '';
+
+  async function loadPosts() {
+    if (!WORKER_URL) return;
+    postsLoading = true;
+    try {
+      const res = await fetch(`${WORKER_URL}/api/posts`);
+      if (res.ok) posts = await res.json();
+    } catch { /* sin conexión al worker */ }
+    finally { postsLoading = false; }
+  }
+
+  function renderMarkdown(raw: string): string {
+    return raw
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/`(.+?)`/g, '<code>$1</code>')
+      .replace(/\[(.+?)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+      .replace(/\n\n/g, '</p><p>')
+      .replace(/\n/g, '<br/>');
+  }
+
+  function formatDate(iso: string): string {
+    return new Date(iso).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
   const roles = [
     'Tech Lead & Solution Architect',
     'QA & AI Strategy Expert',
@@ -274,6 +306,7 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseleave', onMouseLeave);
     document.querySelectorAll<HTMLElement>('.magnetic').forEach((el) => cleanups.push(attachMagnetic(el)));
+    loadPosts();
     return () => {
       cleanups.forEach((c) => c());
       sObs.disconnect(); fObs.disconnect();
@@ -289,6 +322,7 @@
     { id: 'skills', label: 'Skills' },
     { id: 'projects', label: 'Proyectos' },
     { id: 'experience', label: 'Experiencia' },
+    { id: 'blog', label: 'Blog' },
     { id: 'contact', label: 'Contacto' },
   ];
 </script>
@@ -554,6 +588,45 @@
         </div>
       {/each}
     </div>
+  </div>
+</section>
+
+<!-- ── BLOG ── -->
+<section id="blog" class="blog-section">
+  <div class="container">
+    <div class="section-header fade-in">
+      <p class="section-label">Últimas entradas</p>
+      <h2>Blog <span class="gradient-text">& notas</span></h2>
+      <p class="section-sub">Ideas, reflexiones y aprendizajes del día a día. Publicado desde Telegram.</p>
+    </div>
+
+    {#if postsLoading}
+      <div class="blog-loading fade-in">
+        <div class="blog-spinner"></div>
+        <span>Cargando posts…</span>
+      </div>
+    {:else if posts.length === 0}
+      <div class="blog-empty fade-in">
+        <span class="blog-empty-icon">✏️</span>
+        <p>Aún no hay posts. ¡Pronto habrá contenido aquí!</p>
+      </div>
+    {:else}
+      <div class="blog-grid">
+        {#each posts as post, i}
+          <article class="blog-card fade-in" style="transition-delay: {i * 80}ms">
+            <div class="blog-card-meta">
+              <time class="blog-date">{formatDate(post.date)}</time>
+              <span class="blog-id">#{post.id}</span>
+            </div>
+            <h3 class="blog-title">{post.title}</h3>
+            <div class="blog-body">
+              <p>{@html renderMarkdown(post.content)}</p>
+            </div>
+            <div class="blog-card-glow"></div>
+          </article>
+        {/each}
+      </div>
+    {/if}
   </div>
 </section>
 
@@ -1034,5 +1107,60 @@
     .strengths-grid { grid-template-columns: 1fr; }
     .hero-actions { flex-direction: column; align-items: center; }
     .contact-inner { padding: 3rem 1.5rem; }
+    .blog-grid { grid-template-columns: 1fr; }
   }
+
+  /* ── Blog ── */
+  .blog-section {
+    padding: 8rem 0;
+    background: linear-gradient(180deg, transparent, #0a0a1a 20%, #0a0a1a 80%, transparent);
+  }
+  .blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+
+  .blog-card {
+    position: relative; padding: 2rem;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px; overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    display: flex; flex-direction: column; gap: 0.75rem;
+  }
+  .blog-card:hover { border-color: rgba(99,102,241,0.5); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+  .blog-card:hover .blog-card-glow { opacity: 1; }
+  .blog-card-glow {
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(99,102,241,0.1), transparent 65%);
+    opacity: 0; transition: opacity 0.4s; pointer-events: none;
+  }
+  .blog-card-meta { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+  .blog-date { font-size: 0.75rem; color: #6366f1; font-family: 'JetBrains Mono', monospace; }
+  .blog-id { font-size: 0.7rem; color: #334155; font-family: 'JetBrains Mono', monospace; }
+  .blog-title { font-size: 1.15rem; font-weight: 700; line-height: 1.3; color: #f8fafc; }
+  .blog-body {
+    font-size: 0.9rem; color: #94a3b8; line-height: 1.75;
+    display: -webkit-box; -webkit-line-clamp: 6; line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .blog-body :global(strong) { color: #f8fafc; }
+  .blog-body :global(em) { color: #a5b4fc; font-style: italic; }
+  .blog-body :global(code) {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.82em;
+    background: rgba(99,102,241,0.15); padding: 0.1em 0.4em; border-radius: 4px; color: #a5b4fc;
+  }
+  .blog-body :global(a) { color: #6366f1; text-decoration: underline; text-underline-offset: 2px; }
+
+  .blog-loading {
+    display: flex; align-items: center; justify-content: center; gap: 1rem;
+    padding: 4rem; color: #475569; font-size: 0.9rem;
+  }
+  .blog-spinner {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 2px solid rgba(99,102,241,0.2); border-top-color: #6366f1;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .blog-empty {
+    display: flex; flex-direction: column; align-items: center; gap: 1rem;
+    padding: 4rem; color: #475569; text-align: center;
+  }
+  .blog-empty-icon { font-size: 2.5rem; }
+  .blog-empty p { font-size: 0.95rem; }
 </style>
