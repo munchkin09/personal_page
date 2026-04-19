@@ -15,6 +15,7 @@
 
   // ─── State ───────────────────────────────────────────────────────────────────
   let canvasEl = $state<HTMLCanvasElement | null>(null);
+  let mobileMenuOpen = $state(false);
   let navScrolled = $state(false);
   let activeSection = $state("hero");
   let cursorX = $state(0);
@@ -474,45 +475,58 @@
 <!-- ── NAV ── -->
 <nav class:scrolled={navScrolled}>
   <a href="#hero" class="logo">CL<span>.</span></a>
-  <ul>
-    {#each navLinks as link}
-      <li>
-        <a href="#{link.id}" class:active={activeSection === link.id}
-          >{link.label}</a
-        >
-      </li>
-    {/each}
-  </ul>
-  <div class="nav-actions">
-    <div class="lang-switch" role="group" aria-label={t.nav.langSwitchLabel}>
-      {#each SUPPORTED_LOCALES as loc}
-        <button
-          type="button"
-          class="lang-btn"
-          class:active={data.lang === loc}
-          aria-pressed={data.lang === loc}
-          onclick={() => switchLocale(loc)}>{loc.toUpperCase()}</button
-        >
+  <div class="nav-content" class:open={mobileMenuOpen}>
+    <ul>
+      {#each navLinks as link}
+        <li>
+          <a
+            href="#{link.id}"
+            class:active={activeSection === link.id}
+            onclick={() => (mobileMenuOpen = false)}>{link.label}</a
+          >
+        </li>
       {/each}
-    </div>
-    <a href="/{data.lang}/cv" class="nav-cv" title={t.nav.cvTitle}>
-      <svg
-        width="14"
-        height="14"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        ><path
-          d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
-        /><path d="M14 2v6h6" /><path d="M8 13h8M8 17h5" /></svg
+    </ul>
+    <div class="nav-actions">
+      <div class="lang-switch" role="group" aria-label={t.nav.langSwitchLabel}>
+        {#each SUPPORTED_LOCALES as loc}
+          <button
+            type="button"
+            class="lang-btn"
+            class:active={data.lang === loc}
+            aria-pressed={data.lang === loc}
+            onclick={() => { switchLocale(loc); mobileMenuOpen = false; }}>{loc.toUpperCase()}</button
+          >
+        {/each}
+      </div>
+      <a href="/{data.lang}/cv" class="nav-cv" title={t.nav.cvTitle} onclick={() => (mobileMenuOpen = false)}>
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          ><path
+            d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+          /><path d="M14 2v6h6" /><path d="M8 13h8M8 17h5" /></svg
+        >
+        {t.nav.cvLabel}
+      </a>
+      <a href="mailto:{CONTACT.email}" class="nav-cta magnetic" onclick={() => (mobileMenuOpen = false)}
+        >{t.nav.ctaContact}</a
       >
-      {t.nav.cvLabel}
-    </a>
-    <a href="mailto:{CONTACT.email}" class="nav-cta magnetic"
-      >{t.nav.ctaContact}</a
-    >
+    </div>
   </div>
+  <button class="menu-toggle" onclick={() => (mobileMenuOpen = !mobileMenuOpen)} aria-label="Toggle menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      {#if mobileMenuOpen}
+        <path d="M18 6L6 18M6 6l12 12" />
+      {:else}
+        <path d="M4 6h16M4 12h16M4 18h16" />
+      {/if}
+    </svg>
+  </button>
 </nav>
 
 <!-- ── HERO ── -->
@@ -1037,6 +1051,20 @@
     background: rgba(5, 5, 16, 0.85);
     backdrop-filter: blur(20px);
     border-color: rgba(255, 255, 255, 0.08);
+  }
+  .nav-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-left: auto;
+  }
+  .menu-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    color: #f8fafc;
+    cursor: pointer;
+    padding: 0.5rem;
   }
   .logo {
     font-size: 1.5rem;
@@ -2096,8 +2124,43 @@
     }
   }
   @media (max-width: 900px) {
-    nav ul {
-      display: none;
+    .menu-toggle {
+      display: block;
+      margin-left: auto;
+    }
+    .logo {
+      margin-right: 0;
+    }
+    .nav-content {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: rgba(5, 5, 16, 0.95);
+      backdrop-filter: blur(20px);
+      flex-direction: column;
+      padding: 2rem;
+      gap: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      transform: translateY(-10px);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    .nav-content.open {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
+    .nav-content ul {
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .nav-content .nav-actions {
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
     }
     .about-grid {
       grid-template-columns: 1fr;
