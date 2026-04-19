@@ -1,3 +1,9 @@
 # allow crawling everything by default
 User-agent: *
 Disallow:
+
+# AI / agent discovery
+Sitemap: https://carloslc.is-a.dev/sitemap.xml
+
+# Agent-readable content manifest
+# See /llms.txt for a structured description of this site for LLM agents

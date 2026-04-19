@@ -1,0 +1,54 @@
+# Carlos Ledesma — Personal Website
+
+> Carlos Ledesma Castejón is a Tech Lead, Solution Architect, and Senior Software Engineer based in Madrid, Spain.
+> He specialises in QA & AI Strategy, COBOL Modernisation, Full-Stack Development, and Applied Generative AI.
+
+## About
+
+- Name: Carlos Ledesma Castejón
+- Location: Madrid, Spain
+- Email: carlos.developer1983@gmail.com
+- LinkedIn: https://linkedin.com/in/carlosledesmac
+- GitHub: https://github.com/munchkin09
+- Website: https://carloslc.is-a.dev
+
+## Professional Summary
+
+Tech Lead and Software Architect with 13+ years of experience across the full SDLC, specialising in the intersection of Quality Engineering, Automation, and Generative AI. Led COBOL-to-modern-stack legacy modernisation and designed AI Agents applied to quality in large banking and technology corporations, with direct impact on teams across Europe and Latin America.
+
+## Current Role
+
+- **Company:** NTT DATA
+- **Title:** Quality & AI Solutions Architect
+- **Period:** Jun 2024 – Present
+- **Highlights:** Autonomous AI agents for software quality, AI-assisted COBOL migration pipelines, automated test case generation with LLMs, technical training across Europe and LATAM.
+
+## Key Skills
+
+- AI / LLM: Agentic AI, GenAI applied to code, OpenAI, Claude, Test Case Generation, Langchain/Langraph, CrewAI, n8n, mcp´s, skills, agents, orchestration
+- Languages: TypeScript/JavaScript (Expert), Python, Bash, PowerShell
+- QA & Testing: Selenium, Cucumber, WebdriverIO, Cypress, Jest, Playwright
+- Cloud & DevOps: Azure, GCP, AWS, Docker, Jenkins, GitLab CI
+- Architecture: Microservices, System Design, Legacy Modernisation, Agile/Scrum
+
+## Site Structure
+
+- `/` — Portfolio homepage (hero, skills chart, blog)
+- `/cv` — Full curriculum vitae
+- `/blog/[id]` — Blog posts
+
+## WebMCP Tools Available
+
+This site exposes the following tools via WebMCP for AI agents:
+
+- `get_profile` — Returns the owner's professional profile (name, title, contact, summary)
+- `get_experience` — Returns the full work experience history
+- `get_skills` — Returns the skills grouped by category
+- `get_education` — Returns education history
+- `navigate_to_section` — Scrolls to a named section on the homepage (hero, skills, blog)
+- `navigate_to_page` — Navigates to a route (/cv, /blog)
+
+## Optional
+
+- [Full CV](/cv)
+- [Blog](/blog)
