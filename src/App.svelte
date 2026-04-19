@@ -411,7 +411,9 @@
         <div class="avatar-wrapper">
           <div class="avatar-ring"></div>
           <div class="avatar-ring ring-2"></div>
-          <div class="avatar"><span class="avatar-initials">CL</span></div>
+          <div class="avatar">
+            <img src="https://boletinstatics.blob.core.windows.net/personal/yo.jpg" alt="Carlos Ledesma" />
+          </div>
           <div class="avatar-badge">Senior</div>
         </div>
         <div class="about-tags">
@@ -879,6 +881,10 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 2.5rem; font-weight: 900; color: white;
     box-shadow: 0 0 60px rgba(99,102,241,0.3);
+    overflow: hidden;
+  }
+  .avatar img {
+    width: 100%; height: 100%; object-fit: cover;
   }
   .avatar-badge {
     position: absolute; bottom: 0; right: -10px;
