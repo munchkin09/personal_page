@@ -1092,6 +1092,35 @@
     .hero-actions { flex-direction: column; align-items: center; }
     .contact-inner { padding: 3rem 1.5rem; }
     .blog-grid { grid-template-columns: 1fr; }
+
+    /* Experience Centered Mobile Layout */
+    .timeline::before {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .timeline-item {
+      display: block;
+      position: relative;
+      padding-top: 2rem;
+      text-align: center;
+    }
+    .timeline-dot {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      margin-top: 0;
+    }
+    .timeline-content {
+      position: relative;
+      z-index: 2;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(10, 10, 26, 0.75);
+    }
+    .timeline-tags {
+      justify-content: center;
+    }
   }
 
   /* ── Blog ── */
