@@ -415,7 +415,7 @@
           <div class="avatar-badge">Senior</div>
         </div>
         <div class="about-tags">
-          {#each ['TypeScript', 'Python', 'Agentes IA', 'QA Architecture', 'AWS', 'COBOL Migration'] as tag}
+          {#each ['TypeScript', 'Python', 'Agentes IA', 'QA Architecture', 'Cloud', 'COBOL Migration'] as tag}
             <span class="tech-tag">{tag}</span>
           {/each}
         </div>

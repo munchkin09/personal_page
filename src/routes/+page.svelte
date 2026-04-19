@@ -103,32 +103,36 @@
 
   const projects = [
     {
-      title: 'Personal Page',
-      description: 'Este mismo sitio — construido con Svelte 5, efectos CSS avanzados y animaciones fluidas.',
-      tags: ['Svelte 5', 'TypeScript', 'CSS', 'Vite'],
+      title: 'Personal Page + Blog CMS',
+      description: 'Este mismo sitio. Portfolio con Svelte 5, animaciones CSS avanzadas y un blog CMS completo: publico desde Telegram a Cloudflare KV vía un Worker y webhook.',
+      tags: ['Svelte 5', 'TypeScript', 'Cloudflare Workers', 'Telegram Bot'],
       icon: '🌐',
       year: '2026',
+      url: 'https://github.com/munchkin09/personal_page',
     },
     {
-      title: 'AI-Powered Dashboard',
-      description: 'Panel analítico que integra modelos LLM para análisis de datos en tiempo real.',
-      tags: ['React', 'Python', 'Claude API', 'PostgreSQL'],
-      icon: '📊',
-      year: '2025',
+      title: 'Project N.O.M.A.D',
+      description: 'Ordenador de supervivencia autónomo y offline con IA integrada: herramientas críticas, base de conocimiento y modelos LLM sin conexión a internet.',
+      tags: ['TypeScript', 'Electron', 'LLM', 'Offline AI'],
+      icon: '📡',
+      year: '2026',
+      url: 'https://github.com/munchkin09/project-nomad',
     },
     {
-      title: 'Microservices Platform',
-      description: 'Arquitectura distribuida con alta disponibilidad, observabilidad y deploys automáticos.',
-      tags: ['Node.js', 'Docker', 'K8s', 'Redis'],
-      icon: '⚙️',
-      year: '2025',
+      title: 'NotebookLM Python API',
+      description: 'API Python no oficial y skill agéntica para Google NotebookLM. Acceso programático completo vía CLI e integración con agentes IA como Claude Code y Codex.',
+      tags: ['Python', 'Google NotebookLM', 'Agentic AI', 'CLI'],
+      icon: '📚',
+      year: '2026',
+      url: 'https://github.com/munchkin09/notebooklm-py',
     },
     {
-      title: 'Real-Time Collaboration',
-      description: 'Herramienta de colaboración en tiempo real con WebSockets, OT y conflict resolution.',
-      tags: ['Svelte', 'WebSocket', 'TypeScript', 'Rust'],
-      icon: '👥',
-      year: '2024',
+      title: 'GitAgent',
+      description: 'Estándar git-native y agnóstico al framework para definir agentes IA. Los agentes viven en el repo junto al código, versionados y portables.',
+      tags: ['TypeScript', 'AI Agents', 'Git', 'Open Standard'],
+      icon: '🤖',
+      year: '2026',
+      url: 'https://github.com/munchkin09/gitagent',
     },
   ];
 
@@ -415,7 +419,7 @@
           <div class="avatar-badge">Senior</div>
         </div>
         <div class="about-tags">
-          {#each ['TypeScript', 'Python', 'Agentes IA', 'QA Architecture', 'AWS', 'COBOL Migration'] as tag}
+          {#each ['TypeScript', 'Python', 'Agentes IA', 'QA Architecture', 'Cloud', 'COBOL Migration'] as tag}
             <span class="tech-tag">{tag}</span>
           {/each}
         </div>
@@ -534,7 +538,7 @@
     </div>
 
     <div class="extra-skills fade-in">
-      {#each ['Git', 'CI/CD', 'WebSockets', 'REST', 'GraphQL', 'gRPC', 'Rust', 'Go', 'Linux', 'AWS', 'Vercel', 'Cloudflare', 'Vitest', 'Playwright', 'Figma', 'Agile/Scrum'] as tag}
+      {#each ['Git', 'CI/CD', 'WebSockets', 'REST', 'GraphQL', 'gRPC', 'Rust', 'Go', 'Linux', 'Cloud', 'Vercel', 'Cloudflare', 'Vitest', 'Playwright', 'Figma', 'Agile/Scrum'] as tag}
         <span class="extra-tag">{tag}</span>
       {/each}
     </div>
@@ -560,6 +564,12 @@
           <div class="project-tags">
             {#each project.tags as tag}<span class="project-tag">{tag}</span>{/each}
           </div>
+          {#if project.url}
+            <a href={project.url} target="_blank" rel="noopener noreferrer" class="project-github">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+              Ver en GitHub
+            </a>
+          {/if}
           <div class="project-sheen"></div>
         </div>
       {/each}
@@ -1021,7 +1031,15 @@
   .project-year { font-size: 0.75rem; color: #475569; font-family: 'JetBrains Mono', monospace; }
   .project-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.6rem; }
   .project-card p { font-size: 0.9rem; color: #94a3b8; line-height: 1.7; margin-bottom: 1.25rem; }
-  .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+  .project-github {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.78rem; font-weight: 600; color: #475569;
+    text-decoration: none; margin-top: auto;
+    transition: color 0.2s;
+    position: relative; z-index: 1;
+  }
+  .project-github:hover { color: #6366f1; }
   .project-tag {
     padding: 0.2rem 0.6rem; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2);
     border-radius: 100px; font-size: 0.72rem; color: #6366f1; font-family: 'JetBrains Mono', monospace;

@@ -83,7 +83,7 @@
     { group: 'IA & Modernización',   items: ['Agentes IA', 'GenAI aplicada a código', 'LLMs (OpenAI, Claude)', 'Test Case Generation', 'Análisis estático', 'Migración COBOL'] },
     { group: 'Lenguajes',             items: ['JavaScript / TypeScript (Experto)', 'Python', 'Bash', 'PowerShell', 'COBOL (análisis y migración)'] },
     { group: 'QA & Testing',          items: ['Selenium', 'Cucumber', 'WebdriverIO', 'Cypress', 'Jest', 'Playwright', 'ESLint'] },
-    { group: 'Cloud & DevOps',        items: ['AWS (EC2, RDS, S3, Device Farm)', 'Docker', 'Jenkins', 'GitLab CI', 'Linux', 'Git'] },
+    { group: 'Cloud & DevOps',        items: ['Azure (WebApps, Functions, LLM Foundry)', 'GCP', 'AWS (EC2, RDS, S3, Device Farm)', 'Docker', 'Jenkins', 'GitLab CI', 'Linux', 'Git'] },
     { group: 'Formación & Adopción',  items: ['Diseño de cursos técnicos', 'Talleres de IA', 'Onboarding de equipos', 'Evangelización tecnológica'] },
   ];
 
