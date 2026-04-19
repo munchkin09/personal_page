@@ -1,12 +1,18 @@
 import type { es } from './es';
 
-type Deep<T> = T extends readonly (infer U)[]
-  ? Deep<U>[]
-  : T extends object
-    ? { -readonly [K in keyof T]: Deep<T[K]> }
-    : T;
+type Widen<T> = T extends string
+  ? string
+  : T extends number
+    ? number
+    : T extends boolean
+      ? boolean
+      : T extends readonly (infer U)[]
+        ? Widen<U>[]
+        : T extends object
+          ? { -readonly [K in keyof T]: Widen<T[K]> }
+          : T;
 
-export const en: Deep<typeof es> = {
+export const en: Widen<typeof es> = {
   meta: {
     homeTitle: 'Carlos Ledesma · Software Engineer',
     homeDescription:
