@@ -1,6 +1,239 @@
 <script lang="ts">
-  // Redirect to root portfolio
-</script>
+  import { onMount, tick } from 'svelte';
+
+  // ─── State ───────────────────────────────────────────────────────────────────
+  let canvasEl = $state<HTMLCanvasElement | null>(null);
+  let navScrolled = $state(false);
+  let activeSection = $state('hero');
+  let cursorX = $state(0);
+  let cursorY = $state(0);
+  let cursorVisible = $state(false);
+  let typewriterText = $state('');
+  let hoveredSlice = $state<number | null>(null);
+
+  // ─── Blog ────────────────────────────────────────────────────────────────────
+  let fadeObs: IntersectionObserver | null = null;
+  interface Post { id: string; title: string; content: string; date: string; }
+  let posts = $state<Post[]>([]);
+  let postsLoading = $state(false);
+
+  const WORKER_URL = import.meta.env.VITE_BLOG_WORKER_URL ?? '';
+
+  async function loadPosts() {
+    if (!WORKER_URL) return;
+    postsLoading = true;
+    try {
+      const res = await fetch(`${WORKER_URL}/api/posts`);
+      if (res.ok) posts = await res.json();
+    } catch { /* sin conexión al worker */ }
+    finally {
+      postsLoading = false;
+      await tick();
+      document.querySelectorAll('.fade-in:not(.visible)').forEach((el) => fadeObs?.observe(el));
+    }
+  }
+
+  function renderMarkdown(raw: string): string {
+    return raw
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/`(.+?)`/g, '<code>$1</code>')
+      .replace(/\[(.+?)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+      .replace(/\n\n/g, '</p><p>')
+      .replace(/\n/g, '<br/>');
+  }
+
+  function formatDate(iso: string): string {
+    return new Date(iso).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  const roles = [
+    'Tech Lead & Solution Architect',
+    'QA & AI Strategy Expert',
+    'Full Stack Senior Developer',
+    'GenAI Applied to Software',
+    'COBOL Modernization Lead',
+  ];
+
+  const techStack = [
+    { name: 'TypeScript & Node.js',    pct: 25, color: '#6366f1', glow: 'rgba(99,102,241,0.5)',   icon: '⚡', category: 'Frontend'     },
+    { name: 'AI / LLM',      pct: 20, color: '#8b5cf6', glow: 'rgba(139,92,246,0.5)',   icon: '🤖', category: 'AI'           },
+    { name: 'System Design', pct: 13, color: '#f59e0b', glow: 'rgba(245,158,11,0.5)',   icon: '🏗️', category: 'Architecture' },
+    { name: 'Frontend',  pct: 5, color: '#06b6d4', glow: 'rgba(6,182,212,0.5)',    icon: '🎨', category: 'Frontend'     },
+    { name: 'Python',        pct:  4, color: '#3b82f6', glow: 'rgba(59,130,246,0.5)',   icon: '🐍', category: 'Backend'      },
+    { name: 'Cloud & Infra',    pct:  20, color: '#ec4899', glow: 'rgba(236,72,153,0.5)',   icon: '🐳', category: 'DevOps'       },
+    { name: 'Data Management',    pct:  13, color: '#64748b', glow: 'rgba(100,116,139,0.5)',  icon: '🗄️', category: 'Data'         },
+  ];
+
+  // ─── Pie chart helpers ────────────────────────────────────────────────────────
+  const CX = 160, CY = 160, R_OUT = 140, R_IN = 72, GAP = 2;
+
+  function polar(r: number, deg: number) {
+    const rad = ((deg - 90) * Math.PI) / 180;
+    return { x: CX + r * Math.cos(rad), y: CY + r * Math.sin(rad) };
+  }
+
+  function slicePath(startDeg: number, endDeg: number, expand = 0) {
+    const span = endDeg - startDeg;
+    if (span >= 359.999) return '';
+    const mid = startDeg + span / 2;
+    const ox = expand ? Math.cos(((mid - 90) * Math.PI) / 180) * expand : 0;
+    const oy = expand ? Math.sin(((mid - 90) * Math.PI) / 180) * expand : 0;
+    const os = polar(R_OUT, startDeg + GAP / 2);
+    const oe = polar(R_OUT, endDeg   - GAP / 2);
+    const ie = polar(R_IN,  endDeg   - GAP / 2);
+    const is_ = polar(R_IN, startDeg + GAP / 2);
+    const large = span > 180 ? 1 : 0;
+    return `M ${os.x + ox} ${os.y + oy} A ${R_OUT} ${R_OUT} 0 ${large} 1 ${oe.x + ox} ${oe.y + oy} L ${ie.x + ox} ${ie.y + oy} A ${R_IN} ${R_IN} 0 ${large} 0 ${is_.x + ox} ${is_.y + oy} Z`;
+  }
+
+  const slices = $derived.by(() => {
+    let cum = 0;
+    return techStack.map((item, i) => {
+      const start = cum * 3.6;
+      cum += item.pct;
+      const end = cum * 3.6;
+      const mid = start + (end - start) / 2;
+      const labelR = R_OUT + 22;
+      const lp = polar(labelR, mid);
+      return { ...item, i, start, end, mid, path: slicePath(start, end), labelPos: lp };
+    });
+  });
+
+  const projects = [
+    {
+      title: 'Personal Page',
+      description: 'Este mismo sitio — construido con Svelte 5, efectos CSS avanzados y animaciones fluidas.',
+      tags: ['Svelte 5', 'TypeScript', 'CSS', 'Vite'],
+      icon: '🌐',
+      year: '2026',
+    },
+    {
+      title: 'AI-Powered Dashboard',
+      description: 'Panel analítico que integra modelos LLM para análisis de datos en tiempo real.',
+      tags: ['React', 'Python', 'Claude API', 'PostgreSQL'],
+      icon: '📊',
+      year: '2025',
+    },
+    {
+      title: 'Microservices Platform',
+      description: 'Arquitectura distribuida con alta disponibilidad, observabilidad y deploys automáticos.',
+      tags: ['Node.js', 'Docker', 'K8s', 'Redis'],
+      icon: '⚙️',
+      year: '2025',
+    },
+    {
+      title: 'Real-Time Collaboration',
+      description: 'Herramienta de colaboración en tiempo real con WebSockets, OT y conflict resolution.',
+      tags: ['Svelte', 'WebSocket', 'TypeScript', 'Rust'],
+      icon: '👥',
+      year: '2024',
+    },
+  ];
+
+  const strengths = [
+    { icon: '🧠', title: 'Pensamiento sistémico', desc: 'Capacidad para ver el panorama completo y diseñar soluciones escalables que resisten el paso del tiempo.' },
+    { icon: '⚡', title: 'Velocidad de ejecución', desc: 'De la idea al código en producción con criterio, sin sacrificar calidad por velocidad.' },
+    { icon: '🤝', title: 'Comunicación técnica', desc: 'Traduzco conceptos complejos a lenguaje claro, tanto para equipos técnicos como para stakeholders.' },
+    { icon: '🔁', title: 'Aprendizaje continuo', desc: 'Más de 20 años en la industria con mentalidad de principiante. Siempre actualizándome.' },
+    { icon: '🎯', title: 'Orientación a resultados', desc: 'Foco en el impacto real del producto, no solo en el código perfectamente elegante.' },
+    { icon: '🛡️', title: 'Código defensivo', desc: 'Escribo software robusto, seguro y mantenible. La deuda técnica me quita el sueño.' },
+  ];
+
+  const timeline = [
+    {
+      year: 'Jun 2024 – Actualidad',
+      role: 'Arquitecto de Soluciones de Calidad & IA',
+      company: 'NTT DATA · Madrid (Híbrido)',
+      desc: 'Rol estratégico de innovación en transformación digital a gran escala. Diseño de agentes IA autónomos con LLMs para verificación y validación del software. Plataforma de generación automática de casos de prueba con IA. Liderazgo de migraciones COBOL a tecnologías modernas. Formación a equipos de Europa y LATAM.',
+      highlights: ['Agentes IA para QA', 'Test Case Generation', 'Migración COBOL', 'Europa & LATAM'],
+    },
+    {
+      year: 'Feb 2021 – Jun 2024',
+      role: 'QA Automation Lead / Developer',
+      company: 'Capitole Consulting · Cliente: BBVA · Madrid',
+      desc: 'Liderazgo técnico en automatización de pruebas para uno de los mayores bancos de Europa. Arquitectura de frameworks con Selenium, Cucumber y WebdriverIO. Integración de herramientas de calidad en el SDLC para detección temprana de errores. Capas de abstracción para stakeholders no técnicos.',
+      highlights: ['Selenium', 'Cucumber', 'WebdriverIO', 'BBVA'],
+    },
+    {
+      year: 'Sep 2018 – Jul 2021',
+      role: 'Senior Full-Stack Developer',
+      company: 'Centum Digital · Madrid',
+      desc: 'Infraestructura de microservicios integrada con AWS Device Farm para validación de dispositivos IoT y móviles a escala. Automatización multi-plataforma: Smartphones, Smart TVs, STBs y WebApps.',
+      highlights: ['Microservicios', 'AWS Device Farm', 'IoT', 'Multi-plataforma'],
+    },
+    {
+      year: '2013 – 2018',
+      role: 'Consultor Full Stack & Web Developer',
+      company: 'Freelance · Madrid',
+      desc: 'Proyectos para clientes como Wunderman (Land Rover), Anlddea, Informatiz@rte y Meollo. Full Stack con CakePHP, jQuery, APIs SOAP/JSON y arquitectura MVC para sectores automoción, cooperación ciudadana y agrícola.',
+      highlights: ['Land Rover', 'CakePHP', 'APIs SOAP', 'eCommerce'],
+    },
+    {
+      year: '2010 – 2013',
+      role: 'Ingeniero de Software',
+      company: 'ATOS – DAESA · Cliente: BBVA · Madrid',
+      desc: 'Diseño y desarrollo de software para monitoreo de SLAs, procesos ETL y herramientas de gestión de stock para centros del grupo BBVA.',
+      highlights: ['SLA Monitoring', 'ETL', 'BBVA', 'Java'],
+    },
+  ];
+
+  // ─── Particle Canvas ─────────────────────────────────────────────────────────
+  function initCanvas(canvas: HTMLCanvasElement) {
+    const ctx = canvas.getContext('2d')!;
+    let animId: number;
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize);
+
+    const count = 80;
+    const particles = Array.from({ length: count }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 1.5 + 0.5,
+      opacity: Math.random() * 0.5 + 0.1,
+    }));
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const p of particles) {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(99,102,241,${p.opacity})`;
+        ctx.fill();
+      }
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(99,102,241,${(1 - dist / 120) * 0.15})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+      animId = requestAnimationFrame(draw);
+    };
+    draw();
+
+    return () => {
+      cancelAnimationFrame(animId);
       window.removeEventListener('resize', resize);
     };
   }
@@ -38,12 +271,12 @@
   }
 
   function observeFadeIns() {
-    const obs = new IntersectionObserver(
+    fadeObs = new IntersectionObserver(
       (entries) => { for (const e of entries) if (e.isIntersecting) e.target.classList.add('visible'); },
       { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
     );
-    document.querySelectorAll('.fade-in').forEach((el) => obs.observe(el));
-    return obs;
+    document.querySelectorAll('.fade-in').forEach((el) => fadeObs!.observe(el));
+    return fadeObs;
   }
 
   // ─── Magnetic ────────────────────────────────────────────────────────────────
@@ -78,6 +311,7 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseleave', onMouseLeave);
     document.querySelectorAll<HTMLElement>('.magnetic').forEach((el) => cleanups.push(attachMagnetic(el)));
+    loadPosts();
     return () => {
       cleanups.forEach((c) => c());
       sObs.disconnect(); fObs.disconnect();
@@ -93,6 +327,7 @@
     { id: 'skills', label: 'Skills' },
     { id: 'projects', label: 'Proyectos' },
     { id: 'experience', label: 'Experiencia' },
+    { id: 'blog', label: 'Blog' },
     { id: 'contact', label: 'Contacto' },
   ];
 </script>
@@ -114,7 +349,7 @@
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>
       CV
     </a>
-    <a href="mailto:developer1983@gmail.com" class="nav-cta magnetic">Contáctame</a>
+    <a href="mailto:carlos.developer1983@gmail.com" class="nav-cta magnetic">Contáctame</a>
   </div>
 </nav>
 
@@ -151,7 +386,7 @@
           <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </a>
-      <a href="mailto:developer1983@gmail.com" class="btn-secondary magnetic">Hablemos</a>
+      <a href="mailto:carlos.developer1983@gmail.com" class="btn-secondary magnetic">Hablemos</a>
       <a href="/cv" class="btn-secondary magnetic">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
         CV imprimible
@@ -192,16 +427,16 @@
         <p>He liderado modernizaciones de ecosistemas legado —incluyendo migraciones de <strong>COBOL a tecnologías modernas</strong>— y el diseño de <strong>Agentes IA aplicados a calidad</strong> en grandes corporaciones bancarias como BBVA, con impacto directo en equipos de Europa y LATAM.</p>
         <p>Mi diferencial: entiendo el problema de calidad <strong>desde la arquitectura</strong>, no solo desde el testing. Combino base técnica sólida con capacidad real de liderazgo, mentoring y traducción de necesidades de negocio en soluciones accionables.</p>
         <div class="about-links">
-          <a href="mailto:developer1983@gmail.com" class="about-link">
+          <a href="mailto:carlos.developer1983@gmail.com" class="about-link">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
-            developer1983@gmail.com
+            carlos.developer1983@gmail.com
           </a>
-          <a href="https://github.com" target="_blank" rel="noopener" class="about-link">
+          <a href="https://github.com/munchkin09" target="_blank" rel="noopener" class="about-link">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
             GitHub
           </a>
-          <a href="https://linkedin.com" target="_blank" rel="noopener" class="about-link">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          <a href="https://linkedin.com/in/carlosledesmac" target="_blank" rel="noopener" class="about-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 23.2 0 22.222 0h.003z"/></svg>
             LinkedIn
           </a>
         </div>
@@ -241,7 +476,6 @@
     </div>
 
     <div class="chart-layout fade-in">
-      <!-- SVG Donut chart -->
       <div class="chart-wrap">
         <svg viewBox="0 0 320 320" class="pie-svg" role="img" aria-label="Tech stack pie chart">
           <defs>
@@ -265,7 +499,6 @@
             />
           {/each}
 
-          <!-- Centre label -->
           {#if hoveredSlice !== null}
             {@const s = slices[hoveredSlice]}
             <text x={CX} y={CY - 18} text-anchor="middle" class="c-icon">{s.icon}</text>
@@ -278,7 +511,6 @@
         </svg>
       </div>
 
-      <!-- Legend -->
       <div class="legend-grid">
         {#each slices as s}
           <div
@@ -364,6 +596,46 @@
   </div>
 </section>
 
+<!-- ── BLOG ── -->
+<section id="blog" class="blog-section">
+  <div class="container">
+    <div class="section-header fade-in">
+      <p class="section-label">Últimas entradas</p>
+      <h2>Blog <span class="gradient-text">& notas</span></h2>
+      <p class="section-sub">Ideas, reflexiones y aprendizajes del día a día. Publicado desde Telegram.</p>
+    </div>
+
+    {#if postsLoading}
+      <div class="blog-loading fade-in">
+        <div class="blog-spinner"></div>
+        <span>Cargando posts…</span>
+      </div>
+    {:else if posts.length === 0}
+      <div class="blog-empty fade-in">
+        <span class="blog-empty-icon">✏️</span>
+        <p>Aún no hay posts. ¡Pronto habrá contenido aquí!</p>
+      </div>
+    {:else}
+      <div class="blog-grid">
+        {#each posts as post, i}
+          <a href="/blog/{post.id}" class="blog-card fade-in" style="transition-delay: {i * 80}ms">
+            <div class="blog-card-meta">
+              <time class="blog-date">{formatDate(post.date)}</time>
+              <span class="blog-id">#{post.id}</span>
+            </div>
+            <h3 class="blog-title">{post.title}</h3>
+            <div class="blog-body">
+              <p>{@html renderMarkdown(post.content)}</p>
+            </div>
+            <span class="blog-read-more">Leer más →</span>
+            <div class="blog-card-glow"></div>
+          </a>
+        {/each}
+      </div>
+    {/if}
+  </div>
+</section>
+
 <!-- ── CONTACT ── -->
 <section id="contact" class="contact-section">
   <div class="container">
@@ -372,16 +644,16 @@
       <p class="section-label">¿Trabajamos juntos?</p>
       <h2>Hablemos de tu <span class="gradient-text">próximo proyecto</span></h2>
       <p class="contact-sub">Siempre abierto a nuevos retos, colaboraciones y conversaciones interesantes. Ya sea un proyecto completo, una consultoría puntual o simplemente una charla técnica.</p>
-      <a href="mailto:developer1983@gmail.com" class="btn-primary magnetic contact-btn">
+      <a href="mailto:carlos.developer1983@gmail.com" class="btn-primary magnetic contact-btn">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
         Envíame un email
       </a>
       <div class="contact-socials">
-        <a href="https://github.com" target="_blank" rel="noopener" class="social-link magnetic">GitHub</a>
+        <a href="https://github.com/munchkin09" target="_blank" rel="noopener" class="social-link magnetic">GitHub</a>
         <span class="social-sep">·</span>
-        <a href="https://linkedin.com" target="_blank" rel="noopener" class="social-link magnetic">LinkedIn</a>
+        <a href="https://linkedin.com/in/carlosledesmac" target="_blank" rel="noopener" class="social-link magnetic">LinkedIn</a>
         <span class="social-sep">·</span>
-        <a href="https://twitter.com" target="_blank" rel="noopener" class="social-link magnetic">Twitter / X</a>
+        <a href="https://twitter.com/carloslc" target="_blank" rel="noopener" class="social-link magnetic">Twitter / X</a>
       </div>
     </div>
   </div>
@@ -675,7 +947,6 @@
     padding: 8rem 0;
     background: linear-gradient(180deg, transparent, #0a0a1a 20%, #0a0a1a 80%, transparent);
   }
-
   .chart-layout {
     display: grid;
     grid-template-columns: 340px 1fr;
@@ -683,11 +954,8 @@
     align-items: center;
     margin-bottom: 3.5rem;
   }
-
-  /* SVG chart */
   .chart-wrap { position: relative; }
   .pie-svg { width: 100%; overflow: visible; }
-
   .pie-slice {
     cursor: pointer;
     transform-origin: 160px 160px;
@@ -697,22 +965,16 @@
     animation-delay: var(--delay);
   }
   :global(.fade-in.visible) .pie-slice { animation-play-state: running; }
-
   @keyframes slice-pop {
     from { transform: scale(0); opacity: 0; }
     to   { transform: scale(1); opacity: 1; }
   }
-
-  /* Centre text */
   .c-total { font-size: 1.6rem; font-weight: 800; fill: #f8fafc; font-family: Inter, sans-serif; }
   .c-sub   { font-size: 0.75rem; fill: #475569; font-family: Inter, sans-serif; text-transform: uppercase; letter-spacing: 0.1em; }
   .c-icon  { font-size: 1.5rem; font-family: Inter, sans-serif; }
   .c-name  { font-size: 0.85rem; font-weight: 700; fill: #f8fafc; font-family: Inter, sans-serif; }
   .c-pct   { font-size: 1.3rem; font-weight: 800; font-family: Inter, sans-serif; }
-
-  /* Legend */
   .legend-grid { display: flex; flex-direction: column; gap: 0.6rem; }
-
   .legend-item {
     display: flex; align-items: center; gap: 0.75rem;
     padding: 0.65rem 1rem;
@@ -725,15 +987,12 @@
     transform: translateX(4px);
   }
   .legend-item.is-dimmed { opacity: 0.3; }
-
   .ldot  { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
   .licon { font-size: 1rem; }
   .linfo { display: flex; flex-direction: column; flex: 1; min-width: 0; }
   .lname { font-size: 0.875rem; font-weight: 600; white-space: nowrap; }
   .lcat  { font-size: 0.7rem; color: #475569; }
   .lpct  { font-size: 0.875rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; flex-shrink: 0; }
-
-  /* Extra tags */
   .extra-skills { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; }
   .extra-tag {
     padding: 0.35rem 0.85rem; background: rgba(255,255,255,0.04);
@@ -854,5 +1113,66 @@
     .strengths-grid { grid-template-columns: 1fr; }
     .hero-actions { flex-direction: column; align-items: center; }
     .contact-inner { padding: 3rem 1.5rem; }
+    .blog-grid { grid-template-columns: 1fr; }
   }
+
+  /* ── Blog ── */
+  .blog-section {
+    padding: 8rem 0;
+    background: linear-gradient(180deg, transparent, #0a0a1a 20%, #0a0a1a 80%, transparent);
+  }
+  .blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+
+  .blog-card {
+    position: relative; padding: 2rem;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px; overflow: hidden; text-decoration: none; color: inherit;
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    display: flex; flex-direction: column; gap: 0.75rem;
+  }
+  .blog-card:hover { border-color: rgba(99,102,241,0.5); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+  .blog-card:hover .blog-card-glow { opacity: 1; }
+  .blog-card-glow {
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(99,102,241,0.1), transparent 65%);
+    opacity: 0; transition: opacity 0.4s; pointer-events: none;
+  }
+  .blog-card-meta { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+  .blog-date { font-size: 0.75rem; color: #6366f1; font-family: 'JetBrains Mono', monospace; }
+  .blog-id { font-size: 0.7rem; color: #334155; font-family: 'JetBrains Mono', monospace; }
+  .blog-title { font-size: 1.15rem; font-weight: 700; line-height: 1.3; color: #f8fafc; }
+  .blog-body {
+    font-size: 0.9rem; color: #94a3b8; line-height: 1.75;
+    display: -webkit-box; -webkit-line-clamp: 6; line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .blog-body :global(strong) { color: #f8fafc; }
+  .blog-body :global(em) { color: #a5b4fc; font-style: italic; }
+  .blog-body :global(code) {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.82em;
+    background: rgba(99,102,241,0.15); padding: 0.1em 0.4em; border-radius: 4px; color: #a5b4fc;
+  }
+  .blog-body :global(a) { color: #6366f1; text-decoration: underline; text-underline-offset: 2px; }
+
+  .blog-loading {
+    display: flex; align-items: center; justify-content: center; gap: 1rem;
+    padding: 4rem; color: #475569; font-size: 0.9rem;
+  }
+  .blog-spinner {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 2px solid rgba(99,102,241,0.2); border-top-color: #6366f1;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .blog-empty {
+    display: flex; flex-direction: column; align-items: center; gap: 1rem;
+    padding: 4rem; color: #475569; text-align: center;
+  }
+  .blog-empty-icon { font-size: 2.5rem; }
+  .blog-empty p { font-size: 0.95rem; }
+  .blog-read-more {
+    font-size: 0.8rem; font-weight: 600; color: #6366f1;
+    margin-top: auto; align-self: flex-start;
+    transition: gap 0.2s;
+  }
+  .blog-card:hover .blog-read-more { text-decoration: underline; }
 </style>

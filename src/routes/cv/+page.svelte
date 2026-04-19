@@ -6,9 +6,9 @@
     location: 'Madrid, España',
     phone: '+34 680 33 24 30',
     email: 'developer1983@gmail.com',
-    linkedin: 'linkedin.com/in/carlos-ledesma',
-    github: 'github.com/carlos-ledesma',
-    website: 'carlosledesma.dev',
+    linkedin: 'linkedin.com/in/carlosledesmac',
+    github: 'github.com/munchkin09',
+    website: 'carloslc.is-a.dev',
     summary: [
       'Tech Lead y Arquitecto de Software con +13 años de experiencia en el ciclo completo del software (SDLC), especializado en la intersección entre Ingeniería de Calidad, Automatización e Inteligencia Artificial Generativa.',
       'He liderado la modernización de ecosistemas legado —incluyendo migraciones de COBOL a tecnologías modernas— y el diseño de Agentes IA aplicados a calidad en grandes corporaciones bancarias y tecnológicas, con impacto directo en equipos de Europa y LATAM.',
