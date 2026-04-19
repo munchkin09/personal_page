@@ -1,7 +1,10 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { dictionaries, localeDateFormat, type Locale } from '$lib/i18n';
 
-  let { data } = $props<{ data: { id: string } }>();
+  let { data }: { data: { id: string; lang: Locale } } = $props();
+
+  const t = $derived(dictionaries[data.lang].blogDetail);
 
   interface Post { id: string; title: string; content: string; date: string; }
   let post = $state<Post | null>(null);
@@ -22,7 +25,7 @@
   }
 
   function formatDate(iso: string): string {
-    return new Date(iso).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+    return new Date(iso).toLocaleDateString(localeDateFormat(data.lang), { year: 'numeric', month: 'long', day: 'numeric' });
   }
 
   onMount(async () => {
@@ -50,27 +53,27 @@
 
 <div class="page">
   <nav>
-    <a href="/#blog" class="back-link">
+    <a href="/{data.lang}#blog" class="back-link">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
         <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      Volver al blog
+      {t.back}
     </a>
-    <a href="/" class="logo">CL<span>.</span></a>
+    <a href="/{data.lang}" class="logo">CL<span>.</span></a>
   </nav>
 
   <main>
     {#if loading}
       <div class="loading">
         <div class="spinner"></div>
-        <span>Cargando…</span>
+        <span>{t.loading}</span>
       </div>
     {:else if notFound || !post}
       <div class="not-found">
         <span class="not-found-icon">🔍</span>
-        <h2>Post no encontrado</h2>
-        <p>El post que buscas no existe o ha sido eliminado.</p>
-        <a href="/#blog" class="btn-back">← Volver al blog</a>
+        <h2>{t.notFoundTitle}</h2>
+        <p>{t.notFoundBody}</p>
+        <a href="/{data.lang}#blog" class="btn-back">{t.notFoundBack}</a>
       </div>
     {:else}
       <article class="post">
@@ -85,7 +88,7 @@
           <p>{@html renderMarkdown(post.content)}</p>
         </div>
         <footer class="post-footer">
-          <a href="/#blog" class="btn-back">← Volver al blog</a>
+          <a href="/{data.lang}#blog" class="btn-back">{t.notFoundBack}</a>
         </footer>
       </article>
     {/if}

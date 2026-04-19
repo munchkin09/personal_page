@@ -1,108 +1,17 @@
 <script lang="ts">
-  // ─── Datos CV (fuente única en este fichero para independencia del index) ─────
-  const profile = {
-    name: 'Carlos Ledesma Castejón',
-    title: 'Tech Lead · Arquitecto de Soluciones de Calidad & IA · Full Stack Senior',
-    location: 'Madrid, España',
+  import { dictionaries, type Locale } from '$lib/i18n';
+
+  let { data }: { data: { lang: Locale } } = $props();
+
+  const t = $derived(dictionaries[data.lang].cv);
+
+  const contact = {
     phone: '+34 680 33 24 30',
     email: 'carlos.developer1983@gmail.com',
     linkedin: 'linkedin.com/in/carlosledesmac',
     github: 'github.com/munchkin09',
     website: 'carloslc.is-a.dev',
-    summary: [
-      'Tech Lead y Arquitecto de Software con +13 años de experiencia en el ciclo completo del software (SDLC), especializado en la intersección entre Ingeniería de Calidad, Automatización e Inteligencia Artificial Generativa.',
-      'He liderado la modernización de ecosistemas legado —incluyendo migraciones de COBOL a tecnologías modernas— y el diseño de Agentes IA aplicados a calidad en grandes corporaciones bancarias y tecnológicas, con impacto directo en equipos de Europa y LATAM.',
-      'Mi diferencial: entiendo el problema de calidad desde la arquitectura, no solo desde el testing.',
-    ],
   };
-
-  const experience = [
-    {
-      company: 'NTT DATA',
-      location: 'Madrid (Híbrido)',
-      role: 'Arquitecto de Soluciones de Calidad & IA',
-      period: 'Jun 2024 – Actualidad',
-      context: 'Rol estratégico de innovación tecnológica aplicada al ciclo de vida del software en un contexto de transformación digital a gran escala.',
-      bullets: [
-        { k: 'Agentes IA para Calidad', v: 'Diseño y desarrollo de agentes autónomos con LLMs orientados a la verificación, validación y análisis de calidad del software, reduciendo la intervención manual en procesos críticos del SDLC.' },
-        { k: 'Test Case Generation', v: 'Desarrollé una plataforma de generación automática de casos de prueba con IA, democratizando el acceso al testing para perfiles no técnicos y acelerando el tiempo de diseño.' },
-        { k: 'Migración COBOL', v: 'Lidero proyectos de modernización de código legado COBOL con pipelines asistidos por IA para análisis, documentación y traducción a lenguajes mantenibles, reduciendo deuda técnica acumulada durante décadas.' },
-        { k: 'Transferencia de conocimiento', v: 'Imparto cursos y talleres técnicos y lidero iniciativas de adopción de IA para equipos de calidad en Europa y LATAM, asegurando una implantación efectiva y sostenible.' },
-        { k: 'Estrategia transversal', v: 'Defino soluciones de análisis de calidad integradas en el SDLC que garantizan mantenibilidad, trazabilidad y eficiencia en el delivery a escala corporativa.' },
-      ],
-    },
-    {
-      company: 'Capitole Consulting',
-      location: 'Cliente: BBVA · Madrid',
-      role: 'QA Automation Lead / Developer',
-      period: 'Feb 2021 – Jun 2024',
-      context: 'Liderazgo técnico en la evolución y estandarización de frameworks de automatización para uno de los mayores bancos de Europa.',
-      bullets: [
-        { k: 'Arquitectura de frameworks', v: 'Diseñé e implementé soluciones de automatización con Selenium, Cucumber y WebdriverIO, aumentando la cobertura en flujos críticos de negocio.' },
-        { k: 'Integración SDLC', v: 'Desarrollé herramientas de control de calidad embebidas en el ciclo de vida, habilitando detección temprana de errores y reduciendo el coste del bug fixing.' },
-        { k: 'Legibilidad y adopción', v: 'Implementé capas de abstracción y reporting que hicieron las pruebas automatizadas comprensibles para stakeholders no técnicos, acelerando la aprobación de releases.' },
-      ],
-    },
-    {
-      company: 'Centum Digital',
-      location: 'Madrid',
-      role: 'Senior Full-Stack Developer',
-      period: 'Sep 2018 – Jul 2021',
-      context: 'Desarrollo de infraestructura compleja para validación de dispositivos IoT y móviles a escala.',
-      bullets: [
-        { k: 'Microservicios + AWS Device Farm', v: 'Diseñé y mantuve una infraestructura orientada a microservicios integrada con AWS Device Farm para validación en la nube de múltiples tipologías de dispositivo.' },
-        { k: 'Automatización multi-plataforma', v: 'Lideré el análisis y refactorización de herramientas de testing para un ecosistema heterogéneo: Smartphones, Smart TVs, STBs y WebApps.' },
-        { k: 'Productividad de equipos', v: 'Creé flujos de trabajo eficientes que redujeron la carga operativa del departamento y mejoraron el soporte a usuarios de la plataforma.' },
-      ],
-    },
-    {
-      company: 'Freelance / Consultoría tecnológica',
-      location: 'Madrid',
-      role: 'Consultor Full Stack & Web Developer',
-      period: '2013 – 2018',
-      context: 'Proyectos end-to-end para clientes corporativos y PYMEs.',
-      bullets: [
-        { k: 'Wunderman (Land Rover)', v: 'Desarrollo Full Stack con CakePHP y jQuery/Bootstrap para campañas digitales de alto tráfico.' },
-        { k: 'Anlddea', v: 'Arquitectura y prototipado de red social para cooperación ciudadana y financiación de PYMEs (MVC, HTML5/JS).' },
-        { k: 'Informatiz@rte', v: 'Integración de APIs SOAP y consumo de datos JSON para el sector agrícola.' },
-        { k: 'Meollo', v: 'Consultoría estratégica de eCommerce y gestión de presencia digital.' },
-      ],
-    },
-    {
-      company: 'Atos – DAESA',
-      location: 'Cliente: BBVA · Madrid',
-      role: 'Ingeniero de Software',
-      period: '2010 – 2013',
-      context: 'Diseño y desarrollo de software para monitoreo de SLAs, procesos ETL y herramientas de gestión de stock para centros del grupo BBVA.',
-      bullets: [],
-    },
-  ];
-
-  const skills = [
-    { group: 'Liderazgo & Estrategia', items: ['Arquitectura de Software', 'Mentoring técnico', 'Modernización de Legado', 'Agile / Scrum', 'Gestión de Stakeholders'] },
-    { group: 'IA & Modernización',   items: ['Agentes IA', 'GenAI aplicada a código', 'LLMs (OpenAI, Claude)', 'Test Case Generation', 'Análisis estático', 'Migración COBOL'] },
-    { group: 'Lenguajes',             items: ['JavaScript / TypeScript (Experto)', 'Python', 'Bash', 'PowerShell', 'COBOL (análisis y migración)'] },
-    { group: 'QA & Testing',          items: ['Selenium', 'Cucumber', 'WebdriverIO', 'Cypress', 'Jest', 'Playwright', 'ESLint'] },
-    { group: 'Cloud & DevOps',        items: ['Azure (WebApps, Functions, LLM Foundry)', 'GCP', 'AWS (EC2, RDS, S3, Device Farm)', 'Docker', 'Jenkins', 'GitLab CI', 'Linux', 'Git'] },
-    { group: 'Formación & Adopción',  items: ['Diseño de cursos técnicos', 'Talleres de IA', 'Onboarding de equipos', 'Evangelización tecnológica'] },
-  ];
-
-  const languages = [
-    { lang: 'Español', level: 'Nativo' },
-    { lang: 'Inglés',  level: 'Competencia profesional' },
-  ];
-
-  const education = [
-    { title: 'Bootcamp Full Stack Web & Mobile', org: 'Keep Coding, Madrid', period: '2016 – 2017' },
-    { title: 'Técnico Superior en Desarrollo de Aplicaciones Informáticas', org: 'Cámara de Comercio de Madrid', period: '2007 – 2009' },
-  ];
-
-  const highlights = [
-    { n: '13+',  l: 'años de experiencia' },
-    { n: '2',    l: 'continentes (EU & LATAM)' },
-    { n: 'BBVA', l: 'cliente bancario Top EU' },
-    { n: 'LLMs', l: 'aplicados a QA y legacy' },
-  ];
 
   function handlePrint() {
     window.print();
@@ -110,66 +19,71 @@
 </script>
 
 <svelte:head>
-  <title>CV · Carlos Ledesma — Tech Lead QA & IA</title>
-  <meta name="description" content="Currículum imprimible de Carlos Ledesma — Tech Lead, Arquitecto de Calidad & IA, Full Stack Senior." />
+  <title>{data.lang === 'en' ? 'CV · Carlos Ledesma — Tech Lead QA & AI' : 'CV · Carlos Ledesma — Tech Lead QA & IA'}</title>
+  <meta
+    name="description"
+    content={data.lang === 'en'
+      ? 'Printable résumé of Carlos Ledesma — Tech Lead, Quality & AI Solutions Architect, Senior Full Stack.'
+      : 'Currículum imprimible de Carlos Ledesma — Tech Lead, Arquitecto de Calidad & IA, Full Stack Senior.'}
+  />
   <meta name="robots" content="index,follow" />
 </svelte:head>
 
-<!-- Toolbar (solo pantalla) -->
+<!-- Toolbar (screen only) -->
 <div class="toolbar no-print">
-  <a href="/" class="tool-link" aria-label="Volver al portfolio">
+  <a href="/{data.lang}" class="tool-link" aria-label={t.toolbar.back}>
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 4 3 8l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Volver al portfolio
+    {t.toolbar.back}
   </a>
   <div class="tool-actions">
     <button type="button" class="btn ghost" onclick={handlePrint}>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v7H6z"/></svg>
-      Imprimir
+      {t.toolbar.print}
     </button>
     <button type="button" class="btn primary" onclick={handlePrint}>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></svg>
-      Descargar PDF
+      {t.toolbar.downloadPdf}
     </button>
   </div>
 </div>
 
-<main class="sheet" aria-label="Currículum Carlos Ledesma">
-  <!-- ── Header ── -->
+<main class="sheet" aria-label={t.docAriaLabel}>
+  <!-- Header -->
   <header class="head">
     <div class="head-main">
-      <h1>{profile.name}</h1>
-      <p class="title">{profile.title}</p>
+      <h1>{t.profile.name}</h1>
+      <p class="title">{t.profile.title}</p>
     </div>
     <ul class="contact">
-      <li><span class="label">Ubicación</span>{profile.location}</li>
-      <li><span class="label">Teléfono</span><a href="tel:+34680332430">{profile.phone}</a></li>
-      <li><span class="label">Email</span><a href="mailto:{profile.email}">{profile.email}</a></li>
-      <li><span class="label">LinkedIn</span><a href="https://{profile.linkedin}" target="_blank" rel="noopener">{profile.linkedin}</a></li>
-      <li><span class="label">GitHub</span><a href="https://{profile.github}" target="_blank" rel="noopener">{profile.github}</a></li>
-      <li><span class="label">Web</span><a href="https://{profile.website}" target="_blank" rel="noopener">{profile.website}</a></li>
+      <li><span class="label">{t.headerLabels.location}</span>{t.profile.location}</li>
+      <li><span class="label">{t.headerLabels.phone}</span><a href="tel:+34680332430">{contact.phone}</a></li>
+      <li><span class="label">{t.headerLabels.email}</span><a href="mailto:{contact.email}">{contact.email}</a></li>
+      <li><span class="label">{t.headerLabels.linkedin}</span><a href="https://{contact.linkedin}" target="_blank" rel="noopener">{contact.linkedin}</a></li>
+      <li><span class="label">{t.headerLabels.github}</span><a href="https://{contact.github}" target="_blank" rel="noopener">{contact.github}</a></li>
+      <li><span class="label">{t.headerLabels.web}</span><a href="https://{contact.website}" target="_blank" rel="noopener">{contact.website}</a></li>
     </ul>
   </header>
 
-  <!-- ── Highlights ── -->
-  <section class="highlights" aria-label="Métricas clave">
-    {#each highlights as h}
+  <!-- Highlights -->
+  <section class="highlights" aria-label={t.metricsLabel}>
+    {#each t.highlights as h}
       <div class="hl"><span class="hl-n">{h.n}</span><span class="hl-l">{h.l}</span></div>
     {/each}
   </section>
 
-  <!-- ── Body grid ── -->
+  <!-- Body grid -->
   <div class="grid">
-    <!-- Columna principal -->
+    <!-- Main column -->
     <div class="col-main">
       <section>
-        <h2>Perfil</h2>
-        {#each profile.summary as p}<p class="lead">{p}</p>{/each}
+        <h2>{t.sections.profile}</h2>
+        {#each t.profile.summary as p}<p class="lead">{p}</p>{/each}
       </section>
 
       <section>
-        <h2>Experiencia</h2>
+        <h2>{t.sections.experience}</h2>
         <div class="timeline">
-          {#each experience as job}
+          {#each t.experience as job}
             <article class="job">
               <header class="job-head">
                 <div>
@@ -195,9 +109,9 @@
     <!-- Sidebar -->
     <aside class="col-side">
       <section>
-        <h2>Stack técnico</h2>
+        <h2>{t.sections.stack}</h2>
         <div class="skills">
-          {#each skills as g}
+          {#each t.skills as g}
             <div class="skill-group">
               <h4>{g.group}</h4>
               <ul class="tags">
@@ -209,18 +123,18 @@
       </section>
 
       <section>
-        <h2>Idiomas</h2>
+        <h2>{t.sections.languages}</h2>
         <ul class="plain">
-          {#each languages as l}
+          {#each t.languages as l}
             <li><strong>{l.lang}</strong> — {l.level}</li>
           {/each}
         </ul>
       </section>
 
       <section>
-        <h2>Formación</h2>
+        <h2>{t.sections.education}</h2>
         <ul class="plain">
-          {#each education as e}
+          {#each t.education as e}
             <li>
               <strong>{e.title}</strong>
               <span class="muted">{e.org}</span>
@@ -231,20 +145,20 @@
       </section>
 
       <section class="callout">
-        <h4>Disponibilidad</h4>
-        <p>Abierto a nuevas oportunidades como Tech Lead / Solution Architect en entornos de QA + IA, modernización de legacy y plataformas Full Stack.</p>
+        <h4>{t.sections.availability}</h4>
+        <p>{t.availabilityBody}</p>
       </section>
     </aside>
   </div>
 
   <footer class="foot">
-    <span>Referencias disponibles bajo petición</span>
-    <span class="mono">carlosledesma.dev · Madrid, España</span>
+    <span>{t.footer.references}</span>
+    <span class="mono">{t.footer.website}</span>
   </footer>
 </main>
 
 <style>
-  /* ── Reset local (esta ruta usa su propia tipografía y fondo claro) ── */
+  /* Local reset (this route uses its own typography and light background) */
   :global(html), :global(body) {
     background: #eef0f5;
     color: #111827;
@@ -253,7 +167,7 @@
   }
   :global(body) { overflow-x: auto; }
 
-  /* ── Toolbar ── */
+  /* Toolbar */
   .toolbar {
     position: sticky; top: 0; z-index: 50;
     display: flex; align-items: center; justify-content: space-between;
@@ -286,7 +200,7 @@
   }
   .btn.primary:hover { background: #4338ca; box-shadow: 0 6px 18px rgba(79,70,229,0.25); }
 
-  /* ── Hoja CV (A4) ── */
+  /* CV sheet (A4) */
   .sheet {
     max-width: 210mm;
     margin: 1.5rem auto 3rem;
@@ -299,7 +213,7 @@
     font-size: 10.5pt;
   }
 
-  /* ── Header ── */
+  /* Header */
   .head {
     display: grid;
     grid-template-columns: 1fr auto;
@@ -339,7 +253,7 @@
   .contact a { color: #111827; }
   .contact a:hover { color: #4f46e5; text-decoration: underline; }
 
-  /* ── Highlights ── */
+  /* Highlights */
   .highlights {
     display: grid; grid-template-columns: repeat(4, 1fr);
     gap: 0.6rem; margin-bottom: 1.1rem;
@@ -355,7 +269,7 @@
   .hl-n { font-size: 13pt; font-weight: 800; color: #0f172a; letter-spacing: -0.01em; }
   .hl-l { font-size: 7.8pt; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }
 
-  /* ── Grid body ── */
+  /* Grid body */
   .grid {
     display: grid;
     grid-template-columns: 1fr 33%;
@@ -379,7 +293,7 @@
 
   .lead { margin-bottom: 0.5rem; color: #1f2937; }
 
-  /* ── Timeline ── */
+  /* Timeline */
   .job { margin-bottom: 0.9rem; break-inside: avoid; page-break-inside: avoid; }
   .job:last-child { margin-bottom: 0; }
   .job-head {
@@ -409,7 +323,7 @@
   }
   .bullets strong { color: #0f172a; font-weight: 700; }
 
-  /* ── Sidebar ── */
+  /* Sidebar */
   .skill-group { margin-bottom: 0.75rem; }
   .tags { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.25rem; }
   .tags li {
@@ -441,7 +355,7 @@
   .callout h4 { color: #4338ca; margin-bottom: 0.3rem; }
   .callout p { font-size: 9pt; color: #312e81; line-height: 1.5; }
 
-  /* ── Footer ── */
+  /* Footer */
   .foot {
     margin-top: 1.5rem;
     padding-top: 0.7rem;
@@ -451,7 +365,7 @@
   }
   .foot .mono { font-size: 7.8pt; }
 
-  /* ── Responsive (pantalla) ── */
+  /* Responsive (screen) */
   @media (max-width: 780px) {
     .sheet { padding: 10mm; margin: 0.75rem; }
     .head { grid-template-columns: 1fr; gap: 0.8rem; }
@@ -462,7 +376,7 @@
     .tool-actions { justify-content: space-between; }
   }
 
-  /* ── Print ── */
+  /* Print */
   @page {
     size: A4;
     margin: 12mm 12mm 12mm 12mm;
@@ -482,11 +396,9 @@
       font-size: 9.8pt;
     }
     a { color: inherit; text-decoration: none; }
-    /* Evitar cortes feos en trabajos */
     .job, .skill-group, .callout { break-inside: avoid; page-break-inside: avoid; }
     h2 { break-after: avoid; page-break-after: avoid; }
     .highlights { break-inside: avoid; page-break-inside: avoid; }
-    /* Preservar colores de acento */
     * {
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;

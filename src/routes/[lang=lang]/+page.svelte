@@ -1,5 +1,10 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
+  import { goto } from '$app/navigation';
+  import { dictionaries, localeDateFormat, rememberLocale, swapLocaleInPath, SUPPORTED_LOCALES, type Locale } from '$lib/i18n';
+
+  let { data }: { data: { lang: Locale } } = $props();
+  const t = $derived(dictionaries[data.lang]);
 
   // ─── State ───────────────────────────────────────────────────────────────────
   let canvasEl = $state<HTMLCanvasElement | null>(null);
@@ -44,27 +49,29 @@
       .replace(/\n/g, '<br/>');
   }
 
+  const dateLocale = $derived(localeDateFormat(data.lang));
   function formatDate(iso: string): string {
-    return new Date(iso).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+    return new Date(iso).toLocaleDateString(dateLocale, { year: 'numeric', month: 'long', day: 'numeric' });
   }
 
-  const roles = [
-    'Tech Lead & Solution Architect',
-    'QA & AI Strategy Expert',
-    'Full Stack Senior Developer',
-    'GenAI Applied to Software',
-    'COBOL Modernization Lead',
-  ];
+  // ─── Visual-only tech stack config (colors, percentages, icons) ───────────────
+  const techStackBase = [
+    { key: 'typescript',   pct: 25, color: '#6366f1', glow: 'rgba(99,102,241,0.5)',   icon: '⚡', category: 'Frontend'     },
+    { key: 'ai',           pct: 20, color: '#8b5cf6', glow: 'rgba(139,92,246,0.5)',   icon: '🤖', category: 'AI'           },
+    { key: 'systemDesign', pct: 13, color: '#f59e0b', glow: 'rgba(245,158,11,0.5)',   icon: '🏗️', category: 'Architecture' },
+    { key: 'frontend',     pct:  5, color: '#06b6d4', glow: 'rgba(6,182,212,0.5)',    icon: '🎨', category: 'Frontend'     },
+    { key: 'python',       pct:  4, color: '#3b82f6', glow: 'rgba(59,130,246,0.5)',   icon: '🐍', category: 'Backend'      },
+    { key: 'cloud',        pct: 20, color: '#ec4899', glow: 'rgba(236,72,153,0.5)',   icon: '🐳', category: 'DevOps'       },
+    { key: 'data',         pct: 13, color: '#64748b', glow: 'rgba(100,116,139,0.5)',  icon: '🗄️', category: 'Data'         },
+  ] as const;
 
-  const techStack = [
-    { name: 'TypeScript & Node.js',    pct: 25, color: '#6366f1', glow: 'rgba(99,102,241,0.5)',   icon: '⚡', category: 'Frontend'     },
-    { name: 'AI / LLM',      pct: 20, color: '#8b5cf6', glow: 'rgba(139,92,246,0.5)',   icon: '🤖', category: 'AI'           },
-    { name: 'System Design', pct: 13, color: '#f59e0b', glow: 'rgba(245,158,11,0.5)',   icon: '🏗️', category: 'Architecture' },
-    { name: 'Frontend',  pct: 5, color: '#06b6d4', glow: 'rgba(6,182,212,0.5)',    icon: '🎨', category: 'Frontend'     },
-    { name: 'Python',        pct:  4, color: '#3b82f6', glow: 'rgba(59,130,246,0.5)',   icon: '🐍', category: 'Backend'      },
-    { name: 'Cloud & Infra',    pct:  20, color: '#ec4899', glow: 'rgba(236,72,153,0.5)',   icon: '🐳', category: 'DevOps'       },
-    { name: 'Data Management',    pct:  13, color: '#64748b', glow: 'rgba(100,116,139,0.5)',  icon: '🗄️', category: 'Data'         },
-  ];
+  const techStack = $derived(
+    techStackBase.map((b) => ({
+      ...b,
+      name: t.skills.techNames[b.key],
+      categoryLabel: t.skills.categories[b.category as keyof typeof t.skills.categories],
+    }))
+  );
 
   // ─── Pie chart helpers ────────────────────────────────────────────────────────
   const CX = 160, CY = 160, R_OUT = 140, R_IN = 72, GAP = 2;
@@ -101,103 +108,23 @@
     });
   });
 
-  const projects = [
-    {
-      title: 'YACS — Yet Another Claude Skills Repo',
-      description: 'Colección de Skills y Agentes para Claude Code: auditorías OWASP, diseño de arquitectura, gamificación, deuda técnica, data storytelling y más. Instalable vía npx.',
-      tags: ['Claude Code', 'AI Skills', 'Node.js', 'npx'],
-      icon: '🧠',
-      year: '2026',
-      url: 'https://github.com/Mammals-at-work/YACS',
-    },
-    {
-      title: 'Mammals',
-      description: 'Plataforma unificada de gestión de tickets y documentos con IA. Fusiona task management estilo Linear con knowledge management estilo Obsidian, diseñada para humanos y agentes autónomos vía MCP.',
-      tags: ['SvelteKit', 'Express', 'MongoDB', 'Qdrant', 'Docker'],
-      icon: '🐘',
-      year: '2026',
-      url: 'https://github.com/Mammals-at-work/mammals',
-    },
-    {
-      title: 'Personal Page',
-      description: 'Este mismo sitio. Portfolio con Svelte 5, animaciones CSS avanzadas y blog CMS propio: publico desde Telegram a Cloudflare KV vía un Worker y webhook.',
-      tags: ['Svelte 5', 'TypeScript', 'Cloudflare Workers', 'Telegram Bot'],
-      icon: '🌐',
-      year: '2026',
-      url: 'https://github.com/munchkin09/personal_page',
-    },
-    {
-      title: 'CS Analyzer Backend',
-      description: 'Sistema de análisis de vídeo de partidas de Counter-Strike con IA. Gemini LLM analiza el gameplay, FFmpeg comprime los vídeos y todo corre en Docker con CI/CD a Azure Container Registry.',
-      tags: ['TypeScript', 'Gemini LLM', 'FFmpeg', 'Docker', 'Azure'],
-      icon: '🎮',
-      year: '2025',
-      url: 'https://github.com/munchkin09/cs_backend',
-    },
-    {
-      title: 'Gordots',
-      description: 'Proyecto de videojuego desarrollado con Godot Engine. Assets externos, sprites con ZzSprite y sistema de log con LogDuck.',
-      tags: ['Godot', 'GDScript', 'Game Dev'],
-      icon: '🎮',
-      year: '2024',
-      url: 'https://github.com/munchkin09/gordots',
-    },
-    {
-      title: 'Asciicrappers (turbo-invention)',
-      description: 'Genera skylines ASCII a partir de los tabs y espacios del código fuente de cualquier fichero remoto. Dale una URL con código y obtiene un skyline único en tu terminal.',
-      tags: ['Node.js', 'ASCII Art', 'CLI'],
-      icon: '🏙️',
-      year: '2023',
-      url: 'https://github.com/munchkin09/turbo-invention',
-    },
-  ];
+  // ─── Project metadata (visual only, text via dict) ───────────────────────────
+  const projectsMeta = [
+    { icon: '🧠', year: '2026', tags: ['Claude Code', 'AI Skills', 'Node.js', 'npx'],               url: 'https://github.com/Mammals-at-work/YACS' },
+    { icon: '🐘', year: '2026', tags: ['SvelteKit', 'Express', 'MongoDB', 'Qdrant', 'Docker'],       url: 'https://github.com/Mammals-at-work/mammals' },
+    { icon: '🌐', year: '2026', tags: ['Svelte 5', 'TypeScript', 'Cloudflare Workers', 'Telegram Bot'], url: 'https://github.com/munchkin09/personal_page' },
+    { icon: '🎮', year: '2025', tags: ['TypeScript', 'Gemini LLM', 'FFmpeg', 'Docker', 'Azure'],     url: 'https://github.com/munchkin09/cs_backend' },
+    { icon: '🎮', year: '2024', tags: ['Godot', 'GDScript', 'Game Dev'],                              url: 'https://github.com/munchkin09/gordots' },
+    { icon: '🏙️', year: '2023', tags: ['Node.js', 'ASCII Art', 'CLI'],                               url: 'https://github.com/munchkin09/turbo-invention' },
+  ] as const;
 
-  const strengths = [
-    { icon: '🧠', title: 'Pensamiento sistémico', desc: 'Capacidad para ver el panorama completo y diseñar soluciones escalables que resisten el paso del tiempo.' },
-    { icon: '⚡', title: 'Velocidad de ejecución', desc: 'De la idea al código en producción con criterio, sin sacrificar calidad por velocidad.' },
-    { icon: '🤝', title: 'Comunicación técnica', desc: 'Traduzco conceptos complejos a lenguaje claro, tanto para equipos técnicos como para stakeholders.' },
-    { icon: '🔁', title: 'Aprendizaje continuo', desc: 'Más de 20 años en la industria con mentalidad de principiante. Siempre actualizándome.' },
-    { icon: '🎯', title: 'Orientación a resultados', desc: 'Foco en el impacto real del producto, no solo en el código perfectamente elegante.' },
-    { icon: '🛡️', title: 'Código defensivo', desc: 'Escribo software robusto, seguro y mantenible. La deuda técnica me quita el sueño.' },
-  ];
-
-  const timeline = [
-    {
-      year: 'Jun 2024 – Actualidad',
-      role: 'Arquitecto de Soluciones de Calidad & IA',
-      company: 'NTT DATA · Madrid (Híbrido)',
-      desc: 'Rol estratégico de innovación en transformación digital a gran escala. Diseño de agentes IA autónomos con LLMs para verificación y validación del software. Plataforma de generación automática de casos de prueba con IA. Liderazgo de migraciones COBOL a tecnologías modernas. Formación a equipos de Europa y LATAM.',
-      highlights: ['Agentes IA para QA', 'Test Case Generation', 'Migración COBOL', 'Europa & LATAM'],
-    },
-    {
-      year: 'Feb 2021 – Jun 2024',
-      role: 'QA Automation Lead / Developer',
-      company: 'Capitole Consulting · Cliente: BBVA · Madrid',
-      desc: 'Liderazgo técnico en automatización de pruebas para uno de los mayores bancos de Europa. Arquitectura de frameworks con Selenium, Cucumber y WebdriverIO. Integración de herramientas de calidad en el SDLC para detección temprana de errores. Capas de abstracción para stakeholders no técnicos.',
-      highlights: ['Selenium', 'Cucumber', 'WebdriverIO', 'BBVA'],
-    },
-    {
-      year: 'Sep 2018 – Jul 2021',
-      role: 'Senior Full-Stack Developer',
-      company: 'Centum Digital · Madrid',
-      desc: 'Infraestructura de microservicios integrada con AWS Device Farm para validación de dispositivos IoT y móviles a escala. Automatización multi-plataforma: Smartphones, Smart TVs, STBs y WebApps.',
-      highlights: ['Microservicios', 'AWS Device Farm', 'IoT', 'Multi-plataforma'],
-    },
-    {
-      year: '2013 – 2018',
-      role: 'Consultor Full Stack & Web Developer',
-      company: 'Freelance · Madrid',
-      desc: 'Proyectos para clientes como Wunderman (Land Rover), Anlddea, Informatiz@rte y Meollo. Full Stack con CakePHP, jQuery, APIs SOAP/JSON y arquitectura MVC para sectores automoción, cooperación ciudadana y agrícola.',
-      highlights: ['Land Rover', 'CakePHP', 'APIs SOAP', 'eCommerce'],
-    },
-    {
-      year: '2010 – 2013',
-      role: 'Ingeniero de Software',
-      company: 'ATOS – DAESA · Cliente: BBVA · Madrid',
-      desc: 'Diseño y desarrollo de software para monitoreo de SLAs, procesos ETL y herramientas de gestión de stock para centros del grupo BBVA.',
-      highlights: ['SLA Monitoring', 'ETL', 'BBVA', 'Java'],
-    },
-  ];
+  const projects = $derived(
+    projectsMeta.map((m, i) => ({
+      ...m,
+      title: t.projects.items[i].title,
+      description: t.projects.items[i].description,
+    }))
+  );
 
   // ─── Particle Canvas ─────────────────────────────────────────────────────────
   function initCanvas(canvas: HTMLCanvasElement) {
@@ -265,11 +192,12 @@
     let deleting = false;
     let pauseFrames = 0;
     const tick = () => {
-      const current = roles[roleIdx];
+      const roleList = dictionaries[data.lang].hero.roles;
+      const current = roleList[roleIdx % roleList.length];
       if (deleting) {
         if (pauseFrames > 0) { pauseFrames--; setTimeout(tick, 50); return; }
         typewriterText = current.slice(0, --charIdx);
-        if (charIdx === 0) { deleting = false; roleIdx = (roleIdx + 1) % roles.length; }
+        if (charIdx === 0) { deleting = false; roleIdx = (roleIdx + 1) % roleList.length; }
         setTimeout(tick, 60);
       } else {
         typewriterText = current.slice(0, ++charIdx);
@@ -341,16 +269,28 @@
     };
   });
 
-  const navLinks = [
-    { id: 'about', label: 'Sobre mí' },
-    { id: 'strengths', label: 'Fortalezas' },
-    { id: 'skills', label: 'Skills' },
-    { id: 'projects', label: 'Proyectos' },
-    { id: 'experience', label: 'Experiencia' },
-    { id: 'blog', label: 'Blog' },
-    { id: 'contact', label: 'Contacto' },
-  ];
+  const navLinks = $derived([
+    { id: 'about',      label: t.nav.about },
+    { id: 'strengths',  label: t.nav.strengths },
+    { id: 'skills',     label: t.nav.skills },
+    { id: 'projects',   label: t.nav.projects },
+    { id: 'experience', label: t.nav.experience },
+    { id: 'blog',       label: t.nav.blog },
+    { id: 'contact',    label: t.nav.contact },
+  ]);
+
+  function switchLocale(next: Locale) {
+    if (next === data.lang) return;
+    rememberLocale(next);
+    const target = swapLocaleInPath(window.location.pathname, next) + window.location.hash;
+    goto(target);
+  }
 </script>
+
+<svelte:head>
+  <title>{t.meta.homeTitle}</title>
+  <meta name="description" content={t.meta.homeDescription} />
+</svelte:head>
 
 <!-- Custom cursor -->
 <div class="cursor" style="left:{cursorX}px; top:{cursorY}px; opacity:{cursorVisible ? 1 : 0}"></div>
@@ -365,11 +305,22 @@
     {/each}
   </ul>
   <div class="nav-actions">
-    <a href="/cv" class="nav-cv" title="Ver CV imprimible">
+    <div class="lang-switch" role="group" aria-label={t.nav.langSwitchLabel}>
+      {#each SUPPORTED_LOCALES as loc}
+        <button
+          type="button"
+          class="lang-btn"
+          class:active={data.lang === loc}
+          aria-pressed={data.lang === loc}
+          onclick={() => switchLocale(loc)}
+        >{loc.toUpperCase()}</button>
+      {/each}
+    </div>
+    <a href="/{data.lang}/cv" class="nav-cv" title={t.nav.cvTitle}>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>
-      CV
+      {t.nav.cvLabel}
     </a>
-    <a href="mailto:carlos.developer1983@gmail.com" class="nav-cta magnetic">Contáctame</a>
+    <a href="mailto:carlos.developer1983@gmail.com" class="nav-cta magnetic">{t.nav.ctaContact}</a>
   </div>
 </nav>
 
@@ -384,7 +335,7 @@
   <div class="hero-content">
     <div class="hero-badge fade-in">
       <span class="pulse-dot"></span>
-      Disponible para proyectos
+      {t.hero.badge}
     </div>
     <h1 class="hero-name fade-in">
       <span class="name-line">Carlos</span>
@@ -396,28 +347,28 @@
       <span class="cursor-blink">|</span>
     </p>
     <p class="hero-subtitle fade-in">
-      Tech Lead · Arquitecto de Calidad & IA · Full Stack Senior<br />
-      +13 años transformando ingeniería en impacto real — desde la banca hasta la IA generativa.
+      {t.hero.subtitleLine1}<br />
+      {t.hero.subtitleLine2}
     </p>
     <div class="hero-actions fade-in">
       <a href="#projects" class="btn-primary magnetic">
-        <span>Ver proyectos</span>
+        <span>{t.hero.viewProjects}</span>
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
           <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </a>
-      <a href="mailto:carlos.developer1983@gmail.com" class="btn-secondary magnetic">Hablemos</a>
-      <a href="/cv" class="btn-secondary magnetic">
+      <a href="mailto:carlos.developer1983@gmail.com" class="btn-secondary magnetic">{t.hero.letsTalk}</a>
+      <a href="/{data.lang}/cv" class="btn-secondary magnetic">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
-        CV imprimible
+        {t.hero.printableCv}
       </a>
     </div>
     <div class="hero-stats fade-in">
-      <div class="stat"><span class="stat-number">13+</span><span class="stat-label">Años de experiencia</span></div>
+      <div class="stat"><span class="stat-number">13+</span><span class="stat-label">{t.hero.stats.yearsLabel}</span></div>
       <div class="stat-divider"></div>
-      <div class="stat"><span class="stat-number">2</span><span class="stat-label">Continentes impactados</span></div>
+      <div class="stat"><span class="stat-number">2</span><span class="stat-label">{t.hero.stats.continentsLabel}</span></div>
       <div class="stat-divider"></div>
-      <div class="stat"><span class="stat-number">∞</span><span class="stat-label">Bugs detectados antes</span></div>
+      <div class="stat"><span class="stat-number">∞</span><span class="stat-label">{t.hero.stats.bugsLabel}</span></div>
     </div>
   </div>
   <div class="scroll-hint"><span>scroll</span><div class="scroll-line"></div></div>
@@ -435,17 +386,17 @@
           <div class="avatar-badge">Senior</div>
         </div>
         <div class="about-tags">
-          {#each ['TypeScript', 'Python', 'Agentes IA', 'QA Architecture', 'Cloud', 'COBOL Migration'] as tag}
+          {#each t.about.tags as tag}
             <span class="tech-tag">{tag}</span>
           {/each}
         </div>
       </div>
       <div class="about-text fade-in">
-        <p class="section-label">Sobre mí</p>
-        <h2>Tech Lead en la intersección de <span class="gradient-text">Calidad e IA</span></h2>
-        <p>Soy Tech Lead y Arquitecto de Software con +13 años de experiencia en el ciclo completo del software (SDLC), especializado en la intersección entre <strong>Ingeniería de Calidad</strong>, <strong>Automatización</strong> e <strong>Inteligencia Artificial Generativa</strong>.</p>
-        <p>He liderado modernizaciones de ecosistemas legado —incluyendo migraciones de <strong>COBOL a tecnologías modernas</strong>— y el diseño de <strong>Agentes IA aplicados a calidad</strong> en grandes corporaciones bancarias como BBVA, con impacto directo en equipos de Europa y LATAM.</p>
-        <p>Mi diferencial: entiendo el problema de calidad <strong>desde la arquitectura</strong>, no solo desde el testing. Combino base técnica sólida con capacidad real de liderazgo, mentoring y traducción de necesidades de negocio en soluciones accionables.</p>
+        <p class="section-label">{t.about.label}</p>
+        <h2>{t.about.titlePrefix}<span class="gradient-text">{t.about.titleHighlight}</span></h2>
+        {#each t.about.paragraphs as p}
+          <p>{@html p}</p>
+        {/each}
         <div class="about-links">
           <a href="mailto:carlos.developer1983@gmail.com" class="about-link">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
@@ -469,12 +420,12 @@
 <section id="strengths" class="strengths">
   <div class="container">
     <div class="section-header fade-in">
-      <p class="section-label">Qué me diferencia</p>
-      <h2>Mis puntos <span class="gradient-text">fuertes</span></h2>
-      <p class="section-sub">No solo escribo código. Construyo sistemas, lidero equipos y genero impacto.</p>
+      <p class="section-label">{t.strengths.label}</p>
+      <h2>{t.strengths.titlePrefix}<span class="gradient-text">{t.strengths.titleHighlight}</span></h2>
+      <p class="section-sub">{t.strengths.subtitle}</p>
     </div>
     <div class="strengths-grid">
-      {#each strengths as s, i}
+      {#each t.strengths.items as s, i}
         <div class="strength-card fade-in" style="transition-delay: {i * 80}ms">
           <div class="strength-icon">{s.icon}</div>
           <h3>{s.title}</h3>
@@ -490,9 +441,9 @@
 <section id="skills" class="skills-section">
   <div class="container">
     <div class="section-header fade-in">
-      <p class="section-label">Toolkit</p>
-      <h2>Stack <span class="gradient-text">técnico</span></h2>
-      <p class="section-sub">Hover cada porción para ver el detalle de cada tecnología.</p>
+      <p class="section-label">{t.skills.label}</p>
+      <h2>{t.skills.titlePrefix}<span class="gradient-text">{t.skills.titleHighlight}</span></h2>
+      <p class="section-sub">{t.skills.subtitle}</p>
     </div>
 
     <div class="chart-layout fade-in">
@@ -526,7 +477,7 @@
             <text x={CX} y={CY + 32} text-anchor="middle" class="c-pct" style="fill:{s.color}">{s.pct}%</text>
           {:else}
             <text x={CX} y={CY + 6}  text-anchor="middle" class="c-total">100%</text>
-            <text x={CX} y={CY + 26} text-anchor="middle" class="c-sub">Stack</text>
+            <text x={CX} y={CY + 26} text-anchor="middle" class="c-sub">{t.skills.totalLabel}</text>
           {/if}
         </svg>
       </div>
@@ -545,7 +496,7 @@
             <span class="licon">{s.icon}</span>
             <div class="linfo">
               <span class="lname">{s.name}</span>
-              <span class="lcat">{s.category}</span>
+              <span class="lcat">{s.categoryLabel}</span>
             </div>
             <span class="lpct" style="color:{s.color}">{s.pct}%</span>
           </div>
@@ -565,8 +516,8 @@
 <section id="projects" class="projects-section">
   <div class="container">
     <div class="section-header fade-in">
-      <p class="section-label">Open Source</p>
-      <h2>Proyectos <span class="gradient-text">personales</span></h2>
+      <p class="section-label">{t.projects.label}</p>
+      <h2>{t.projects.titlePrefix}<span class="gradient-text">{t.projects.titleHighlight}</span></h2>
     </div>
     <div class="projects-grid">
       {#each projects as project, i}
@@ -583,7 +534,7 @@
           {#if project.url}
             <a href={project.url} target="_blank" rel="noopener noreferrer" class="project-github">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-              Ver en GitHub
+              {t.projects.seeOnGitHub}
             </a>
           {/if}
           <div class="project-sheen"></div>
@@ -597,12 +548,12 @@
 <section id="experience" class="experience-section">
   <div class="container">
     <div class="section-header fade-in">
-      <p class="section-label">Trayectoria</p>
-      <h2>+13 años en la <span class="gradient-text">industria</span></h2>
-      <p class="section-sub">De la ingeniería clásica a los agentes IA, pasando por banca, IoT y consultoría.</p>
+      <p class="section-label">{t.experience.label}</p>
+      <h2>{t.experience.titlePrefix}<span class="gradient-text">{t.experience.titleHighlight}</span></h2>
+      <p class="section-sub">{t.experience.subtitle}</p>
     </div>
     <div class="timeline">
-      {#each timeline as item, i}
+      {#each t.experience.items as item, i}
         <div class="timeline-item fade-in" style="transition-delay: {i * 120}ms">
           <div class="timeline-dot"></div>
           <div class="timeline-content">
@@ -626,25 +577,25 @@
 <section id="blog" class="blog-section">
   <div class="container">
     <div class="section-header fade-in">
-      <p class="section-label">Últimas entradas</p>
-      <h2>Blog <span class="gradient-text">& notas</span></h2>
-      <p class="section-sub">Ideas, reflexiones y aprendizajes del día a día. Publicado desde Telegram.</p>
+      <p class="section-label">{t.blog.label}</p>
+      <h2>{t.blog.titlePrefix}<span class="gradient-text">{t.blog.titleHighlight}</span></h2>
+      <p class="section-sub">{t.blog.subtitle}</p>
     </div>
 
     {#if postsLoading}
       <div class="blog-loading fade-in">
         <div class="blog-spinner"></div>
-        <span>Cargando posts…</span>
+        <span>{t.blog.loading}</span>
       </div>
     {:else if posts.length === 0}
       <div class="blog-empty fade-in">
-        <span class="blog-empty-icon">✏️</span>
-        <p>Aún no hay posts. ¡Pronto habrá contenido aquí!</p>
+        <span class="blog-empty-icon">{t.blog.emptyIcon}</span>
+        <p>{t.blog.empty}</p>
       </div>
     {:else}
       <div class="blog-grid">
         {#each posts as post, i}
-          <a href="/blog/{post.id}" class="blog-card fade-in" style="transition-delay: {i * 80}ms">
+          <a href="/{data.lang}/blog/{post.id}" class="blog-card fade-in" style="transition-delay: {i * 80}ms">
             <div class="blog-card-meta">
               <time class="blog-date">{formatDate(post.date)}</time>
               <span class="blog-id">#{post.id}</span>
@@ -653,7 +604,7 @@
             <div class="blog-body">
               <p>{@html renderMarkdown(post.content)}</p>
             </div>
-            <span class="blog-read-more">Leer más →</span>
+            <span class="blog-read-more">{t.blog.readMore}</span>
             <div class="blog-card-glow"></div>
           </a>
         {/each}
@@ -667,12 +618,12 @@
   <div class="container">
     <div class="contact-inner fade-in">
       <div class="contact-glow-bg"></div>
-      <p class="section-label">¿Trabajamos juntos?</p>
-      <h2>Hablemos de tu <span class="gradient-text">próximo proyecto</span></h2>
-      <p class="contact-sub">Siempre abierto a nuevos retos, colaboraciones y conversaciones interesantes. Ya sea un proyecto completo, una consultoría puntual o simplemente una charla técnica.</p>
+      <p class="section-label">{t.contact.label}</p>
+      <h2>{t.contact.titlePrefix}<span class="gradient-text">{t.contact.titleHighlight}</span></h2>
+      <p class="contact-sub">{t.contact.subtitle}</p>
       <a href="mailto:carlos.developer1983@gmail.com" class="btn-primary magnetic contact-btn">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
-        Envíame un email
+        {t.contact.sendEmail}
       </a>
       <div class="contact-socials">
         <a href="https://github.com/munchkin09" target="_blank" rel="noopener" class="social-link magnetic">GitHub</a>
@@ -687,7 +638,7 @@
 
 <!-- ── FOOTER ── -->
 <footer>
-  <p>© 2026 Carlos Ledesma · Hecho con <span class="heart">♥</span> y <strong>Svelte 5</strong></p>
+  <p>{t.footer.copyright} <span class="heart">♥</span> {t.footer.tech} <strong>Svelte 5</strong></p>
 </footer>
 
 <style>
@@ -739,6 +690,30 @@
   nav ul a:hover, nav ul a.active { color: #f8fafc; background: rgba(255,255,255,0.04); }
   nav ul a.active { color: #6366f1; }
   .nav-actions { display: flex; align-items: center; gap: 0.6rem; }
+
+  /* ── Language switch ── */
+  .lang-switch {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 9px;
+    background: rgba(255,255,255,0.03);
+  }
+  .lang-btn {
+    appearance: none; background: transparent; border: 0; cursor: pointer;
+    padding: 0.3rem 0.55rem;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em;
+    color: #94a3b8; border-radius: 7px;
+    transition: color 0.2s, background 0.2s;
+    font-family: inherit;
+  }
+  .lang-btn:hover { color: #f8fafc; }
+  .lang-btn.active {
+    background: rgba(99,102,241,0.18);
+    color: #a5b4fc;
+  }
+
   .nav-cv {
     display: inline-flex; align-items: center; gap: 0.35rem;
     padding: 0.45rem 0.85rem;
@@ -943,7 +918,7 @@
   .tech-tag:hover { border-color: #6366f1; color: #6366f1; }
   .about-text { display: flex; flex-direction: column; gap: 1.25rem; }
   .about-text p { color: #94a3b8; line-height: 1.8; }
-  .about-text strong { color: #f8fafc; }
+  .about-text :global(strong) { color: #f8fafc; }
   .about-links { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.5rem; }
   .about-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: #94a3b8; transition: color 0.2s; }
   .about-link:hover { color: #6366f1; }
