@@ -510,27 +510,6 @@
           {/if}
         </svg>
       </div>
-
-      <div class="legend-grid">
-        {#each slices as s}
-          <div
-            class="legend-item"
-            class:is-hovered={hoveredSlice === s.i}
-            class:is-dimmed={hoveredSlice !== null && hoveredSlice !== s.i}
-            onmouseenter={() => (hoveredSlice = s.i)}
-            onmouseleave={() => (hoveredSlice = null)}
-            role="presentation"
-          >
-            <span class="ldot" style="background:{s.color}; box-shadow:0 0 8px {s.glow}"></span>
-            <span class="licon">{s.icon}</span>
-            <div class="linfo">
-              <span class="lname">{s.name}</span>
-              <span class="lcat">{s.category}</span>
-            </div>
-            <span class="lpct" style="color:{s.color}">{s.pct}%</span>
-          </div>
-        {/each}
-      </div>
     </div>
 
     <div class="extra-skills fade-in">

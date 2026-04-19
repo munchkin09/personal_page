@@ -103,36 +103,52 @@
 
   const projects = [
     {
-      title: 'Personal Page + Blog CMS',
-      description: 'Este mismo sitio. Portfolio con Svelte 5, animaciones CSS avanzadas y un blog CMS completo: publico desde Telegram a Cloudflare KV vía un Worker y webhook.',
+      title: 'YACS — Yet Another Claude Skills Repo',
+      description: 'Colección de Skills y Agentes para Claude Code: auditorías OWASP, diseño de arquitectura, gamificación, deuda técnica, data storytelling y más. Instalable vía npx.',
+      tags: ['Claude Code', 'AI Skills', 'Node.js', 'npx'],
+      icon: '🧠',
+      year: '2026',
+      url: 'https://github.com/Mammals-at-work/YACS',
+    },
+    {
+      title: 'Mammals',
+      description: 'Plataforma unificada de gestión de tickets y documentos con IA. Fusiona task management estilo Linear con knowledge management estilo Obsidian, diseñada para humanos y agentes autónomos vía MCP.',
+      tags: ['SvelteKit', 'Express', 'MongoDB', 'Qdrant', 'Docker'],
+      icon: '🐘',
+      year: '2026',
+      url: 'https://github.com/Mammals-at-work/mammals',
+    },
+    {
+      title: 'Personal Page',
+      description: 'Este mismo sitio. Portfolio con Svelte 5, animaciones CSS avanzadas y blog CMS propio: publico desde Telegram a Cloudflare KV vía un Worker y webhook.',
       tags: ['Svelte 5', 'TypeScript', 'Cloudflare Workers', 'Telegram Bot'],
       icon: '🌐',
       year: '2026',
       url: 'https://github.com/munchkin09/personal_page',
     },
     {
-      title: 'Project N.O.M.A.D',
-      description: 'Ordenador de supervivencia autónomo y offline con IA integrada: herramientas críticas, base de conocimiento y modelos LLM sin conexión a internet.',
-      tags: ['TypeScript', 'Electron', 'LLM', 'Offline AI'],
-      icon: '📡',
-      year: '2026',
-      url: 'https://github.com/munchkin09/project-nomad',
+      title: 'CS Analyzer Backend',
+      description: 'Sistema de análisis de vídeo de partidas de Counter-Strike con IA. Gemini LLM analiza el gameplay, FFmpeg comprime los vídeos y todo corre en Docker con CI/CD a Azure Container Registry.',
+      tags: ['TypeScript', 'Gemini LLM', 'FFmpeg', 'Docker', 'Azure'],
+      icon: '🎮',
+      year: '2025',
+      url: 'https://github.com/munchkin09/cs_backend',
     },
     {
-      title: 'NotebookLM Python API',
-      description: 'API Python no oficial y skill agéntica para Google NotebookLM. Acceso programático completo vía CLI e integración con agentes IA como Claude Code y Codex.',
-      tags: ['Python', 'Google NotebookLM', 'Agentic AI', 'CLI'],
-      icon: '📚',
-      year: '2026',
-      url: 'https://github.com/munchkin09/notebooklm-py',
+      title: 'Gordots',
+      description: 'Proyecto de videojuego desarrollado con Godot Engine. Assets externos, sprites con ZzSprite y sistema de log con LogDuck.',
+      tags: ['Godot', 'GDScript', 'Game Dev'],
+      icon: '🎮',
+      year: '2024',
+      url: 'https://github.com/munchkin09/gordots',
     },
     {
-      title: 'GitAgent',
-      description: 'Estándar git-native y agnóstico al framework para definir agentes IA. Los agentes viven en el repo junto al código, versionados y portables.',
-      tags: ['TypeScript', 'AI Agents', 'Git', 'Open Standard'],
-      icon: '🤖',
-      year: '2026',
-      url: 'https://github.com/munchkin09/gitagent',
+      title: 'Asciicrappers (turbo-invention)',
+      description: 'Genera skylines ASCII a partir de los tabs y espacios del código fuente de cualquier fichero remoto. Dale una URL con código y obtiene un skyline único en tu terminal.',
+      tags: ['Node.js', 'ASCII Art', 'CLI'],
+      icon: '🏙️',
+      year: '2023',
+      url: 'https://github.com/munchkin09/turbo-invention',
     },
   ];
 
@@ -549,8 +565,8 @@
 <section id="projects" class="projects-section">
   <div class="container">
     <div class="section-header fade-in">
-      <p class="section-label">Trabajo reciente</p>
-      <h2>Proyectos <span class="gradient-text">destacados</span></h2>
+      <p class="section-label">Open Source</p>
+      <h2>Proyectos <span class="gradient-text">personales</span></h2>
     </div>
     <div class="projects-grid">
       {#each projects as project, i}
@@ -1013,7 +1029,7 @@
 
   /* ── Projects ── */
   .projects-section { padding: 8rem 0; }
-  .projects-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
+  .projects-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
   .project-card {
     position: relative; padding: 2rem;
     background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
@@ -1115,6 +1131,9 @@
   }
 
   /* ── Responsive ── */
+  @media (max-width: 1100px) {
+    .projects-grid { grid-template-columns: repeat(2,1fr); }
+  }
   @media (max-width: 900px) {
     nav ul { display: none; }
     .about-grid { grid-template-columns: 1fr; gap: 3rem; }
@@ -1122,7 +1141,7 @@
     .strengths-grid { grid-template-columns: repeat(2,1fr); }
     .chart-layout { grid-template-columns: 1fr; }
     .chart-wrap { max-width: 320px; margin: 0 auto; }
-    .projects-grid { grid-template-columns: 1fr; }
+    .projects-grid { grid-template-columns: repeat(2,1fr); }
     nav { padding: 1rem 1.5rem; }
   }
   @media (max-width: 600px) {
@@ -1131,6 +1150,7 @@
     .strengths-grid { grid-template-columns: 1fr; }
     .hero-actions { flex-direction: column; align-items: center; }
     .contact-inner { padding: 3rem 1.5rem; }
+    .projects-grid { grid-template-columns: 1fr; }
     .blog-grid { grid-template-columns: 1fr; }
   }
 

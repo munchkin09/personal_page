@@ -5,7 +5,7 @@
     title: 'Tech Lead · Arquitecto de Soluciones de Calidad & IA · Full Stack Senior',
     location: 'Madrid, España',
     phone: '+34 680 33 24 30',
-    email: 'developer1983@gmail.com',
+    email: 'carlos.developer1983@gmail.com',
     linkedin: 'linkedin.com/in/carlosledesmac',
     github: 'github.com/munchkin09',
     website: 'carloslc.is-a.dev',
