@@ -15,6 +15,8 @@
   let cursorVisible = $state(false);
   let typewriterText = $state('');
   let hoveredSlice = $state<number | null>(null);
+  let typewriterTimeout: ReturnType<typeof setTimeout> | undefined;
+  let avatarError = $state(false);
 
   // ─── Blog ────────────────────────────────────────────────────────────────────
   let fadeObs: IntersectionObserver | null = null;
@@ -23,6 +25,13 @@
   let postsLoading = $state(false);
 
   const WORKER_URL = import.meta.env.VITE_BLOG_WORKER_URL ?? '';
+
+  const CONTACT = {
+    email: 'carlos.developer1983@gmail.com',
+    github: 'https://github.com/munchkin09',
+    linkedin: 'https://linkedin.com/in/carlosledesmac',
+    twitter: 'https://x.com/carloslc83',
+  } as const;
 
   async function loadPosts() {
     if (!WORKER_URL) return;
@@ -44,7 +53,10 @@
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.+?)\*/g, '<em>$1</em>')
       .replace(/`(.+?)`/g, '<code>$1</code>')
-      .replace(/\[(.+?)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+      .replace(/\[(.+?)\]\((https?:\/\/[^)]+)\)/g, (_, text, url) => {
+        const safeUrl = url.replace(/"/g, '%22').replace(/'/g, '%27');
+        return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+      })
       .replace(/\n\n/g, '</p><p>')
       .replace(/\n/g, '<br/>');
   }
@@ -138,7 +150,8 @@
     resize();
     window.addEventListener('resize', resize);
 
-    const count = 80;
+    const isMobile = window.matchMedia('(pointer: coarse)').matches;
+    const count = isMobile ? 40 : 80;
     const particles = Array.from({ length: count }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
@@ -195,14 +208,14 @@
       const roleList = dictionaries[data.lang].hero.roles;
       const current = roleList[roleIdx % roleList.length];
       if (deleting) {
-        if (pauseFrames > 0) { pauseFrames--; setTimeout(tick, 50); return; }
+        if (pauseFrames > 0) { pauseFrames--; typewriterTimeout = setTimeout(tick, 50); return; }
         typewriterText = current.slice(0, --charIdx);
         if (charIdx === 0) { deleting = false; roleIdx = (roleIdx + 1) % roleList.length; }
-        setTimeout(tick, 60);
+        typewriterTimeout = setTimeout(tick, 60);
       } else {
         typewriterText = current.slice(0, ++charIdx);
         if (charIdx === current.length) { deleting = true; pauseFrames = 30; }
-        setTimeout(tick, 80);
+        typewriterTimeout = setTimeout(tick, 80);
       }
     };
     tick();
@@ -266,6 +279,7 @@
       window.removeEventListener('scroll', onScroll);
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseleave', onMouseLeave);
+      clearTimeout(typewriterTimeout);
     };
   });
 
@@ -290,6 +304,15 @@
 <svelte:head>
   <title>{t.meta.homeTitle}</title>
   <meta name="description" content={t.meta.homeDescription} />
+  <meta property="og:title" content={t.meta.homeTitle} />
+  <meta property="og:description" content={t.meta.homeDescription} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://carloslc.is-a.dev/{data.lang}" />
+  <meta property="og:image" content="https://picsum.photos/seed/munchkin/200/200" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content={t.meta.homeTitle} />
+  <meta name="twitter:description" content={t.meta.homeDescription} />
+  <meta name="twitter:image" content="https://picsum.photos/seed/munchkin/1200/630" />
 </svelte:head>
 
 <!-- Custom cursor -->
@@ -320,7 +343,7 @@
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>
       {t.nav.cvLabel}
     </a>
-    <a href="mailto:carlos.developer1983@gmail.com" class="nav-cta magnetic">{t.nav.ctaContact}</a>
+    <a href="mailto:{CONTACT.email}" class="nav-cta magnetic">{t.nav.ctaContact}</a>
   </div>
 </nav>
 
@@ -357,7 +380,7 @@
           <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </a>
-      <a href="mailto:carlos.developer1983@gmail.com" class="btn-secondary magnetic">{t.hero.letsTalk}</a>
+      <a href="mailto:{CONTACT.email}" class="btn-secondary magnetic">{t.hero.letsTalk}</a>
       <a href="/{data.lang}/cv" class="btn-secondary magnetic">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
         {t.hero.printableCv}
@@ -383,7 +406,15 @@
           <div class="avatar-ring"></div>
           <div class="avatar-ring ring-2"></div>
           <div class="avatar">
-            <img src="https://boletinstatics.blob.core.windows.net/personal/yo.jpg" alt="Carlos Ledesma" />
+            {#if !avatarError}
+              <img
+                src="https://boletinstatics.blob.core.windows.net/personal/yo.jpg"
+                alt="Carlos Ledesma"
+                onerror={() => (avatarError = true)}
+              />
+            {:else}
+              <span>CL</span>
+            {/if}
           </div>
           <div class="avatar-badge">Senior</div>
         </div>
@@ -400,15 +431,15 @@
           <p>{@html p}</p>
         {/each}
         <div class="about-links">
-          <a href="mailto:carlos.developer1983@gmail.com" class="about-link">
+          <a href="mailto:{CONTACT.email}" class="about-link">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
-            carlos.developer1983@gmail.com
+            {CONTACT.email}
           </a>
-          <a href="https://github.com/munchkin09" target="_blank" rel="noopener" class="about-link">
+          <a href={CONTACT.github} target="_blank" rel="noopener noreferrer" class="about-link">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
             GitHub
           </a>
-          <a href="https://linkedin.com/in/carlosledesmac" target="_blank" rel="noopener" class="about-link">
+          <a href={CONTACT.linkedin} target="_blank" rel="noopener noreferrer" class="about-link">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 23.2 0 22.222 0h.003z"/></svg>
             LinkedIn
           </a>
@@ -468,8 +499,12 @@
               style="--delay:{s.i * 55}ms; opacity:{hoveredSlice === null || hoveredSlice === s.i ? 1 : 0.3}; filter:{hoveredSlice === s.i ? `drop-shadow(0 0 12px ${s.glow})` : 'none'}"
               onmouseenter={() => (hoveredSlice = s.i)}
               onmouseleave={() => (hoveredSlice = null)}
-              role="presentation"
-            />
+              onclick={() => (hoveredSlice = hoveredSlice === s.i ? null : s.i)}
+              onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && (hoveredSlice = hoveredSlice === s.i ? null : s.i)}
+              role="button"
+              tabindex="0"
+              aria-label="{s.name}: {s.pct}%"
+            ><title>{s.name} — {s.pct}%</title></path>
           {/each}
 
           {#if hoveredSlice !== null}
@@ -604,16 +639,16 @@
       <p class="section-label">{t.contact.label}</p>
       <h2>{t.contact.titlePrefix}<span class="gradient-text">{t.contact.titleHighlight}</span></h2>
       <p class="contact-sub">{t.contact.subtitle}</p>
-      <a href="mailto:carlos.developer1983@gmail.com" class="btn-primary magnetic contact-btn">
+      <a href="mailto:{CONTACT.email}" class="btn-primary magnetic contact-btn">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
         {t.contact.sendEmail}
       </a>
       <div class="contact-socials">
-        <a href="https://github.com/munchkin09" target="_blank" rel="noopener" class="social-link magnetic">GitHub</a>
+        <a href={CONTACT.github} target="_blank" rel="noopener noreferrer" class="social-link magnetic">GitHub</a>
         <span class="social-sep">·</span>
-        <a href="https://linkedin.com/in/carlosledesmac" target="_blank" rel="noopener" class="social-link magnetic">LinkedIn</a>
+        <a href={CONTACT.linkedin} target="_blank" rel="noopener noreferrer" class="social-link magnetic">LinkedIn</a>
         <span class="social-sep">·</span>
-        <a href="https://twitter.com/carloslc" target="_blank" rel="noopener" class="social-link magnetic">Twitter / X</a>
+        <a href={CONTACT.twitter} target="_blank" rel="noopener noreferrer" class="social-link magnetic">Twitter / X</a>
       </div>
     </div>
   </div>
@@ -718,8 +753,9 @@
   /* ── Hero ── */
   .hero {
     position: relative; min-height: 100vh;
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden; padding: 0 2rem;
+    display: flex; flex-direction: column;
+    overflow: hidden; padding: 6rem 2rem 4rem;
+    box-sizing: border-box;
   }
   .particle-canvas { position: absolute; inset: 0; pointer-events: none; }
   .aurora { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
@@ -739,6 +775,7 @@
     position: relative; z-index: 2;
     max-width: 780px; text-align: center;
     display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+    margin: auto;
   }
   .hero-badge {
     display: inline-flex; align-items: center; gap: 0.5rem;
@@ -949,6 +986,11 @@
     animation: slice-pop 0.55s cubic-bezier(0.34,1.56,0.64,1) both;
     animation-play-state: paused;
     animation-delay: var(--delay);
+    outline: none;
+  }
+  .pie-slice:focus-visible {
+    filter: drop-shadow(0 0 8px rgba(99,102,241,0.9)) !important;
+    opacity: 1 !important;
   }
   :global(.fade-in.visible) .pie-slice { animation-play-state: running; }
   @keyframes slice-pop {

@@ -714,8 +714,9 @@
   /* ── Hero ── */
   .hero {
     position: relative; min-height: 100vh;
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden; padding: 0 2rem;
+    display: flex; flex-direction: column;
+    overflow: hidden; padding: 6rem 2rem 4rem;
+    box-sizing: border-box;
   }
   .particle-canvas { position: absolute; inset: 0; pointer-events: none; }
   .aurora { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
@@ -735,6 +736,7 @@
     position: relative; z-index: 2;
     max-width: 780px; text-align: center;
     display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+    margin: auto;
   }
   .hero-badge {
     display: inline-flex; align-items: center; gap: 0.5rem;
