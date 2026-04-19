@@ -72,7 +72,7 @@ export const es = {
     titlePrefix: 'Stack ',
     titleHighlight: 'técnico',
     subtitle: 'Hover cada porción para ver el detalle de cada tecnología.',
-    totalLabel: 'Stack',
+    totalLabel: 'Full Stack',
     techNames: {
       typescript: 'TypeScript & Node.js',
       ai: 'AI / LLM',

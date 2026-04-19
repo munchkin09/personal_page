@@ -86,7 +86,7 @@ export const en: Widen<typeof es> = {
     titlePrefix: 'Technical ',
     titleHighlight: 'stack',
     subtitle: 'Hover each slice to see the details of every technology.',
-    totalLabel: 'Stack',
+    totalLabel: 'Full Stack',
     techNames: {
       typescript: 'TypeScript & Node.js',
       ai: 'AI / LLM',

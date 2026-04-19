@@ -506,7 +506,7 @@
             <text x={CX} y={CY + 32} text-anchor="middle" class="c-pct" style="fill:{s.color}">{s.pct}%</text>
           {:else}
             <text x={CX} y={CY + 6}  text-anchor="middle" class="c-total">100%</text>
-            <text x={CX} y={CY + 26} text-anchor="middle" class="c-sub">Stack</text>
+            <text x={CX} y={CY + 26} text-anchor="middle" class="c-sub">Full Stack</text>
           {/if}
         </svg>
       </div>

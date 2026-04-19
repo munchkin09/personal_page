@@ -482,26 +482,7 @@
         </svg>
       </div>
 
-      <div class="legend-grid">
-        {#each slices as s}
-          <div
-            class="legend-item"
-            class:is-hovered={hoveredSlice === s.i}
-            class:is-dimmed={hoveredSlice !== null && hoveredSlice !== s.i}
-            onmouseenter={() => (hoveredSlice = s.i)}
-            onmouseleave={() => (hoveredSlice = null)}
-            role="presentation"
-          >
-            <span class="ldot" style="background:{s.color}; box-shadow:0 0 8px {s.glow}"></span>
-            <span class="licon">{s.icon}</span>
-            <div class="linfo">
-              <span class="lname">{s.name}</span>
-              <span class="lcat">{s.categoryLabel}</span>
-            </div>
-            <span class="lpct" style="color:{s.color}">{s.pct}%</span>
-          </div>
-        {/each}
-      </div>
+
     </div>
 
     <div class="extra-skills fade-in">
@@ -949,10 +930,8 @@
     background: linear-gradient(180deg, transparent, #0a0a1a 20%, #0a0a1a 80%, transparent);
   }
   .chart-layout {
-    display: grid;
-    grid-template-columns: 340px 1fr;
-    gap: 4rem;
-    align-items: center;
+    display: flex;
+    justify-content: center;
     margin-bottom: 3.5rem;
   }
   .chart-wrap { position: relative; }
@@ -975,25 +954,6 @@
   .c-icon  { font-size: 1.5rem; font-family: Inter, sans-serif; }
   .c-name  { font-size: 0.85rem; font-weight: 700; fill: #f8fafc; font-family: Inter, sans-serif; }
   .c-pct   { font-size: 1.3rem; font-weight: 800; font-family: Inter, sans-serif; }
-  .legend-grid { display: flex; flex-direction: column; gap: 0.6rem; }
-  .legend-item {
-    display: flex; align-items: center; gap: 0.75rem;
-    padding: 0.65rem 1rem;
-    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 10px; cursor: pointer;
-    transition: background 0.2s, border-color 0.2s, transform 0.2s, opacity 0.2s;
-  }
-  .legend-item:hover, .legend-item.is-hovered {
-    background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.18);
-    transform: translateX(4px);
-  }
-  .legend-item.is-dimmed { opacity: 0.3; }
-  .ldot  { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-  .licon { font-size: 1rem; }
-  .linfo { display: flex; flex-direction: column; flex: 1; min-width: 0; }
-  .lname { font-size: 0.875rem; font-weight: 600; white-space: nowrap; }
-  .lcat  { font-size: 0.7rem; color: #475569; }
-  .lpct  { font-size: 0.875rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; flex-shrink: 0; }
   .extra-skills { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; }
   .extra-tag {
     padding: 0.35rem 0.85rem; background: rgba(255,255,255,0.04);
@@ -1114,7 +1074,6 @@
     .about-grid { grid-template-columns: 1fr; gap: 3rem; }
     .about-visual { order: -1; }
     .strengths-grid { grid-template-columns: repeat(2,1fr); }
-    .chart-layout { grid-template-columns: 1fr; }
     .chart-wrap { max-width: 320px; margin: 0 auto; }
     .projects-grid { grid-template-columns: repeat(2,1fr); }
     nav { padding: 1rem 1.5rem; }
