@@ -26,6 +26,44 @@
   let typewriterTimeout: ReturnType<typeof setTimeout> | undefined;
   let avatarError = $state(false);
 
+  // ─── Video background ────────────────────────────────────────────────────────
+  const VIDEO_CHUNKS = 5;
+  const videoSrc = `https://boletinstatics.blob.core.windows.net/personal/saturn_v_chunk_${Math.floor(Math.random() * VIDEO_CHUNKS)}.mp4`;
+  let videoMuted = $state(true);
+  let videoEl = $state<HTMLVideoElement | null>(null);
+  let videoSectionEl = $state<HTMLElement | null>(null);
+  let videoBgMediaEl = $state<HTMLDivElement | null>(null);
+  let parallaxFrame = 0;
+
+  function applyParallax() {
+    if (!videoBgMediaEl || !videoSectionEl) return;
+    const rect = videoSectionEl.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const sectionH = videoSectionEl.offsetHeight;
+    const rawProgress = (vh - rect.top) / (vh + sectionH);
+    const progress = Math.min(1, Math.max(0, rawProgress));
+    const focus = 1 - Math.abs(progress - 0.5) * 2;
+    const parallaxRange = Math.min(320, vh * 0.3);
+    const shift = (progress - 0.5) * parallaxRange;
+    const scale = 1.08 + focus * 0.06;
+    videoBgMediaEl.style.transform = `translate3d(0, calc(-50% + ${shift}px), 0) scale(${scale})`;
+
+    if (videoEl) {
+      const opacity = 0.26 + focus * 0.34;
+      const blur = 3 - focus * 2.5;
+      videoEl.style.opacity = opacity.toFixed(3);
+      videoEl.style.filter = `blur(${blur.toFixed(2)}px)`;
+    }
+  }
+
+  function scheduleParallax() {
+    if (parallaxFrame) return;
+    parallaxFrame = window.requestAnimationFrame(() => {
+      parallaxFrame = 0;
+      applyParallax();
+    });
+  }
+
   // ─── Blog ────────────────────────────────────────────────────────────────────
   let fadeObs: IntersectionObserver | null = null;
   interface Post {
@@ -210,7 +248,7 @@
       icon: "🧠",
       year: "2026",
       tags: ["Claude Code", "AI Skills", "Node.js", "npx"],
-      url: "https://github.com/Mammals-at-work/YACS",
+      url: "https://www.npmjs.com/package/@mammals-at-work/yacs?activeTab=readme",
     },
     {
       icon: "🐘",
@@ -398,8 +436,13 @@
     startTypewriter();
     const sObs = observeSections();
     const fObs = observeFadeIns();
-    const onScroll = () => (navScrolled = window.scrollY > 40);
+    const onScroll = () => {
+      navScrolled = window.scrollY > 40;
+      scheduleParallax();
+    };
+    const onResize = () => scheduleParallax();
     window.addEventListener("scroll", onScroll);
+    window.addEventListener("resize", onResize);
     const onMouseMove = (e: MouseEvent) => {
       cursorX = e.clientX;
       cursorY = e.clientY;
@@ -412,13 +455,16 @@
       .querySelectorAll<HTMLElement>(".magnetic")
       .forEach((el) => cleanups.push(attachMagnetic(el)));
     loadPosts();
+    scheduleParallax();
     return () => {
       cleanups.forEach((c) => c());
       sObs.disconnect();
       fObs.disconnect();
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseleave", onMouseLeave);
+      if (parallaxFrame) window.cancelAnimationFrame(parallaxFrame);
       clearTimeout(typewriterTimeout);
     };
   });
@@ -440,6 +486,10 @@
       swapLocaleInPath(window.location.pathname, next) + window.location.hash;
     goto(target);
   }
+
+  $effect(() => {
+    if (videoEl) videoEl.muted = videoMuted;
+  });
 </script>
 
 <svelte:head>
@@ -697,7 +747,24 @@
 </section>
 
 <!-- ── STRENGTHS ── -->
-<section id="strengths" class="strengths">
+<div class="video-bg-section" bind:this={videoSectionEl}>
+  <div class="video-bg-wrapper" aria-hidden="true">
+    <div class="video-bg-media" bind:this={videoBgMediaEl}>
+      <video
+        bind:this={videoEl}
+        class="video-bg"
+        src={videoSrc}
+        autoplay
+        loop
+        muted
+        playsinline
+        aria-hidden="true"
+      ></video>
+    </div>
+    <div class="video-bg-overlay"></div>
+  </div>
+
+  <section id="strengths" class="strengths">
   <div class="container">
     <div class="section-header fade-in">
       <p class="section-label">{t.strengths.label}</p>
@@ -1003,6 +1070,7 @@
     {t.footer.tech} <strong>Svelte 5</strong>
   </p>
 </footer>
+</div><!-- end .video-bg-section -->
 
 <style>
   /* ── Custom cursor ── */
@@ -1028,6 +1096,76 @@
     z-index: 9999;
     transform: translate(-50%, -50%);
     transition: opacity 0.3s;
+  }
+
+  /* ── Video background (parallax) ── */
+  .video-bg-section {
+    position: relative;
+    overflow: hidden;
+    background: #050510;
+  }
+  .video-bg-wrapper {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .video-bg-media {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 135vh;
+    transform: translate3d(0, -50%, 0) scale(1.08);
+    will-change: transform;
+  }
+  .video-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    opacity: 0.38;
+    filter: blur(1px);
+    will-change: opacity, filter;
+  }
+  .video-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(5, 5, 16, 0.98) 0%,
+      rgba(5, 5, 16, 0.35) 18%,
+      rgba(5, 5, 16, 0.16) 50%,
+      rgba(5, 5, 16, 0.35) 82%,
+      rgba(5, 5, 16, 0.98) 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+  }
+  .video-bg-section > section,
+  .video-bg-section > footer {
+    position: relative;
+    z-index: 2;
+  }
+
+  @media (max-width: 768px) {
+    .video-bg-wrapper {
+      height: 100svh;
+    }
+
+    .video-bg-media {
+      height: 120svh;
+    }
+
+    .video-bg {
+      filter: blur(0.75px);
+    }
   }
 
   /* ── Nav ── */
@@ -1737,13 +1875,6 @@
   /* ── Skills / Pie chart ── */
   .skills-section {
     padding: 8rem 0;
-    background: linear-gradient(
-      180deg,
-      transparent,
-      #0a0a1a 20%,
-      #0a0a1a 80%,
-      transparent
-    );
   }
   .chart-layout {
     display: flex;
@@ -1939,13 +2070,6 @@
   /* ── Experience ── */
   .experience-section {
     padding: 8rem 0;
-    background: linear-gradient(
-      180deg,
-      transparent,
-      #0a0a1a 20%,
-      #0a0a1a 80%,
-      transparent
-    );
   }
   .timeline {
     position: relative;
@@ -2246,13 +2370,6 @@
   /* ── Blog ── */
   .blog-section {
     padding: 8rem 0;
-    background: linear-gradient(
-      180deg,
-      transparent,
-      #0a0a1a 20%,
-      #0a0a1a 80%,
-      transparent
-    );
   }
   .blog-grid {
     display: grid;
