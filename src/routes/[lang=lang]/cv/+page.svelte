@@ -23,37 +23,34 @@
   <meta
     name="description"
     content={data.lang === 'en'
-      ? 'Printable résumé of Carlos Ledesma — Tech Lead, Quality & AI Solutions Architect, Senior Full Stack.'
-      : 'Currículum imprimible de Carlos Ledesma — Tech Lead, Arquitecto de Calidad & IA, Full Stack Senior.'}
+      ? 'Printable resume of Carlos Ledesma — Tech Lead, Quality & AI Solutions Architect, Senior Full Stack.'
+      : 'Curriculum imprimible de Carlos Ledesma — Tech Lead, Arquitecto de Calidad & IA, Full Stack Senior.'}
   />
   <meta name="robots" content="index,follow" />
 </svelte:head>
 
-<!-- Toolbar (screen only) -->
-<div class="toolbar no-print">
+<div class="toolbar no-print glass-panel">
   <a href="/{data.lang}" class="tool-link" aria-label={t.toolbar.back}>
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 4 3 8l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+      <path d="M13 8H3M7 4 3 8l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
     {t.toolbar.back}
   </a>
+
   <div class="tool-actions">
-    <button type="button" class="btn ghost" onclick={handlePrint}>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v7H6z"/></svg>
-      {t.toolbar.print}
-    </button>
-    <button type="button" class="btn primary" onclick={handlePrint}>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></svg>
-      {t.toolbar.downloadPdf}
-    </button>
+    <button type="button" class="btn ghost" onclick={handlePrint}>{t.toolbar.print}</button>
+    <button type="button" class="btn primary" onclick={handlePrint}>{t.toolbar.downloadPdf}</button>
   </div>
 </div>
 
 <main class="sheet" aria-label={t.docAriaLabel}>
-  <!-- Header -->
   <header class="head">
     <div class="head-main">
+      <p class="eyebrow">{t.sections.profile}</p>
       <h1>{t.profile.name}</h1>
       <p class="title">{t.profile.title}</p>
     </div>
+
     <ul class="contact">
       <li><span class="label">{t.headerLabels.location}</span>{t.profile.location}</li>
       <li><span class="label">{t.headerLabels.phone}</span><a href="tel:+34680332430">{contact.phone}</a></li>
@@ -64,20 +61,22 @@
     </ul>
   </header>
 
-  <!-- Highlights -->
   <section class="highlights" aria-label={t.metricsLabel}>
-    {#each t.highlights as h}
-      <div class="hl"><span class="hl-n">{h.n}</span><span class="hl-l">{h.l}</span></div>
+    {#each t.highlights as highlight}
+      <div class="hl">
+        <span class="hl-n">{highlight.n}</span>
+        <span class="hl-l">{highlight.l}</span>
+      </div>
     {/each}
   </section>
 
-  <!-- Body grid -->
   <div class="grid">
-    <!-- Main column -->
     <div class="col-main">
       <section>
         <h2>{t.sections.profile}</h2>
-        {#each t.profile.summary as p}<p class="lead">{p}</p>{/each}
+        {#each t.profile.summary as paragraph}
+          <p class="lead">{paragraph}</p>
+        {/each}
       </section>
 
       <section>
@@ -92,11 +91,15 @@
                 </div>
                 <span class="period">{job.period}</span>
               </header>
-              {#if job.context}<p class="context">{job.context}</p>{/if}
+
+              {#if job.context}
+                <p class="context">{job.context}</p>
+              {/if}
+
               {#if job.bullets.length}
                 <ul class="bullets">
-                  {#each job.bullets as b}
-                    <li><strong>{b.k}.</strong> {b.v}</li>
+                  {#each job.bullets as bullet}
+                    <li><strong>{bullet.k}.</strong> {bullet.v}</li>
                   {/each}
                 </ul>
               {/if}
@@ -106,16 +109,17 @@
       </section>
     </div>
 
-    <!-- Sidebar -->
     <aside class="col-side">
       <section>
         <h2>{t.sections.stack}</h2>
         <div class="skills">
-          {#each t.skills as g}
+          {#each t.skills as group}
             <div class="skill-group">
-              <h4>{g.group}</h4>
+              <h4>{group.group}</h4>
               <ul class="tags">
-                {#each g.items as it}<li>{it}</li>{/each}
+                {#each group.items as item}
+                  <li>{item}</li>
+                {/each}
               </ul>
             </div>
           {/each}
@@ -125,8 +129,8 @@
       <section>
         <h2>{t.sections.languages}</h2>
         <ul class="plain">
-          {#each t.languages as l}
-            <li><strong>{l.lang}</strong> — {l.level}</li>
+          {#each t.languages as language}
+            <li><strong>{language.lang}</strong> - {language.level}</li>
           {/each}
         </ul>
       </section>
@@ -134,11 +138,11 @@
       <section>
         <h2>{t.sections.education}</h2>
         <ul class="plain">
-          {#each t.education as e}
+          {#each t.education as education}
             <li>
-              <strong>{e.title}</strong>
-              <span class="muted">{e.org}</span>
-              <span class="muted mono">{e.period}</span>
+              <strong>{education.title}</strong>
+              <span class="muted">{education.org}</span>
+              <span class="muted mono">{education.period}</span>
             </li>
           {/each}
         </ul>
@@ -158,250 +162,511 @@
 </main>
 
 <style>
-  /* Local reset (this route uses its own typography and light background) */
-  :global(html), :global(body) {
-    background: #eef0f5;
-    color: #111827;
-    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
+  :global(body) {
+    overflow-x: hidden;
   }
-  :global(body) { overflow-x: auto; }
 
-  /* Toolbar */
   .toolbar {
-    position: sticky; top: 0; z-index: 50;
-    display: flex; align-items: center; justify-content: space-between;
+    position: sticky;
+    top: 1rem;
+    z-index: 30;
+    width: min(calc(100% - 1.5rem), var(--container-max));
+    margin: 1rem auto 1.5rem;
+    padding: 0.9rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 1rem;
-    padding: 0.75rem 1.25rem;
-    background: rgba(255,255,255,0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid #e5e7eb;
   }
+
   .tool-link {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    font-size: 0.85rem; color: #4f46e5; font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--on-surface);
+    font-family: var(--font-display);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
-  .tool-link:hover { color: #3730a3; }
-  .tool-actions { display: flex; gap: 0.5rem; }
+
+  .tool-link:hover {
+    color: var(--secondary);
+  }
+
+  .tool-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+
   .btn {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    padding: 0.55rem 1rem;
-    font-size: 0.85rem; font-weight: 600;
-    border-radius: 8px; cursor: pointer;
-    border: 1px solid transparent;
-    transition: background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
+    min-height: 2.9rem;
+    padding: 0.65rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-family: var(--font-display);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition:
+      transform 0.24s ease,
+      border-color 0.24s ease,
+      box-shadow 0.24s ease,
+      background 0.24s ease;
   }
+
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+
   .btn.ghost {
-    background: white; color: #111827; border-color: #d1d5db;
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--on-surface);
   }
-  .btn.ghost:hover { background: #f3f4f6; border-color: #9ca3af; }
+
+  .btn.ghost:hover {
+    border-color: rgba(0, 238, 252, 0.35);
+    box-shadow: 0 0 20px rgba(0, 238, 252, 0.12);
+  }
+
   .btn.primary {
-    background: #4f46e5; color: white;
+    color: #fff;
+    background: linear-gradient(135deg, var(--primary-strong), var(--secondary-strong));
+    box-shadow: 0 10px 34px rgba(188, 19, 254, 0.24);
   }
-  .btn.primary:hover { background: #4338ca; box-shadow: 0 6px 18px rgba(79,70,229,0.25); }
 
-  /* CV sheet (A4) */
   .sheet {
-    max-width: 210mm;
-    margin: 1.5rem auto 3rem;
-    padding: 16mm 16mm 14mm;
-    background: white;
-    color: #111827;
-    box-shadow: 0 10px 40px rgba(15,23,42,0.08), 0 2px 6px rgba(15,23,42,0.04);
-    border-radius: 4px;
-    line-height: 1.55;
-    font-size: 10.5pt;
+    width: min(calc(100% - 1.5rem), 1180px);
+    margin: 0 auto 3rem;
+    padding: 2rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.022));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.5rem;
+    backdrop-filter: blur(18px);
+    box-shadow:
+      0 24px 80px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.02) inset,
+      0 0 48px rgba(188, 19, 254, 0.08);
+    color: var(--on-surface);
   }
 
-  /* Header */
   .head {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
     gap: 1.5rem;
     align-items: end;
-    padding-bottom: 0.9rem;
-    border-bottom: 2px solid #111827;
-    margin-bottom: 1rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    position: relative;
   }
-  .head h1 {
-    font-size: 26pt;
-    line-height: 1.1;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    margin-bottom: 0.3rem;
-    color: #0f172a;
+
+  .head::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 12rem;
+    height: 2px;
+    background: linear-gradient(90deg, var(--secondary-strong), var(--primary-strong));
+    box-shadow: 0 0 16px rgba(188, 19, 254, 0.25);
   }
+
+  .head-main {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--secondary);
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 2.25rem;
+    height: 1px;
+    background: linear-gradient(90deg, var(--secondary-strong), transparent);
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 4.3rem);
+    line-height: 0.95;
+    text-shadow: 0 0 24px rgba(235, 178, 255, 0.18);
+  }
+
   .title {
-    font-size: 10.5pt;
-    color: #4f46e5;
-    font-weight: 600;
-    letter-spacing: 0.01em;
+    color: var(--on-surface-variant);
+    font-size: 1rem;
+    max-width: 42rem;
   }
+
   .contact {
-    list-style: none; padding: 0; margin: 0;
-    display: grid; grid-template-columns: repeat(2, auto);
-    column-gap: 1.25rem; row-gap: 0.2rem;
-    font-size: 8.8pt;
-    color: #374151;
-    text-align: right;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, auto));
+    gap: 0.5rem 1.5rem;
+    color: var(--on-surface-variant);
+    justify-items: start;
   }
-  .contact li { display: grid; grid-template-columns: auto 1fr; gap: 0.5rem; align-items: baseline; }
-  .contact .label {
-    font-size: 7pt; text-transform: uppercase; letter-spacing: 0.08em;
-    color: #6b7280; font-weight: 600;
-  }
-  .contact a { color: #111827; }
-  .contact a:hover { color: #4f46e5; text-decoration: underline; }
 
-  /* Highlights */
+  .contact li {
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .label {
+    font-family: var(--font-display);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--secondary);
+  }
+
+  .contact a {
+    color: var(--on-surface);
+  }
+
+  .contact a:hover {
+    color: var(--secondary);
+  }
+
   .highlights {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 0.6rem; margin-bottom: 1.1rem;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.9rem;
+    margin-bottom: 1.5rem;
   }
-  .hl {
-    display: flex; flex-direction: column; gap: 0.1rem;
-    padding: 0.55rem 0.8rem;
-    background: #f8fafc;
-    border: 1px solid #e5e7eb;
-    border-left: 3px solid #4f46e5;
-    border-radius: 3px;
-  }
-  .hl-n { font-size: 13pt; font-weight: 800; color: #0f172a; letter-spacing: -0.01em; }
-  .hl-l { font-size: 7.8pt; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }
 
-  /* Grid body */
+  .hl {
+    padding: 1rem 1.1rem;
+    border-radius: 1.25rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .hl-n {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--secondary-strong);
+  }
+
+  .hl-l {
+    color: var(--on-surface-variant);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
   .grid {
     display: grid;
-    grid-template-columns: 1fr 33%;
-    gap: 1.6rem;
+    grid-template-columns: minmax(0, 1.2fr) minmax(290px, 0.8fr);
+    gap: 1.25rem;
   }
-  .col-main section + section,
-  .col-side section + section { margin-top: 1.1rem; }
+
+  .col-main,
+  .col-side {
+    display: grid;
+    gap: 1.15rem;
+  }
+
+  .col-main section,
+  .col-side section {
+    padding: 1.2rem;
+    border-radius: 1.25rem;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
 
   h2 {
-    font-size: 11pt;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: #4f46e5;
-    font-weight: 700;
-    padding-bottom: 0.25rem;
-    border-bottom: 1px solid #e5e7eb;
-    margin-bottom: 0.7rem;
+    margin-bottom: 0.9rem;
+    font-size: 1.15rem;
   }
-  h3 { font-size: 11pt; font-weight: 700; color: #0f172a; margin: 0; line-height: 1.25; }
-  h4 { font-size: 9pt; font-weight: 700; color: #0f172a; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.35rem; }
 
-  .lead { margin-bottom: 0.5rem; color: #1f2937; }
+  .lead,
+  .context,
+  .bullets li,
+  .plain li,
+  .callout p {
+    color: var(--on-surface-variant);
+  }
 
-  /* Timeline */
-  .job { margin-bottom: 0.9rem; break-inside: avoid; page-break-inside: avoid; }
-  .job:last-child { margin-bottom: 0; }
+  .lead + .lead {
+    margin-top: 0.85rem;
+  }
+
+  .timeline {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .job {
+    position: relative;
+    padding-left: 1.2rem;
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .job::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    bottom: 0.25rem;
+    width: 2px;
+    background: linear-gradient(180deg, var(--secondary-strong), var(--primary-strong));
+    border-radius: 999px;
+    box-shadow: 0 0 14px rgba(188, 19, 254, 0.2);
+  }
+
   .job-head {
-    display: grid; grid-template-columns: 1fr auto;
-    gap: 0.5rem; align-items: baseline; margin-bottom: 0.3rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
   }
-  .org { font-size: 9.5pt; color: #374151; margin: 0.1rem 0 0; }
-  .org .sep { color: #9ca3af; margin: 0 0.2rem; }
-  .loc { color: #6b7280; }
-  .period {
-    font-size: 8.5pt; color: #6b7280;
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    white-space: nowrap;
-    background: #f3f4f6;
-    padding: 0.15rem 0.5rem;
-    border-radius: 3px;
-  }
-  .context { font-size: 9.5pt; color: #374151; margin: 0.25rem 0 0.4rem; font-style: italic; }
-  .bullets { list-style: none; padding: 0; margin: 0; }
-  .bullets li {
-    position: relative; padding-left: 0.9rem;
-    margin-bottom: 0.3rem; font-size: 9.8pt; color: #1f2937;
-  }
-  .bullets li::before {
-    content: ''; position: absolute; left: 0; top: 0.55em;
-    width: 4px; height: 4px; border-radius: 50%; background: #4f46e5;
-  }
-  .bullets strong { color: #0f172a; font-weight: 700; }
 
-  /* Sidebar */
-  .skill-group { margin-bottom: 0.75rem; }
-  .tags { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.25rem; }
+  h3 {
+    font-size: 1rem;
+  }
+
+  .org,
+  .period,
+  .muted {
+    color: var(--on-surface-variant);
+  }
+
+  .period,
+  .mono {
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .bullets,
+  .plain,
+  .tags {
+    margin: 0;
+    padding-left: 1rem;
+  }
+
+  .bullets {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .skills {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .skill-group {
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  h4 {
+    font-size: 0.9rem;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-left: 0;
+    list-style: none;
+  }
+
   .tags li {
-    font-size: 8.5pt;
-    padding: 0.15rem 0.5rem;
-    background: #f1f5f9;
-    border: 1px solid #e2e8f0;
-    border-radius: 3px;
-    color: #334155;
-    white-space: nowrap;
+    padding: 0.32rem 0.7rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--on-surface-variant);
+    font-family: var(--font-display);
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
   }
 
-  .plain { list-style: none; padding: 0; margin: 0; }
-  .plain > li {
-    font-size: 9.5pt; margin-bottom: 0.45rem;
-    display: flex; flex-direction: column; gap: 0.1rem;
+  .plain {
+    display: grid;
+    gap: 0.55rem;
   }
-  .plain strong { color: #0f172a; font-weight: 600; }
-  .muted { color: #6b7280; font-size: 8.8pt; }
-  .mono  { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 8pt; }
+
+  .plain li {
+    display: grid;
+    gap: 0.18rem;
+  }
 
   .callout {
-    margin-top: 1rem;
-    padding: 0.8rem 0.9rem;
-    background: #eef2ff;
-    border: 1px solid #c7d2fe;
-    border-radius: 4px;
+    background:
+      radial-gradient(circle at top right, rgba(0, 238, 252, 0.12), transparent 42%),
+      rgba(255, 255, 255, 0.03);
   }
-  .callout h4 { color: #4338ca; margin-bottom: 0.3rem; }
-  .callout p { font-size: 9pt; color: #312e81; line-height: 1.5; }
 
-  /* Footer */
+  .callout h4 {
+    margin-bottom: 0.65rem;
+    color: var(--secondary);
+  }
+
   .foot {
-    margin-top: 1.5rem;
-    padding-top: 0.7rem;
-    border-top: 1px solid #e5e7eb;
-    display: flex; justify-content: space-between;
-    font-size: 8pt; color: #6b7280;
-  }
-  .foot .mono { font-size: 7.8pt; }
-
-  /* Responsive (screen) */
-  @media (max-width: 780px) {
-    .sheet { padding: 10mm; margin: 0.75rem; }
-    .head { grid-template-columns: 1fr; gap: 0.8rem; }
-    .contact { text-align: left; grid-template-columns: repeat(2, 1fr); }
-    .highlights { grid-template-columns: repeat(2, 1fr); }
-    .grid { grid-template-columns: 1fr; }
-    .toolbar { padding: 0.6rem 0.9rem; flex-direction: column; align-items: stretch; gap: 0.5rem; }
-    .tool-actions { justify-content: space-between; }
+    margin-top: 1.35rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    color: var(--outline);
+    font-size: 0.82rem;
   }
 
-  /* Print */
-  @page {
-    size: A4;
-    margin: 12mm 12mm 12mm 12mm;
-  }
-  @media print {
-    :global(html), :global(body) {
-      background: white !important;
-      color: #000 !important;
+  @media (max-width: 960px) {
+    .toolbar {
+      width: calc(100% - 1rem);
     }
-    .no-print { display: none !important; }
+
     .sheet {
-      max-width: none;
+      width: calc(100% - 1rem);
+      padding: 1.25rem;
+    }
+
+    .head,
+    .grid,
+    .highlights {
+      grid-template-columns: 1fr;
+    }
+
+    .contact {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .toolbar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .tool-actions {
+      flex-direction: column;
+    }
+
+    .btn {
+      width: 100%;
+    }
+
+    .job-head,
+    .foot {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  @media print {
+    :global(html),
+    :global(body) {
+      background: #fff !important;
+      color: #111 !important;
+    }
+
+    .no-print {
+      display: none !important;
+    }
+
+    .sheet {
+      width: 100%;
       margin: 0;
       padding: 0;
-      box-shadow: none;
+      background: #fff;
+      border: 0;
       border-radius: 0;
-      font-size: 9.8pt;
+      box-shadow: none;
+      backdrop-filter: none;
+      color: #111;
     }
-    a { color: inherit; text-decoration: none; }
-    .job, .skill-group, .callout { break-inside: avoid; page-break-inside: avoid; }
-    h2 { break-after: avoid; page-break-after: avoid; }
-    .highlights { break-inside: avoid; page-break-inside: avoid; }
-    * {
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
+
+    .head,
+    .foot {
+      border-color: #d6d6d6;
+    }
+
+    .head::after {
+      box-shadow: none;
+    }
+
+    .hl,
+    .col-main section,
+    .col-side section,
+    .tags li {
+      background: #fff;
+      color: #111;
+      box-shadow: none;
+      border-color: #d9d9d9;
+    }
+
+    .title,
+    .contact,
+    .lead,
+    .context,
+    .bullets li,
+    .plain li,
+    .org,
+    .period,
+    .muted,
+    .callout p,
+    .foot,
+    .hl-l {
+      color: #444 !important;
+    }
+
+    .label,
+    .eyebrow,
+    .period,
+    .mono,
+    .hl-n,
+    .callout h4 {
+      color: #111 !important;
+    }
+
+    .job::before,
+    .head::after {
+      background: #111 !important;
+    }
+
+    .contact a,
+    a {
+      color: #111 !important;
+      text-decoration: none;
+    }
+
+    .job,
+    .col-main section,
+    .col-side section,
+    .hl {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    @page {
+      size: A4;
+      margin: 10mm;
     }
   }
 </style>
