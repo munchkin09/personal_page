@@ -182,7 +182,7 @@
   const heroStats = $derived([
     { value: "13+", label: t.hero.stats.yearsLabel },
     { value: "2", label: t.hero.stats.continentsLabel },
-    { value: "infinity", label: t.hero.stats.bugsLabel },
+    { value: "∞", label: t.hero.stats.bugsLabel },
   ]);
 
   const CX = 160;
