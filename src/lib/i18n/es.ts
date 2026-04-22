@@ -32,7 +32,9 @@ export const es = {
     stats: {
       yearsLabel: 'Años de experiencia',
       continentsLabel: 'Continentes impactados',
+      projectsLabel: 'Proyectos completados',
       bugsLabel: 'Bugs detectados antes',
+      uptimeLabel: 'Uptime en producción',
     },
     roles: [
       'Tech Lead & Solution Architect',

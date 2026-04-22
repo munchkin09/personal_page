@@ -46,7 +46,9 @@ export const en: Widen<typeof es> = {
     stats: {
       yearsLabel: 'Years of experience',
       continentsLabel: 'Continents impacted',
+      projectsLabel: 'Projects delivered',
       bugsLabel: 'Bugs caught early',
+      uptimeLabel: 'Production uptime',
     },
     roles: [
       'Tech Lead & Solution Architect',
