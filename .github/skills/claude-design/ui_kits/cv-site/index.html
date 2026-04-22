@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Carlos Ledesma — Software, with care.</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link rel="icon" type="image/svg+xml" href="../../assets/logo-mark.svg"/>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script src="copy.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" src="components/BgLayers.jsx"></script>
+  <script type="text/babel" src="components/Nav.jsx"></script>
+  <script type="text/babel" src="components/Hero.jsx"></script>
+  <script type="text/babel" src="components/About.jsx"></script>
+  <script type="text/babel" src="components/Experience.jsx"></script>
+  <script type="text/babel" src="components/Projects.jsx"></script>
+  <script type="text/babel" src="components/Skills.jsx"></script>
+  <script type="text/babel" src="components/Footer.jsx"></script>
+  <script type="text/babel" src="components/ProjectDetail.jsx"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const TWEAKS = /*EDITMODE-BEGIN*/{
+      "accent": "cyan",
+      "motionIntensity": 8,
+      "lang": "es"
+    }/*EDITMODE-END*/;
+
+    function applyAccent(name) {
+      const map = {
+        cyan:   { c: '#00F5D4', glow: 'var(--glow-cyan)' },
+        violet: { c: '#9B5DE5', glow: 'var(--glow-violet)' },
+        pink:   { c: '#F15BB5', glow: 'var(--glow-pink)' },
+        yellow: { c: '#FEE440', glow: 'var(--glow-yellow)' }
+      };
+      const v = map[name] || map.cyan;
+      document.documentElement.style.setProperty('--accent', v.c);
+      document.documentElement.style.setProperty('--neon-cyan', v.c);
+    }
+
+    function App() {
+      const saved = (() => { try { return JSON.parse(localStorage.getItem('cv-state-v2') || '{}'); } catch { return {}; } })();
+      const [lang, setLang] = useState(saved.lang || TWEAKS.lang);
+      const [view, setView] = useState(saved.view || 'home'); // 'home' | 'detail'
+      const [slug, setSlug] = useState(saved.slug || null);
+      const [accent, setAccent] = useState(TWEAKS.accent);
+      const [tweaksOpen, setTweaksOpen] = useState(false);
+
+      useEffect(() => { localStorage.setItem('cv-state-v2', JSON.stringify({lang, view, slug})); }, [lang, view, slug]);
+      useEffect(() => { document.documentElement.lang = lang; }, [lang]);
+      useEffect(() => { applyAccent(accent); }, [accent]);
+
+      // scroll reveal — with safety net so nothing is ever permanently invisible
+      useEffect(() => {
+        const els = document.querySelectorAll('.reveal');
+        // First, unconditionally reveal anything already in the viewport on mount.
+        const h = window.innerHeight || 900;
+        els.forEach(el => {
+          const r = el.getBoundingClientRect();
+          if (r.top < h * 0.9) el.classList.add('in');
+        });
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+        }, { threshold: 0, rootMargin: '0px 0px -10% 0px' });
+        els.forEach(el => io.observe(el));
+        // Ultimate safety net — if something slipped through, reveal it.
+        const t = setTimeout(() => document.querySelectorAll('.reveal').forEach(el => el.classList.add('in')), 1400);
+        return () => { io.disconnect(); clearTimeout(t); };
+      }, [view, lang]);
+
+      // edit mode
+      useEffect(() => {
+        const onMsg = (e) => {
+          if (!e.data) return;
+          if (e.data.type === '__activate_edit_mode') setTweaksOpen(true);
+          if (e.data.type === '__deactivate_edit_mode') setTweaksOpen(false);
+        };
+        window.addEventListener('message', onMsg);
+        window.parent.postMessage({type:'__edit_mode_available'}, '*');
+        return () => window.removeEventListener('message', onMsg);
+      }, []);
+
+      const openProject = (s) => { setSlug(s); setView('detail'); window.scrollTo(0, 0); };
+      const back = () => { setView('home'); setTimeout(() => document.getElementById('projects')?.scrollIntoView({behavior:'smooth'}), 50); };
+      const handleNav = (sec) => {
+        if (view === 'detail') setView('home');
+        setTimeout(() => {
+          const map = { work: 'projects', about: 'about', writing: 'experience', contact: 'footer' };
+          const id = map[sec];
+          if (id) document.getElementById(id)?.scrollIntoView({behavior:'smooth', block:'start'});
+        }, 80);
+      };
+
+      return (
+        <>
+          <BgLayers/>
+          <div className="page">
+            <Nav section="work" lang={lang} setLang={setLang} onNav={handleNav}/>
+            {view === 'home' ? (
+              <>
+                <Hero lang={lang}/>
+                <About lang={lang}/>
+                <Experience lang={lang}/>
+                <Projects lang={lang} onOpenProject={openProject}/>
+                <Skills lang={lang}/>
+                <Footer lang={lang}/>
+              </>
+            ) : (
+              <ProjectDetail lang={lang} slug={slug} onBack={back}/>
+            )}
+          </div>
+
+          <div className={`tweaks-panel ${tweaksOpen ? 'open' : ''}`}>
+            <h6>Tweaks</h6>
+            <div className="tweaks-row">
+              <label>Accent</label>
+              <select value={accent} onChange={e => setAccent(e.target.value)}>
+                <option value="cyan">cyan</option>
+                <option value="violet">violet</option>
+                <option value="pink">pink</option>
+                <option value="yellow">yellow</option>
+              </select>
+            </div>
+            <div className="tweaks-row">
+              <label>Language</label>
+              <select value={lang} onChange={e => setLang(e.target.value)}>
+                <option value="en">EN</option>
+                <option value="es">ES</option>
+              </select>
+            </div>
+            <div className="tweaks-row">
+              <label>View</label>
+              <select value={view} onChange={e => { setView(e.target.value); if (e.target.value === 'detail') setSlug('hot-path'); }}>
+                <option value="home">Home</option>
+                <option value="detail">Project detail</option>
+              </select>
+            </div>
+          </div>
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+  </script>
+</body>
+</html>
