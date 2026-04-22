@@ -26,6 +26,8 @@
 <svelte:head>
   <title>Carlos Ledesma · Software Engineer</title>
   <meta name="description" content="Carlos Ledesma — Tech Lead & Solution Architect. Specialised in QA, AI Strategy, and Full-Stack Engineering." />
+  <link rel="icon" href="/design/logo-mark.svg" type="image/svg+xml" />
+  <link rel="shortcut icon" href="/design/logo-mark.svg" type="image/svg+xml" />
 
   <!-- AI / agent discovery -->
   <link rel="llms-txt" href="/llms.txt" />
