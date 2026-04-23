@@ -14,12 +14,12 @@ type Widen<T> = T extends string
 
 export const en: Widen<typeof es> = {
   meta: {
-    homeTitle: 'Carlos Ledesma · STED — Software Test Engineer in Development',
+    homeTitle: 'Carlos Ledesma · Quality Engineering Architect · Tech Lead & AI',
     homeDescription:
-      'Carlos Ledesma — STED, a QA Engineer who codes their own test frameworks, understands CI/CD pipelines end-to-end and combines testing with agentic AI tooling.',
-    cvTitle: 'Resume · Carlos Ledesma — STED · QA & AI Architect',
+      'Carlos Ledesma — Tech Lead and Quality Architect who builds the frameworks, AI agents and platforms that entire teams use to ship software with confidence. 13+ years across banking, IoT, consulting and digital transformation.',
+    cvTitle: 'Resume · Carlos Ledesma — Quality Engineering Architect · Tech Lead & AI',
     cvDescription:
-      'Printable resume of Carlos Ledesma — Software Test Engineer in Development (STED), test framework architect and AI-assisted QA lead.',
+      'Printable resume of Carlos Ledesma — Quality Engineering Architect and Tech Lead specialised in quality as a shared SDLC responsibility and AI tooling.',
     blogPostFallbackTitle: 'Blog · Carlos Ledesma',
   },
   nav: {
@@ -37,9 +37,9 @@ export const en: Widen<typeof es> = {
   },
   hero: {
     badge: 'Available for new projects',
-    subtitleLine1: 'STED · A tester who codes their own frameworks · QA + AI',
+    subtitleLine1: 'Tech Lead · Quality as architecture · AI applied to the SDLC',
     subtitleLine2:
-      '+13 years as a QA engineer who understands CI/CD end-to-end, reads the code being tested and speaks the language of developers.',
+      '+13 years building the platforms and frameworks that entire teams use to ship with confidence — because quality is not a phase, it is a shared commitment.',
     viewProjects: 'See projects',
     letsTalk: "Let's talk",
     printableCv: 'Printable resume',
@@ -51,44 +51,44 @@ export const en: Widen<typeof es> = {
       uptimeLabel: 'Production uptime',
     },
     roles: [
-      'Software Test Engineer in Development (STED)',
-      'Test Framework Architect (Playwright)',
-      'CI/CD-fluent QA Engineer',
-      'AI-Assisted Testing Lead',
-      'QA who speaks the Devs language',
+      'Quality Engineering Architect',
+      'Tech Lead · QA & AI Tooling',
+      'Framework & Platform Builder',
+      'Team Enablement Lead',
+      'QA who understands the architecture',
     ],
   },
   about: {
     label: 'About me',
-    titlePrefix: 'STED — A tester who codes their own ',
-    titleHighlight: 'frameworks',
-    tags: ['Playwright', 'TypeScript', 'CI/CD', 'AI Testing', 'Framework Design', 'Code Review'],
+    titlePrefix: 'Quality as ',
+    titleHighlight: 'shared architecture',
+    tags: ['TypeScript', 'Playwright', 'AI Agents', 'Platform Building', 'SDLC', 'Team Enablement'],
     paragraphs: [
-      "I'm a <strong>Software Test Engineer in Development (STED)</strong>: an <strong>engineer who codes their own test frameworks from scratch</strong>, not a consumer of someone else's tools. My natural ground is Playwright (fixtures, custom reporters, API testing), TypeScript and treating the test suite architecture like production code.",
-      "I'm a <strong>tester who understands CI/CD pipelines end-to-end</strong> — from commit to production deploy — and a <strong>QA professional who speaks the language of developers</strong>: I read the code I'm testing, jump into code reviews and translate technical risk into business language for stakeholders.",
-      "My edge: I <strong>combine testing expertise with AI tooling</strong>. I use agents to generate test cases, surface coverage gaps and kill boilerplate, after +13 years bringing that same discipline to clients like BBVA and NTT DATA across Europe and LATAM.",
+      "I'm a <strong>Tech Lead and Quality Engineering Architect</strong>: over 13 years I haven't just tested software — I've <strong>built the platforms, frameworks and AI agents</strong> that entire teams rely on to ship with confidence. My domain isn't a single discipline; it's the full software lifecycle.",
+      "I believe <strong>quality is a commitment shared by every layer of the SDLC</strong>, not a phase bolted on at the end. That's why I work side by side with developers, POs and stakeholders: I read the code I validate, join code reviews and translate technical risk into business decisions.",
+      "My edge: I <strong>combine a solid technical foundation</strong> (JS/TS, Python, Cloud, CI/CD) with <strong>architectural thinking and AI tooling</strong>, walking alongside teams in their growth — because I trust my teammates' intuition and aim to enable them, not replace them.",
     ],
   },
   strengths: {
     label: 'What sets me apart',
     titlePrefix: 'My core ',
     titleHighlight: 'strengths',
-    subtitle: "I don't just write tests. I code my own frameworks, read the code I'm testing and speak the developers' language.",
+    subtitle: "I design the systems that help teams ship software they're proud of.",
     items: [
-      { icon: '🧠', title: 'Systems thinking', desc: 'The ability to see the full picture and design test suites that scale and stand the test of time.' },
-      { icon: '⚡', title: 'Execution speed', desc: 'From idea to test in CI with judgment, without sacrificing quality for speed.' },
-      { icon: '📖', title: 'Reading production code', desc: "Understanding the codebase you're testing makes you 5x more effective. I don't test black boxes — I navigate the repo and design tests with real context." },
-      { icon: '🤖', title: 'AI-assisted testing', desc: 'I use agentic AI to generate test cases, analyze coverage gaps and write boilerplate in minutes, not hours.' },
-      { icon: '🗣️', title: 'Speaks Dev & Business', desc: 'I jump into code reviews like any other dev and translate technical risk into stakeholder-friendly business language.' },
-      { icon: '🛡️', title: 'Defensive code', desc: 'I write robust, deterministic and maintainable frameworks. Flaky tests keep me up at night.' },
+      { icon: '🏗️', title: 'Quality as architecture', desc: 'I understand quality problems from the system design, not from the test report. I design suites, frameworks and platforms that scale with the team.' },
+      { icon: '🔗', title: 'End-to-end SDLC', desc: 'From the first commit to the production deploy: I know every link in the chain and where quality can break or shine.' },
+      { icon: '🌍', title: 'Breadth of domain', desc: 'Banking, IoT, digital campaigns, consulting, video games... I have solved quality problems across very different domains. Curiosity is my competitive edge.' },
+      { icon: '🤖', title: 'AI applied to the SDLC', desc: 'I use agents and LLMs to generate test cases, analyse coverage, migrate legacy and eliminate boilerplate — always keeping in mind that AI should enable, not replace, human judgement.' },
+      { icon: '🌱', title: 'Enables teams', desc: "I trust my teammates' intuition and judgement. My role is to support their growth, not to be the bottleneck of quality." },
+      { icon: '🗣️', title: 'Bridge between Dev and Business', desc: 'I read production code, join code reviews and translate technical risk into stakeholder language. Quality only works when everyone understands it.' },
     ],
   },
   skills: {
     label: 'Toolkit',
     titlePrefix: 'Technical ',
     titleHighlight: 'stack',
-    subtitle: "A STED's stack: Playwright and TypeScript at the core, AI and CI/CD wrapped around them. Hover each slice for details.",
-    totalLabel: 'Test Engineer',
+    subtitle: "A Quality Architect's stack: TypeScript and testing frameworks at the core, AI and CI/CD wrapped around them. Hover each slice for details.",
+    totalLabel: 'Quality Architect',
     techNames: {
       typescript: 'TypeScript & Node.js',
       ai: 'AI / LLM',
@@ -97,7 +97,7 @@ export const en: Widen<typeof es> = {
       python: 'Python',
       cloud: 'Cloud & Infra',
       data: 'Data Management',
-      qaAutomation: 'QA Automation · Playwright',
+      qaAutomation: 'QA Automation',
     },
     categories: {
       Frontend: 'Frontend',
@@ -138,6 +138,10 @@ export const en: Widen<typeof es> = {
       {
         title: 'Asciicrappers (turbo-invention)',
         description: 'Generates ASCII skylines from the tabs and spaces of any remote source file. Give it a URL with code and get a unique skyline right in your terminal.',
+      },
+      {
+        title: 'Request Mocker',
+        description: 'Desktop app to instantly mock APIs from an OpenAPI/YAML specification. Serves endpoints on localhost, logs requests in real time and requires zero backend code. Electron + TypeScript with a built-in YAML parser and no external dependencies.',
       },
     ],
   },
@@ -200,7 +204,7 @@ export const en: Widen<typeof es> = {
     titlePrefix: "Let's talk about your ",
     titleHighlight: 'next project',
     subtitle:
-      'Always open to new challenges, collaborations and interesting conversations. A full project, targeted consulting or just a technical chat — I’m in.',
+      "Always open to new challenges, collaborations and interesting conversations. A full project, targeted consulting or just a technical chat — I'm in.",
     sendEmail: 'Send me an email',
   },
   footer: {
@@ -243,22 +247,22 @@ export const en: Widen<typeof es> = {
       website: 'carlosledesma.dev · Madrid, Spain',
     },
     availabilityBody:
-      'Open to roles as STED, QA Architect, Test Framework Lead and AI-assisted QA platforms. Also Tech Lead in QA + AI environments and legacy modernization.',
+      'Open to roles as Quality Engineering Architect, Tech Lead in QA + AI environments, AI-assisted quality platforms and legacy modernisation. Also strategic quality consulting in digital transformations.',
     profile: {
       name: 'Carlos Ledesma Castejón',
-      title: 'Software Test Engineer in Development (STED) · QA & AI Architect · Tech Lead',
+      title: 'Quality Engineering Architect · Tech Lead · AI applied to the SDLC',
       location: 'Madrid, Spain',
       summary: [
-        'Software Test Engineer in Development (STED) with 13+ years across the SDLC: an engineer who codes their own test frameworks from scratch (Playwright, fixtures, custom reporters, API testing) and understands CI/CD pipelines end-to-end.',
-        "A QA who speaks the developers' language: I read the code I'm testing, jump into code reviews and translate technical risk into stakeholder language. I've brought this discipline to clients like BBVA and NTT DATA across Europe and LATAM.",
-        'My edge: I combine testing expertise with AI tooling — agents for test case generation, coverage gap analysis and boilerplate — without losing sight of the quality architecture.',
+        "Tech Lead and Quality Engineering Architect with 13+ years across the SDLC: I don't just test software — I build the frameworks, platforms and AI agents that entire teams rely on to ship with confidence. My foundation is technical (JS/TS, Python, Cloud, CI/CD) and my perspective is systemic.",
+        'I believe quality is a shared responsibility across every layer of the SDLC. I work side by side with developers, POs and stakeholders: I read the code I validate, join code reviews and translate technical risk into business decisions. A discipline I have applied across banking, IoT, consulting and large-scale digital transformation.',
+        'My edge: solid technical expertise + architectural thinking + AI tooling, walking alongside teams in their growth — because I trust my teammates\' judgement and aim to enable them, not replace them.',
       ],
     },
     highlights: [
       { n: '13+', l: 'years of experience' },
       { n: '2', l: 'continents (EU & LATAM)' },
-      { n: 'BBVA', l: 'top-EU banking client' },
       { n: 'LLMs', l: 'applied to QA and legacy' },
+      { n: 'SDLC', l: 'end-to-end perspective' },
     ],
     experience: [
       {
