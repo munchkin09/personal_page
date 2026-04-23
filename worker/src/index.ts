@@ -42,7 +42,8 @@ export default {
 
       const body = await request.json() as any;
       const message = body?.message;
-      if (!message?.text) return new Response('ok');
+      // Accept text messages and document (file) messages; ignore anything else
+      if (!message?.text && !message?.document) return new Response('ok');
 
       const chatId: number = message.chat.id;
 
@@ -52,7 +53,7 @@ export default {
         return new Response('ok');
       }
 
-      const text: string = message.text.trim();
+      const text: string = (message.text ?? '').trim();
 
       // ── Comandos ──────────────────────────────────────────────────────────
       if (text === '/help' || text === '/start') {
@@ -93,11 +94,45 @@ export default {
       }
 
       // ── Nuevo post ────────────────────────────────────────────────────────
-      const lines = text.split('\n');
+      // Normaliza el texto que se va a parsear (puede venir de texto libre o de un MD)
+      let postText = text;
+
+      // Detectar documento adjunto (archivo .md enviado por Telegram)
+      if (!postText && message.document) {
+        const doc = message.document;
+        const mime: string = doc.mime_type ?? '';
+        const fileName: string = doc.file_name ?? '';
+        const isMd = mime === 'text/plain' || mime === 'text/markdown' || fileName.endsWith('.md');
+
+        if (!isMd) {
+          await telegram(env.TELEGRAM_TOKEN, chatId,
+            '❌ Solo acepto archivos `.md`. Envía un archivo Markdown.'
+          );
+          return new Response('ok');
+        }
+
+        const filePath = await getFilePath(env.TELEGRAM_TOKEN, doc.file_id);
+        if (!filePath) {
+          await telegram(env.TELEGRAM_TOKEN, chatId, '❌ No pude obtener el archivo de Telegram.');
+          return new Response('ok');
+        }
+
+        const fileRes = await fetch(
+          `https://api.telegram.org/file/bot${env.TELEGRAM_TOKEN}/${filePath}`
+        );
+        if (!fileRes.ok) {
+          await telegram(env.TELEGRAM_TOKEN, chatId, '❌ No pude descargar el archivo.');
+          return new Response('ok');
+        }
+
+        postText = (await fileRes.text()).trim();
+      }
+
+      const lines = postText.split('\n');
       const title = lines[0].replace(/^#+\s*/, '').trim();
       const content = lines.slice(1).join('\n').trim();
 
-      if (!content) {
+      if (!title || !content) {
         await telegram(env.TELEGRAM_TOKEN, chatId,
           '❌ Necesito título *y* contenido.\n\nFormato:\n```\nTítulo del post\n\nContenido del post...\n```'
         );
@@ -126,6 +161,15 @@ export default {
     return new Response('Not found', { status: 404 });
   },
 };
+
+async function getFilePath(token: string, fileId: string): Promise<string | null> {
+  const res = await fetch(
+    `https://api.telegram.org/bot${token}/getFile?file_id=${encodeURIComponent(fileId)}`
+  );
+  if (!res.ok) return null;
+  const data = await res.json() as any;
+  return data?.result?.file_path ?? null;
+}
 
 async function telegram(token: string, chatId: number, text: string) {
   await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
