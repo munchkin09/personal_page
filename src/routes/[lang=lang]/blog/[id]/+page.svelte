@@ -51,7 +51,7 @@
 
   <nav>
     <a href="/{data.lang}#blog" class="back-link">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
         <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       {t.back}
@@ -63,7 +63,7 @@
 
   <main>
     {#if loading}
-      <div class="loading">
+      <div class="loading" role="status" aria-live="polite">
         <div class="spinner"></div>
         <span>{t.loading}</span>
       </div>
@@ -82,7 +82,7 @@
             {data.lang === 'es' ? 'Cuaderno' : 'Notebook'} · <span class="mono">#{post.id}</span>
           </p>
           <div class="post-meta">
-            <time class="post-date mono">{formatDate(post.date)}</time>
+            <time class="post-date mono" datetime={post.date}>{formatDate(post.date)}</time>
           </div>
           <h1 class="post-title">{post.title}</h1>
         </header>
@@ -172,6 +172,7 @@
     transition: color var(--dur-base) var(--ease-out-quart);
   }
   .back-link:hover { color: var(--neon-cyan); }
+  .back-link:focus-visible { outline-color: var(--neon-cyan); }
   .logo {
     display: inline-flex;
     align-items: center;
@@ -482,6 +483,10 @@
     color: var(--neon-cyan);
     background: rgba(0, 245, 212, 0.1);
     box-shadow: 0 0 24px rgba(0, 245, 212, 0.25);
+  }
+  .btn-back:focus-visible {
+    outline-color: var(--neon-cyan);
+    border-color: var(--neon-cyan);
   }
 
   @media (max-width: 640px) {

@@ -36,16 +36,16 @@
 <!-- Toolbar (screen only) -->
 <div class="toolbar no-print">
   <a href="/{data.lang}" class="tool-link" aria-label={t.toolbar.back}>
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 4 3 8l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 8H3M7 4 3 8l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     {t.toolbar.back}
   </a>
   <div class="tool-actions">
     <button type="button" class="btn ghost" onclick={handlePrint}>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v7H6z"/></svg>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v7H6z"/></svg>
       {t.toolbar.print}
     </button>
     <button type="button" class="btn primary" onclick={handlePrint}>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></svg>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></svg>
       {t.toolbar.downloadPdf}
     </button>
   </div>
@@ -240,6 +240,7 @@
     transition: color var(--dur-base) var(--ease-out-quart);
   }
   .tool-link:hover { color: var(--neon-violet-hi); }
+  .tool-link:focus-visible { outline-color: var(--neon-violet); }
   .tool-actions { display: flex; gap: 0.5rem; }
   .btn {
     display: inline-flex;
@@ -270,6 +271,7 @@
     border-color: var(--neon-violet);
     color: var(--neon-violet-hi);
   }
+  .btn:focus-visible { outline-color: var(--neon-violet); }
   .btn.primary {
     background: var(--neon-violet);
     color: var(--obsidian-900);
