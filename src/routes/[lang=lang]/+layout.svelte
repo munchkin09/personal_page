@@ -25,6 +25,7 @@
   <link rel="alternate" hreflang="es" href={altEs} />
   <link rel="alternate" hreflang="en" href={altEn} />
   <link rel="alternate" hreflang="x-default" href={altEs} />
+  <link rel="alternate" type="application/rss+xml" title="Carlos Ledesma · Blog RSS" href="https://blog-worker.carloslc.workers.dev/api/rss.xml" />
 </svelte:head>
 
 {@render children()}
