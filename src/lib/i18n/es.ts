@@ -1,11 +1,11 @@
 export const es = {
   meta: {
-    homeTitle: 'Carlos Ledesma · Software Engineer',
+    homeTitle: 'Carlos Ledesma · STED — Software Test Engineer in Development',
     homeDescription:
-      'Carlos Ledesma — Tech Lead y Arquitecto de Calidad & IA. Construyendo soluciones elegantes con tecnologías web modernas.',
-    cvTitle: 'CV · Carlos Ledesma — Tech Lead QA & IA',
+      'Carlos Ledesma — STED, QA Engineer que codea sus propios frameworks, entiende CI/CD end-to-end y combina testing con IA agéntica.',
+    cvTitle: 'CV · Carlos Ledesma — STED · QA & AI Architect',
     cvDescription:
-      'Currículum imprimible de Carlos Ledesma — Tech Lead, Arquitecto de Calidad & IA, Full Stack Senior.',
+      'Currículum imprimible de Carlos Ledesma — Software Test Engineer in Development (STED), arquitecto de frameworks de testing y de QA asistido por IA.',
     blogPostFallbackTitle: 'Blog · Carlos Ledesma',
   },
   nav: {
@@ -23,9 +23,9 @@ export const es = {
   },
   hero: {
     badge: 'Disponible para proyectos',
-    subtitleLine1: 'Tech Lead · Arquitecto de Calidad & IA · Full Stack Senior',
+    subtitleLine1: 'STED · Tester que codea sus propios frameworks · QA + IA',
     subtitleLine2:
-      '+13 años transformando ingeniería en impacto real — desde la banca hasta la IA generativa.',
+      '+13 años de un QA que entiende CI/CD end-to-end, lee el código que prueba y habla el idioma de los devs.',
     viewProjects: 'Ver proyectos',
     letsTalk: 'Hablemos',
     printableCv: 'CV imprimible',
@@ -37,44 +37,44 @@ export const es = {
       uptimeLabel: 'Uptime en producción',
     },
     roles: [
-      'Tech Lead & Solution Architect',
-      'QA & AI Strategy Expert',
-      'Full Stack Senior Developer',
-      'GenAI Applied to Software',
-      'COBOL Modernization Lead',
+      'Software Test Engineer in Development (STED)',
+      'Test Framework Architect (Playwright)',
+      'CI/CD-fluent QA Engineer',
+      'AI-Assisted Testing Lead',
+      'QA que habla el idioma de los Devs',
     ],
   },
   about: {
     label: 'Sobre mí',
-    titlePrefix: 'Tech Lead en la intersección de ',
-    titleHighlight: 'Calidad e IA',
-    tags: ['TypeScript', 'Python', 'Agentes IA', 'QA Architecture', 'Cloud', 'COBOL Migration'],
+    titlePrefix: 'STED — Tester que codea sus propios ',
+    titleHighlight: 'frameworks',
+    tags: ['Playwright', 'TypeScript', 'CI/CD', 'AI Testing', 'Framework Design', 'Code Review'],
     paragraphs: [
-      'Soy Tech Lead y Arquitecto de Software con +13 años de experiencia en el ciclo completo del software (SDLC), especializado en la intersección entre <strong>Ingeniería de Calidad</strong>, <strong>Automatización</strong> e <strong>Inteligencia Artificial Generativa</strong>.',
-      'He liderado modernizaciones de ecosistemas legado —incluyendo migraciones de <strong>COBOL a tecnologías modernas</strong>— y el diseño de <strong>Agentes IA aplicados a calidad</strong> en grandes corporaciones bancarias como BBVA, con impacto directo en equipos de Europa y LATAM.',
-      'Mi diferencial: entiendo el problema de calidad <strong>desde la arquitectura</strong>, no solo desde el testing. Combino base técnica sólida con capacidad real de liderazgo, mentoring y traducción de necesidades de negocio en soluciones accionables.',
+      'Soy un <strong>Software Test Engineer in Development (STED)</strong>: un <strong>engineer que codea sus propios frameworks de testing desde cero</strong>, no un usuario de herramientas ajenas. Mi terreno natural es Playwright (fixtures, custom reporters, API testing), TypeScript y la arquitectura de la suite de pruebas como si fuese código de producción.',
+      'Soy un <strong>tester que entiende los pipelines CI/CD end-to-end</strong> — desde el commit hasta el deploy en producción — y un <strong>QA que habla el idioma de los developers</strong>: leo el código que pruebo, participo en code reviews y traduzco riesgo técnico a lenguaje de negocio para los stakeholders.',
+      'Mi diferencial: <strong>combino expertise en testing con tooling de IA</strong>. Uso agentes para generar test cases, detectar gaps de cobertura y eliminar boilerplate, después de +13 años llevando esa misma disciplina a clientes como BBVA y NTT DATA en Europa y LATAM.',
     ],
   },
   strengths: {
     label: 'Qué me diferencia',
     titlePrefix: 'Mis puntos ',
     titleHighlight: 'fuertes',
-    subtitle: 'No solo escribo código. Construyo sistemas, lidero equipos y genero impacto.',
+    subtitle: 'No solo escribo tests. Codeo mis propios frameworks, leo el código que pruebo y hablo el idioma de los devs.',
     items: [
-      { icon: '🧠', title: 'Pensamiento sistémico', desc: 'Capacidad para ver el panorama completo y diseñar soluciones escalables que resisten el paso del tiempo.' },
-      { icon: '⚡', title: 'Velocidad de ejecución', desc: 'De la idea al código en producción con criterio, sin sacrificar calidad por velocidad.' },
-      { icon: '🤝', title: 'Comunicación técnica', desc: 'Traduzco conceptos complejos a lenguaje claro, tanto para equipos técnicos como para stakeholders.' },
-      { icon: '🔁', title: 'Aprendizaje continuo', desc: 'Más de 20 años en la industria con mentalidad de principiante. Siempre actualizándome.' },
-      { icon: '🎯', title: 'Orientación a resultados', desc: 'Foco en el impacto real del producto, no solo en el código perfectamente elegante.' },
-      { icon: '🛡️', title: 'Código defensivo', desc: 'Escribo software robusto, seguro y mantenible. La deuda técnica me quita el sueño.' },
+      { icon: '🧠', title: 'Pensamiento sistémico', desc: 'Capacidad para ver el panorama completo y diseñar suites de pruebas escalables que resisten el paso del tiempo.' },
+      { icon: '⚡', title: 'Velocidad de ejecución', desc: 'De la idea al test en CI con criterio, sin sacrificar calidad por velocidad.' },
+      { icon: '📖', title: 'Reading production code', desc: 'Leer y entender el código que pruebas te hace 5x más efectivo. No testeo cajas negras: navego el repo y diseño tests con contexto real.' },
+      { icon: '🤖', title: 'AI-assisted testing', desc: 'Uso IA agéntica para generar test cases, detectar gaps de cobertura y escribir boilerplate en minutos, no horas.' },
+      { icon: '🗣️', title: 'Habla Dev y Negocio', desc: 'Participo en code reviews como un dev más y traduzco riesgo técnico a lenguaje de stakeholders.' },
+      { icon: '🛡️', title: 'Código defensivo', desc: 'Escribo frameworks robustos, deterministas y mantenibles. Los tests flaky me quitan el sueño.' },
     ],
   },
   skills: {
     label: 'Toolkit',
     titlePrefix: 'Stack ',
     titleHighlight: 'técnico',
-    subtitle: 'Hover cada porción para ver el detalle de cada tecnología.',
-    totalLabel: 'Full Stack',
+    subtitle: 'El stack de un STED: Playwright y TypeScript en el centro, IA y CI/CD alrededor. Hover cada porción para el detalle.',
+    totalLabel: 'Test Engineer',
     techNames: {
       typescript: 'TypeScript & Node.js',
       ai: 'AI / LLM',
@@ -83,6 +83,7 @@ export const es = {
       python: 'Python',
       cloud: 'Cloud & Infra',
       data: 'Data Management',
+      qaAutomation: 'QA Automation · Playwright',
     },
     categories: {
       Frontend: 'Frontend',
@@ -91,6 +92,7 @@ export const es = {
       Backend: 'Backend',
       DevOps: 'DevOps',
       Data: 'Data',
+      Testing: 'Testing',
     },
   },
   projects: {
@@ -227,15 +229,15 @@ export const es = {
       website: 'carlosledesma.dev · Madrid, España',
     },
     availabilityBody:
-      'Abierto a nuevas oportunidades como Tech Lead / Solution Architect en entornos de QA + IA, modernización de legacy y plataformas Full Stack.',
+      'Abierto a roles como STED, QA Architect, Test Framework Lead y plataformas de QA asistido por IA. También Tech Lead en entornos QA + IA y modernización de legacy.',
     profile: {
       name: 'Carlos Ledesma Castejón',
-      title: 'Tech Lead · Arquitecto de Soluciones de Calidad & IA · Full Stack Senior',
+      title: 'Software Test Engineer in Development (STED) · QA & AI Architect · Tech Lead',
       location: 'Madrid, España',
       summary: [
-        'Tech Lead y Arquitecto de Software con +13 años de experiencia en el ciclo completo del software (SDLC), especializado en la intersección entre Ingeniería de Calidad, Automatización e Inteligencia Artificial Generativa.',
-        'He liderado la modernización de ecosistemas legado —incluyendo migraciones de COBOL a tecnologías modernas— y el diseño de Agentes IA aplicados a calidad en grandes corporaciones bancarias y tecnológicas, con impacto directo en equipos de Europa y LATAM.',
-        'Mi diferencial: entiendo el problema de calidad desde la arquitectura, no solo desde el testing.',
+        'Software Test Engineer in Development (STED) con +13 años en el SDLC: un engineer que codea sus propios frameworks de testing desde cero (Playwright, fixtures, custom reporters, API testing) y entiende los pipelines CI/CD end-to-end.',
+        'QA que habla el idioma de los developers: leo el código que pruebo, participo en code reviews y traduzco riesgo técnico a lenguaje de stakeholders. He llevado esta disciplina a clientes como BBVA y NTT DATA en Europa y LATAM.',
+        'Mi diferencial: combino expertise en testing con tooling de IA — agentes para generación de test cases, análisis de gaps de cobertura y boilerplate — sin perder de vista la arquitectura de calidad.',
       ],
     },
     highlights: [
@@ -252,11 +254,11 @@ export const es = {
         period: 'Jun 2024 – Actualidad',
         context: 'Rol estratégico de innovación tecnológica aplicada al ciclo de vida del software en un contexto de transformación digital a gran escala.',
         bullets: [
-          { k: 'Agentes IA para Calidad', v: 'Diseño y desarrollo de agentes autónomos con LLMs orientados a la verificación, validación y análisis de calidad del software, reduciendo la intervención manual en procesos críticos del SDLC.' },
-          { k: 'Test Case Generation', v: 'Desarrollé una plataforma de generación automática de casos de prueba con IA, democratizando el acceso al testing para perfiles no técnicos y acelerando el tiempo de diseño.' },
+          { k: 'Agentes IA para Calidad', v: 'Diseño y desarrollo de agentes autónomos con LLMs orientados a la verificación, validación y análisis de calidad del software, combinando expertise de testing con tooling de IA para reducir la intervención manual en procesos críticos del SDLC.' },
+          { k: 'Test Case Generation', v: 'Desarrollé una plataforma de generación automática de casos de prueba con IA, democratizando el acceso al testing para perfiles no técnicos y eliminando el boilerplate del proceso de diseño.' },
           { k: 'Migración COBOL', v: 'Lidero proyectos de modernización de código legado COBOL con pipelines asistidos por IA para análisis, documentación y traducción a lenguajes mantenibles, reduciendo deuda técnica acumulada durante décadas.' },
           { k: 'Transferencia de conocimiento', v: 'Imparto cursos y talleres técnicos y lidero iniciativas de adopción de IA para equipos de calidad en Europa y LATAM, asegurando una implantación efectiva y sostenible.' },
-          { k: 'Estrategia transversal', v: 'Defino soluciones de análisis de calidad integradas en el SDLC que garantizan mantenibilidad, trazabilidad y eficiencia en el delivery a escala corporativa.' },
+          { k: 'Estrategia transversal', v: 'Defino soluciones de análisis de calidad integradas en pipelines CI/CD end-to-end que garantizan mantenibilidad, trazabilidad y eficiencia en el delivery a escala corporativa.' },
         ],
       },
       {
@@ -266,9 +268,9 @@ export const es = {
         period: 'Feb 2021 – Jun 2024',
         context: 'Liderazgo técnico en la evolución y estandarización de frameworks de automatización para uno de los mayores bancos de Europa.',
         bullets: [
-          { k: 'Arquitectura de frameworks', v: 'Diseñé e implementé soluciones de automatización con Selenium, Cucumber y WebdriverIO, aumentando la cobertura en flujos críticos de negocio.' },
-          { k: 'Integración SDLC', v: 'Desarrollé herramientas de control de calidad embebidas en el ciclo de vida, habilitando detección temprana de errores y reduciendo el coste del bug fixing.' },
-          { k: 'Legibilidad y adopción', v: 'Implementé capas de abstracción y reporting que hicieron las pruebas automatizadas comprensibles para stakeholders no técnicos, acelerando la aprobación de releases.' },
+          { k: 'Frameworks desde cero', v: 'Diseñé e implementé soluciones de automatización con Selenium, Cucumber y WebdriverIO codeando los frameworks desde cero — fixtures, custom reporters, helpers de API testing — y aumentando la cobertura en flujos críticos de negocio.' },
+          { k: 'Pipelines CI/CD end-to-end', v: 'Integré las suites en pipelines CI/CD end-to-end (GitLab CI, Jenkins) habilitando detección temprana de errores y reduciendo el coste del bug fixing.' },
+          { k: 'QA que habla Dev', v: 'Participé en code reviews leyendo el código que probaba e implementé capas de abstracción y reporting que hicieron las pruebas comprensibles para stakeholders no técnicos.' },
         ],
       },
       {
@@ -309,7 +311,7 @@ export const es = {
       { group: 'Liderazgo & Estrategia', items: ['Arquitectura de Software', 'Mentoring técnico', 'Modernización de Legado', 'Agile / Scrum', 'Gestión de Stakeholders'] },
       { group: 'IA & Modernización', items: ['Agentes IA', 'GenAI aplicada a código', 'LLMs (OpenAI, Claude)', 'Test Case Generation', 'Análisis estático', 'Migración COBOL'] },
       { group: 'Lenguajes', items: ['JavaScript / TypeScript (Experto)', 'Python', 'Bash', 'PowerShell', 'COBOL (análisis y migración)'] },
-      { group: 'QA & Testing', items: ['Selenium', 'Cucumber', 'WebdriverIO', 'Cypress', 'Jest', 'Playwright', 'ESLint'] },
+      { group: 'QA & Testing', items: ['Playwright (fixtures, custom reporters, API testing)', 'Selenium', 'Cucumber', 'WebdriverIO', 'Cypress', 'Jest', 'AI-assisted test generation', 'ESLint'] },
       { group: 'Cloud & DevOps', items: ['Azure (WebApps, Functions, LLM Foundry)', 'GCP', 'AWS (EC2, RDS, S3, Device Farm)', 'Docker', 'Jenkins', 'GitLab CI', 'Linux', 'Git'] },
       { group: 'Formación & Adopción', items: ['Diseño de cursos técnicos', 'Talleres de IA', 'Onboarding de equipos', 'Evangelización tecnológica'] },
     ],

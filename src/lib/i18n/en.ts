@@ -14,12 +14,12 @@ type Widen<T> = T extends string
 
 export const en: Widen<typeof es> = {
   meta: {
-    homeTitle: 'Carlos Ledesma · Software Engineer',
+    homeTitle: 'Carlos Ledesma · STED — Software Test Engineer in Development',
     homeDescription:
-      'Carlos Ledesma — Tech Lead and QA & AI Solutions Architect. Building elegant solutions with modern web technologies.',
-    cvTitle: 'Resume · Carlos Ledesma — QA & AI Tech Lead',
+      'Carlos Ledesma — STED, a QA Engineer who codes their own test frameworks, understands CI/CD pipelines end-to-end and combines testing with agentic AI tooling.',
+    cvTitle: 'Resume · Carlos Ledesma — STED · QA & AI Architect',
     cvDescription:
-      'Printable resume of Carlos Ledesma — Tech Lead, QA & AI Solutions Architect, Senior Full Stack.',
+      'Printable resume of Carlos Ledesma — Software Test Engineer in Development (STED), test framework architect and AI-assisted QA lead.',
     blogPostFallbackTitle: 'Blog · Carlos Ledesma',
   },
   nav: {
@@ -37,9 +37,9 @@ export const en: Widen<typeof es> = {
   },
   hero: {
     badge: 'Available for new projects',
-    subtitleLine1: 'Tech Lead · QA & AI Architect · Senior Full Stack',
+    subtitleLine1: 'STED · A tester who codes their own frameworks · QA + AI',
     subtitleLine2:
-      '+13 years turning engineering into real impact — from banking to generative AI.',
+      '+13 years as a QA engineer who understands CI/CD end-to-end, reads the code being tested and speaks the language of developers.',
     viewProjects: 'See projects',
     letsTalk: "Let's talk",
     printableCv: 'Printable resume',
@@ -51,44 +51,44 @@ export const en: Widen<typeof es> = {
       uptimeLabel: 'Production uptime',
     },
     roles: [
-      'Tech Lead & Solution Architect',
-      'QA & AI Strategy Expert',
-      'Full Stack Senior Developer',
-      'GenAI Applied to Software',
-      'COBOL Modernization Lead',
+      'Software Test Engineer in Development (STED)',
+      'Test Framework Architect (Playwright)',
+      'CI/CD-fluent QA Engineer',
+      'AI-Assisted Testing Lead',
+      'QA who speaks the Devs language',
     ],
   },
   about: {
     label: 'About me',
-    titlePrefix: 'Tech Lead at the intersection of ',
-    titleHighlight: 'Quality and AI',
-    tags: ['TypeScript', 'Python', 'AI Agents', 'QA Architecture', 'Cloud', 'COBOL Migration'],
+    titlePrefix: 'STED — A tester who codes their own ',
+    titleHighlight: 'frameworks',
+    tags: ['Playwright', 'TypeScript', 'CI/CD', 'AI Testing', 'Framework Design', 'Code Review'],
     paragraphs: [
-      "I'm a Tech Lead and Software Architect with 13+ years across the full software lifecycle (SDLC), specialized at the intersection of <strong>Quality Engineering</strong>, <strong>Automation</strong> and <strong>Generative AI</strong>.",
-      "I've led modernizations of legacy ecosystems — including <strong>COBOL migrations to modern stacks</strong> — and the design of <strong>AI Agents applied to quality</strong> at major banking corporations like BBVA, with direct impact on teams across Europe and LATAM.",
-      'My edge: I understand the quality problem <strong>from the architecture</strong>, not just from testing. I combine solid technical foundations with real leadership, mentoring and the ability to translate business needs into actionable solutions.',
+      "I'm a <strong>Software Test Engineer in Development (STED)</strong>: an <strong>engineer who codes their own test frameworks from scratch</strong>, not a consumer of someone else's tools. My natural ground is Playwright (fixtures, custom reporters, API testing), TypeScript and treating the test suite architecture like production code.",
+      "I'm a <strong>tester who understands CI/CD pipelines end-to-end</strong> — from commit to production deploy — and a <strong>QA professional who speaks the language of developers</strong>: I read the code I'm testing, jump into code reviews and translate technical risk into business language for stakeholders.",
+      "My edge: I <strong>combine testing expertise with AI tooling</strong>. I use agents to generate test cases, surface coverage gaps and kill boilerplate, after +13 years bringing that same discipline to clients like BBVA and NTT DATA across Europe and LATAM.",
     ],
   },
   strengths: {
     label: 'What sets me apart',
     titlePrefix: 'My core ',
     titleHighlight: 'strengths',
-    subtitle: "I don't just write code. I build systems, lead teams and generate impact.",
+    subtitle: "I don't just write tests. I code my own frameworks, read the code I'm testing and speak the developers' language.",
     items: [
-      { icon: '🧠', title: 'Systems thinking', desc: 'The ability to see the full picture and design scalable solutions that stand the test of time.' },
-      { icon: '⚡', title: 'Execution speed', desc: 'From idea to production with judgment, without sacrificing quality for speed.' },
-      { icon: '🤝', title: 'Technical communication', desc: 'I translate complex concepts into clear language, both for technical teams and stakeholders.' },
-      { icon: '🔁', title: 'Continuous learning', desc: 'More than 20 years in the industry with a beginner mindset. Always leveling up.' },
-      { icon: '🎯', title: 'Results oriented', desc: "Focused on the product's real impact, not just on elegantly perfect code." },
-      { icon: '🛡️', title: 'Defensive code', desc: 'I write robust, secure and maintainable software. Tech debt keeps me up at night.' },
+      { icon: '🧠', title: 'Systems thinking', desc: 'The ability to see the full picture and design test suites that scale and stand the test of time.' },
+      { icon: '⚡', title: 'Execution speed', desc: 'From idea to test in CI with judgment, without sacrificing quality for speed.' },
+      { icon: '📖', title: 'Reading production code', desc: "Understanding the codebase you're testing makes you 5x more effective. I don't test black boxes — I navigate the repo and design tests with real context." },
+      { icon: '🤖', title: 'AI-assisted testing', desc: 'I use agentic AI to generate test cases, analyze coverage gaps and write boilerplate in minutes, not hours.' },
+      { icon: '🗣️', title: 'Speaks Dev & Business', desc: 'I jump into code reviews like any other dev and translate technical risk into stakeholder-friendly business language.' },
+      { icon: '🛡️', title: 'Defensive code', desc: 'I write robust, deterministic and maintainable frameworks. Flaky tests keep me up at night.' },
     ],
   },
   skills: {
     label: 'Toolkit',
     titlePrefix: 'Technical ',
     titleHighlight: 'stack',
-    subtitle: 'Hover each slice to see the details of every technology.',
-    totalLabel: 'Full Stack',
+    subtitle: "A STED's stack: Playwright and TypeScript at the core, AI and CI/CD wrapped around them. Hover each slice for details.",
+    totalLabel: 'Test Engineer',
     techNames: {
       typescript: 'TypeScript & Node.js',
       ai: 'AI / LLM',
@@ -97,6 +97,7 @@ export const en: Widen<typeof es> = {
       python: 'Python',
       cloud: 'Cloud & Infra',
       data: 'Data Management',
+      qaAutomation: 'QA Automation · Playwright',
     },
     categories: {
       Frontend: 'Frontend',
@@ -105,6 +106,7 @@ export const en: Widen<typeof es> = {
       Backend: 'Backend',
       DevOps: 'DevOps',
       Data: 'Data',
+      Testing: 'Testing',
     },
   },
   projects: {
@@ -241,15 +243,15 @@ export const en: Widen<typeof es> = {
       website: 'carlosledesma.dev · Madrid, Spain',
     },
     availabilityBody:
-      'Open to new opportunities as Tech Lead / Solution Architect in QA + AI environments, legacy modernization and Full Stack platforms.',
+      'Open to roles as STED, QA Architect, Test Framework Lead and AI-assisted QA platforms. Also Tech Lead in QA + AI environments and legacy modernization.',
     profile: {
       name: 'Carlos Ledesma Castejón',
-      title: 'Tech Lead · QA & AI Solutions Architect · Senior Full Stack',
+      title: 'Software Test Engineer in Development (STED) · QA & AI Architect · Tech Lead',
       location: 'Madrid, Spain',
       summary: [
-        'Tech Lead and Software Architect with 13+ years across the full software lifecycle (SDLC), specialized at the intersection of Quality Engineering, Automation and Generative AI.',
-        "I've led modernizations of legacy ecosystems — including COBOL migrations to modern stacks — and the design of AI Agents applied to quality at major banking and tech corporations, with direct impact on teams across Europe and LATAM.",
-        'My edge: I understand the quality problem from the architecture, not just from testing.',
+        'Software Test Engineer in Development (STED) with 13+ years across the SDLC: an engineer who codes their own test frameworks from scratch (Playwright, fixtures, custom reporters, API testing) and understands CI/CD pipelines end-to-end.',
+        "A QA who speaks the developers' language: I read the code I'm testing, jump into code reviews and translate technical risk into stakeholder language. I've brought this discipline to clients like BBVA and NTT DATA across Europe and LATAM.",
+        'My edge: I combine testing expertise with AI tooling — agents for test case generation, coverage gap analysis and boilerplate — without losing sight of the quality architecture.',
       ],
     },
     highlights: [
@@ -266,11 +268,11 @@ export const en: Widen<typeof es> = {
         period: 'Jun 2024 – Present',
         context: 'Strategic role driving tech innovation across the software lifecycle in a large-scale digital transformation context.',
         bullets: [
-          { k: 'AI Agents for Quality', v: 'Design and development of autonomous LLM-powered agents for software verification, validation and quality analysis, reducing manual intervention in critical SDLC processes.' },
-          { k: 'Test Case Generation', v: 'Built an AI platform for automatic test case generation, democratizing access to testing for non-technical profiles and speeding up design time.' },
+          { k: 'AI Agents for Quality', v: 'Design and development of autonomous LLM-powered agents for software verification, validation and quality analysis, combining testing expertise with AI tooling to reduce manual intervention in critical SDLC processes.' },
+          { k: 'Test Case Generation', v: 'Built an AI platform for automatic test case generation, democratizing access to testing for non-technical profiles and killing the boilerplate in the design process.' },
           { k: 'COBOL Migration', v: 'Leading legacy COBOL modernization projects with AI-assisted pipelines for analysis, documentation and translation to maintainable languages, reducing tech debt accumulated over decades.' },
           { k: 'Knowledge transfer', v: 'Delivering technical courses and workshops and leading AI adoption initiatives for quality teams across Europe and LATAM, ensuring effective and sustainable rollout.' },
-          { k: 'Cross-cutting strategy', v: 'Defining quality analysis solutions embedded in the SDLC that guarantee maintainability, traceability and delivery efficiency at corporate scale.' },
+          { k: 'Cross-cutting strategy', v: 'Defining quality analysis solutions embedded in end-to-end CI/CD pipelines that guarantee maintainability, traceability and delivery efficiency at corporate scale.' },
         ],
       },
       {
@@ -280,9 +282,9 @@ export const en: Widen<typeof es> = {
         period: 'Feb 2021 – Jun 2024',
         context: 'Technical leadership on the evolution and standardization of automation frameworks for one of the largest banks in Europe.',
         bullets: [
-          { k: 'Framework architecture', v: 'Designed and implemented automation solutions with Selenium, Cucumber and WebdriverIO, increasing coverage on critical business flows.' },
-          { k: 'SDLC integration', v: 'Built quality control tools embedded in the lifecycle, enabling early bug detection and reducing the cost of fixing defects.' },
-          { k: 'Readability and adoption', v: 'Added abstraction and reporting layers that made automated tests understandable to non-technical stakeholders, speeding up release approval.' },
+          { k: 'Frameworks from scratch', v: 'Designed and implemented automation solutions with Selenium, Cucumber and WebdriverIO by coding the frameworks from scratch — fixtures, custom reporters, API testing helpers — and increasing coverage on critical business flows.' },
+          { k: 'End-to-end CI/CD pipelines', v: 'Integrated the suites into end-to-end CI/CD pipelines (GitLab CI, Jenkins), enabling early bug detection and reducing the cost of fixing defects.' },
+          { k: 'QA who speaks Dev', v: 'Joined code reviews reading the very code I was testing, and added abstraction and reporting layers that made the tests understandable to non-technical stakeholders.' },
         ],
       },
       {
@@ -323,7 +325,7 @@ export const en: Widen<typeof es> = {
       { group: 'Leadership & Strategy', items: ['Software Architecture', 'Technical mentoring', 'Legacy Modernization', 'Agile / Scrum', 'Stakeholder Management'] },
       { group: 'AI & Modernization', items: ['AI Agents', 'GenAI applied to code', 'LLMs (OpenAI, Claude)', 'Test Case Generation', 'Static analysis', 'COBOL Migration'] },
       { group: 'Languages', items: ['JavaScript / TypeScript (Expert)', 'Python', 'Bash', 'PowerShell', 'COBOL (analysis & migration)'] },
-      { group: 'QA & Testing', items: ['Selenium', 'Cucumber', 'WebdriverIO', 'Cypress', 'Jest', 'Playwright', 'ESLint'] },
+      { group: 'QA & Testing', items: ['Playwright (fixtures, custom reporters, API testing)', 'Selenium', 'Cucumber', 'WebdriverIO', 'Cypress', 'Jest', 'AI-assisted test generation', 'ESLint'] },
       { group: 'Cloud & DevOps', items: ['Azure (WebApps, Functions, LLM Foundry)', 'GCP', 'AWS (EC2, RDS, S3, Device Farm)', 'Docker', 'Jenkins', 'GitLab CI', 'Linux', 'Git'] },
       { group: 'Training & Adoption', items: ['Technical course design', 'AI workshops', 'Team onboarding', 'Tech evangelism'] },
     ],

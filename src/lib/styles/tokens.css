@@ -39,6 +39,10 @@
   --neon-yellow-hi: #FFF07A;
   --neon-yellow-lo: #D4BE00;
 
+  --neon-green:    #10b981;  /* quinary / testing */
+  --neon-green-hi: #34d399;
+  --neon-green-lo: #059669;
+
   /* Signal colors (derived from palette — stay in-family) */
   --signal-success: var(--neon-cyan);
   --signal-warn:    var(--neon-yellow);
@@ -135,6 +139,7 @@
   --glow-violet: 0 0 0 1px rgba(155, 93, 229, 0.4), 0 0 32px rgba(155, 93, 229, 0.35), 0 0 80px rgba(155, 93, 229, 0.18);
   --glow-pink:   0 0 0 1px rgba(241, 91, 181, 0.4), 0 0 32px rgba(241, 91, 181, 0.35), 0 0 80px rgba(241, 91, 181, 0.18);
   --glow-yellow: 0 0 0 1px rgba(254, 228, 64, 0.45), 0 0 32px rgba(254, 228, 64, 0.4), 0 0 80px rgba(254, 228, 64, 0.2);
+  --glow-green:  0 0 0 1px rgba(16, 185, 129, 0.4), 0 0 32px rgba(16, 185, 129, 0.35), 0 0 80px rgba(16, 185, 129, 0.18);
 
   --shadow-inner: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
@@ -186,6 +191,7 @@
   --neon-violet:  #6E3AB8;
   --neon-pink:    #C73A8F;
   --neon-yellow:  #B59E00;
+  --neon-green:   #059669;
 
   --accent:       var(--neon-cyan);
   --accent-2:     var(--neon-violet);

@@ -88,13 +88,14 @@
 
   // ─── Tech stack (bars, no pie) ───────────────────────────────────────────────
   const techStackBase = [
-    { key: "typescript", pct: 25, accent: "cyan", category: "Frontend" },
-    { key: "ai", pct: 20, accent: "violet", category: "AI" },
-    { key: "cloud", pct: 20, accent: "pink", category: "DevOps" },
-    { key: "systemDesign", pct: 13, accent: "violet", category: "Architecture" },
-    { key: "data", pct: 13, accent: "cyan", category: "Data" },
-    { key: "frontend", pct: 5, accent: "pink", category: "Frontend" },
-    { key: "python", pct: 4, accent: "yellow", category: "Backend" },
+    { key: "qaAutomation", pct: 22, accent: "green",  category: "Testing" },
+    { key: "typescript",   pct: 20, accent: "cyan",   category: "Frontend" },
+    { key: "ai",           pct: 18, accent: "violet", category: "AI" },
+    { key: "cloud",        pct: 15, accent: "pink",   category: "DevOps" },
+    { key: "systemDesign", pct: 10, accent: "violet", category: "Architecture" },
+    { key: "data",         pct:  8, accent: "cyan",   category: "Data" },
+    { key: "frontend",     pct:  5, accent: "pink",   category: "Frontend" },
+    { key: "python",       pct:  2, accent: "yellow", category: "Backend" },
   ] as const;
 
   const techStack = $derived(
@@ -622,7 +623,7 @@
     <div class="extra-skills fade-in">
       <span class="eyebrow"><span class="eyebrow-rule"></span>Also in the toolkit</span>
       <div class="extra-tags">
-        {#each ["Git", "CI/CD", "WebSockets", "REST", "GraphQL", "gRPC", "Rust", "Go", "Linux", "Vercel", "Cloudflare", "Vitest", "Playwright", "Figma", "Agile/Scrum"] as tag}
+        {#each ["Playwright", "Git", "CI/CD", "WebSockets", "REST", "GraphQL", "gRPC", "Rust", "Go", "Linux", "Vercel", "Cloudflare", "Vitest", "Figma", "Agile/Scrum"] as tag}
           <span class="extra-tag mono">{tag}</span>
         {/each}
       </div>
@@ -1600,6 +1601,7 @@
   .skill-card[data-accent="violet"] { --accent-on: var(--neon-violet); --accent-glow: var(--glow-violet); }
   .skill-card[data-accent="pink"]   { --accent-on: var(--neon-pink);   --accent-glow: var(--glow-pink);   }
   .skill-card[data-accent="yellow"] { --accent-on: var(--neon-yellow); --accent-glow: var(--glow-yellow); }
+  .skill-card[data-accent="green"]  { --accent-on: var(--neon-green);  --accent-glow: var(--glow-green);  }
   .skill-card:hover {
     transform: translateY(-3px);
     border-color: transparent;
