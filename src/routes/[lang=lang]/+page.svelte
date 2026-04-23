@@ -91,8 +91,16 @@
   // ─── Visual-only tech stack config (colors, percentages, icons) ───────────────
   const techStackBase = [
     {
+      key: "qaAutomation",
+      pct: 22,
+      color: "#10b981",
+      glow: "rgba(16,185,129,0.5)",
+      icon: "🎭",
+      category: "Testing",
+    },
+    {
       key: "typescript",
-      pct: 25,
+      pct: 20,
       color: "#6366f1",
       glow: "rgba(99,102,241,0.5)",
       icon: "⚡",
@@ -100,19 +108,35 @@
     },
     {
       key: "ai",
-      pct: 20,
+      pct: 18,
       color: "#8b5cf6",
       glow: "rgba(139,92,246,0.5)",
       icon: "🤖",
       category: "AI",
     },
     {
+      key: "cloud",
+      pct: 15,
+      color: "#ec4899",
+      glow: "rgba(236,72,153,0.5)",
+      icon: "🐳",
+      category: "DevOps",
+    },
+    {
       key: "systemDesign",
-      pct: 13,
+      pct: 10,
       color: "#f59e0b",
       glow: "rgba(245,158,11,0.5)",
       icon: "🏗️",
       category: "Architecture",
+    },
+    {
+      key: "data",
+      pct: 7,
+      color: "#64748b",
+      glow: "rgba(100,116,139,0.5)",
+      icon: "🗄️",
+      category: "Data",
     },
     {
       key: "frontend",
@@ -124,27 +148,11 @@
     },
     {
       key: "python",
-      pct: 4,
+      pct: 3,
       color: "#3b82f6",
       glow: "rgba(59,130,246,0.5)",
       icon: "🐍",
       category: "Backend",
-    },
-    {
-      key: "cloud",
-      pct: 20,
-      color: "#ec4899",
-      glow: "rgba(236,72,153,0.5)",
-      icon: "🐳",
-      category: "DevOps",
-    },
-    {
-      key: "data",
-      pct: 13,
-      color: "#64748b",
-      glow: "rgba(100,116,139,0.5)",
-      icon: "🗄️",
-      category: "Data",
     },
   ] as const;
 
@@ -803,7 +811,7 @@
     </div>
 
     <div class="extra-skills fade-in">
-      {#each ["Git", "CI/CD", "WebSockets", "REST", "GraphQL", "gRPC", "Rust", "Go", "Linux", "Cloud", "Vercel", "Cloudflare", "Vitest", "Playwright", "Figma", "Agile/Scrum"] as tag}
+      {#each ["Playwright", "Git", "CI/CD", "WebSockets", "REST", "GraphQL", "gRPC", "Rust", "Go", "Linux", "Cloud", "Vercel", "Cloudflare", "Vitest", "Figma", "Agile/Scrum"] as tag}
         <span class="extra-tag">{tag}</span>
       {/each}
     </div>
