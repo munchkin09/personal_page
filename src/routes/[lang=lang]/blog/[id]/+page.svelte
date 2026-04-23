@@ -12,6 +12,16 @@
   let loading = $state(true);
   let notFound = $state(false);
 
+  // ── Reading progress ────────────────────────────────────────────────────────
+  let scrollProgress = $state(0);
+
+  // ── Reading time ────────────────────────────────────────────────────────────
+  const readingTime = $derived(() => {
+    if (!post) return 0;
+    const words = post.content.trim().split(/\s+/).length;
+    return Math.max(1, Math.ceil(words / 200));
+  });
+
   const WORKER_URL = import.meta.env.VITE_BLOG_WORKER_URL ?? '';
 
   function renderMarkdown(raw: string): string {
@@ -39,6 +49,17 @@
       loading = false;
     }
   });
+
+  $effect(() => {
+    const onScroll = () => {
+      const doc = document.documentElement;
+      const scrolled = doc.scrollTop || document.body.scrollTop;
+      const total = doc.scrollHeight - doc.clientHeight;
+      scrollProgress = total > 0 ? Math.min(100, (scrolled / total) * 100) : 0;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  });
 </script>
 
 <svelte:head>
@@ -46,6 +67,11 @@
 </svelte:head>
 
 <div class="page">
+  <!-- Reading progress bar -->
+  <div class="read-progress" role="progressbar" aria-valuenow={scrollProgress} aria-valuemin={0} aria-valuemax={100} aria-label="Reading progress">
+    <div class="read-progress-bar" style="width: {scrollProgress}%"></div>
+  </div>
+
   <div class="bg-blob blob-cyan" aria-hidden="true"></div>
   <div class="bg-blob blob-violet" aria-hidden="true"></div>
 
@@ -83,6 +109,7 @@
           </p>
           <div class="post-meta">
             <time class="post-date mono" datetime={post.date}>{formatDate(post.date)}</time>
+            <span class="read-time mono">{readingTime()} {data.lang === 'es' ? 'min de lectura' : 'min read'}</span>
           </div>
           <h1 class="post-title">{post.title}</h1>
         </header>
@@ -98,6 +125,24 @@
 </div>
 
 <style>
+  /* ── Reading progress bar ────────────────────────────────────────────── */
+  .read-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--border);
+    z-index: calc(var(--z-sticky) + 1);
+  }
+  .read-progress-bar {
+    height: 100%;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 8px var(--neon-cyan);
+    transition: width 80ms linear;
+    transform-origin: left;
+  }
+
   /* Dominant neon for this view: CYAN */
   .page {
     position: relative;
@@ -297,6 +342,15 @@
     border: 1px solid rgba(0, 245, 212, 0.25);
     border-radius: var(--radius-xs);
     background: rgba(0, 245, 212, 0.06);
+  }
+
+  .read-time {
+    font-size: var(--fs-caption);
+    color: var(--fg-subtle);
+    padding: 0.25rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xs);
+    background: transparent;
   }
 
   .post-title {
