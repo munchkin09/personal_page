@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { marked } from 'marked';
   import { dictionaries, localeDateFormat, type Locale } from '$lib/i18n';
 
   let { data }: { data: { id: string; lang: Locale } } = $props();
@@ -14,14 +15,7 @@
   const WORKER_URL = import.meta.env.VITE_BLOG_WORKER_URL ?? '';
 
   function renderMarkdown(raw: string): string {
-    return raw
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.+?)\*/g, '<em>$1</em>')
-      .replace(/`(.+?)`/g, '<code>$1</code>')
-      .replace(/\[(.+?)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
-      .replace(/\n\n/g, '</p><p>')
-      .replace(/\n/g, '<br/>');
+    return marked.parse(raw) as string;
   }
 
   function formatDate(iso: string): string {
@@ -93,7 +87,7 @@
           <h1 class="post-title">{post.title}</h1>
         </header>
         <div class="post-body">
-          <p>{@html renderMarkdown(post.content)}</p>
+          {@html renderMarkdown(post.content)}
         </div>
         <footer class="post-footer">
           <a href="/{data.lang}#blog" class="btn-back">{t.notFoundBack}</a>
@@ -349,6 +343,55 @@
   .post-body :global(p:last-child) { margin-bottom: 0; }
   .post-body :global(strong) { color: var(--fg); font-weight: 600; }
   .post-body :global(em) { color: var(--neon-cyan-hi); font-style: italic; }
+  .post-body :global(del) { opacity: 0.5; text-decoration: line-through; }
+
+  /* Headings */
+  .post-body :global(h1),
+  .post-body :global(h2),
+  .post-body :global(h3),
+  .post-body :global(h4) {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: var(--lh-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--fg);
+    margin: 1.8em 0 0.6em;
+  }
+  .post-body :global(h1) { font-size: clamp(1.5rem, 3vw, 2rem); }
+  .post-body :global(h2) {
+    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+    padding-bottom: 0.4em;
+    border-bottom: 1px solid var(--border);
+  }
+  .post-body :global(h3) { font-size: 1.1rem; color: var(--fg-muted); }
+  .post-body :global(h4) { font-size: 1rem; color: var(--fg-subtle); text-transform: uppercase; letter-spacing: var(--tracking-eyebrow); font-family: var(--font-mono); }
+
+  /* Lists */
+  .post-body :global(ul),
+  .post-body :global(ol) {
+    margin: 0 0 1.25em 1.5em;
+    padding: 0;
+    color: var(--fg-muted);
+  }
+  .post-body :global(li) { margin-bottom: 0.4em; }
+  .post-body :global(ul li)::marker { color: var(--neon-cyan); }
+  .post-body :global(ol li)::marker { color: var(--neon-cyan); font-family: var(--font-mono); font-size: 0.85em; }
+  .post-body :global(li > ul),
+  .post-body :global(li > ol) { margin-top: 0.4em; margin-bottom: 0; }
+
+  /* Blockquote */
+  .post-body :global(blockquote) {
+    margin: 1.5em 0;
+    padding: var(--space-4) var(--space-5);
+    border-left: 3px solid var(--neon-violet);
+    background: rgba(155, 93, 229, 0.06);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    color: var(--fg-muted);
+    font-style: italic;
+  }
+  .post-body :global(blockquote p) { margin: 0; }
+
+  /* Code */
   .post-body :global(code) {
     font-family: var(--font-mono);
     font-size: 0.88em;
@@ -358,6 +401,45 @@
     border-radius: var(--radius-xs);
     color: var(--neon-cyan-hi);
   }
+  .post-body :global(pre) {
+    margin: 1.5em 0;
+    padding: var(--space-5);
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    line-height: 1.7;
+    box-shadow: var(--shadow-inner);
+  }
+  .post-body :global(pre code) {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--fg-muted);
+    font-size: 1em;
+    border-radius: 0;
+  }
+
+  /* Horizontal rule */
+  .post-body :global(hr) {
+    border: none;
+    border-top: 1px solid var(--border-strong);
+    margin: 2em 0;
+    position: relative;
+  }
+
+  /* Images */
+  .post-body :global(img) {
+    max-width: 100%;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    margin: 1em 0;
+    display: block;
+  }
+
+  /* Links */
   .post-body :global(a) {
     color: var(--neon-cyan);
     text-decoration: underline;
