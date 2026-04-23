@@ -86,6 +86,51 @@ export default {
       return new Response(JSON.stringify(posts), { headers: CORS });
     }
 
+    // ── GET /api/rss.xml ──────────────────────────────────────────────────────
+    if (url.pathname === '/api/rss.xml' && request.method === 'GET') {
+      const raw = await env.POSTS.get('posts');
+      const posts: Post[] = raw ? JSON.parse(raw) : [];
+
+      const SITE = 'https://carloslc.is-a.dev';
+      const escapeXml = (s: string) =>
+        s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+
+      const items = posts.map(p => {
+        const slug = p.slug ?? p.id;
+        const link = `${SITE}/es/blog/${p.id}`;
+        const pubDate = new Date(p.date).toUTCString();
+        const desc = p.description ? escapeXml(p.description) : escapeXml(p.content.slice(0, 200).replace(/[#*`_[\]]/g, '') + '…');
+        return `    <item>
+      <title>${escapeXml(p.title)}</title>
+      <link>${link}</link>
+      <guid isPermaLink="true">${link}</guid>
+      <pubDate>${pubDate}</pubDate>
+      <description>${desc}</description>${p.tags?.length ? `\n      <category>${p.tags.map(escapeXml).join('</category>\n      <category>')}</category>` : ''}
+    </item>`;
+      }).join('\n');
+
+      const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Carlos Ledesma · Blog</title>
+    <link>${SITE}/es</link>
+    <description>Ideas, reflexiones y aprendizajes del día a día sobre QA, IA y desarrollo.</description>
+    <language>es</language>
+    <atom:link href="${SITE}/api/rss.xml" rel="self" type="application/rss+xml"/>
+    <lastBuildDate>${posts.length ? new Date(posts[0].date).toUTCString() : new Date().toUTCString()}</lastBuildDate>
+${items}
+  </channel>
+</rss>`;
+
+      return new Response(xml, {
+        headers: {
+          'Content-Type': 'application/rss+xml; charset=utf-8',
+          'Access-Control-Allow-Origin': '*',
+          'Cache-Control': 'public, max-age=600',
+        },
+      });
+    }
+
     // ── POST /telegram  (webhook de Telegram) ─────────────────────────────────
     if (url.pathname === '/telegram' && request.method === 'POST') {
       // Verificar el secreto en el query string
