@@ -10,6 +10,59 @@ interface Post {
   title: string;
   content: string;
   date: string;
+  tags?: string[];
+  slug?: string;
+  description?: string;
+}
+
+interface FrontMatter {
+  title?: string;
+  date?: string;
+  tags?: string[];
+  slug?: string;
+  description?: string;
+}
+
+function parseFrontMatter(raw: string): { fm: FrontMatter; body: string } {
+  const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
+  if (!match) return { fm: {}, body: raw };
+
+  const lines = match[1].split('\n');
+  const body = match[2].trim();
+  const fm: FrontMatter = {};
+
+  let i = 0;
+  while (i < lines.length) {
+    const colonIdx = lines[i].indexOf(':');
+    if (colonIdx === -1) { i++; continue; }
+
+    const key = lines[i].slice(0, colonIdx).trim();
+    const value = lines[i].slice(colonIdx + 1).trim();
+
+    // multiline list (tags:\n  - foo\n  - bar)
+    if (!value && i + 1 < lines.length && lines[i + 1].trimStart().startsWith('- ')) {
+      const items: string[] = [];
+      i++;
+      while (i < lines.length && lines[i].trimStart().startsWith('- ')) {
+        items.push(lines[i].trimStart().slice(2).trim().replace(/^['"]|['"]$/g, ''));
+        i++;
+      }
+      if (key === 'tags') fm.tags = items;
+      continue;
+    }
+
+    const clean = value.replace(/^['"]|['"]$/g, '');
+    if (key === 'title') fm.title = clean;
+    else if (key === 'date') fm.date = clean;
+    else if (key === 'slug') fm.slug = clean;
+    else if (key === 'description') fm.description = clean;
+    else if (key === 'tags' && value.startsWith('[') && value.endsWith(']')) {
+      fm.tags = value.slice(1, -1).split(',').map(t => t.trim().replace(/^['"]|['"]$/g, '')).filter(Boolean);
+    }
+    i++;
+  }
+
+  return { fm, body };
 }
 
 const CORS = {
@@ -128,9 +181,11 @@ export default {
         postText = (await fileRes.text()).trim();
       }
 
-      const lines = postText.split('\n');
-      const title = lines[0].replace(/^#+\s*/, '').trim();
-      const content = lines.slice(1).join('\n').trim();
+      const { fm, body: mdBody } = parseFrontMatter(postText);
+
+      const bodyLines = mdBody.split('\n');
+      const title = fm.title ?? bodyLines[0].replace(/^#+\s*/, '').trim();
+      const content = fm.title ? mdBody.trim() : bodyLines.slice(1).join('\n').trim();
 
       if (!title || !content) {
         await telegram(env.TELEGRAM_TOKEN, chatId,
@@ -139,6 +194,11 @@ export default {
         return new Response('ok');
       }
 
+      const parsedDate = fm.date ? new Date(fm.date) : null;
+      const date = parsedDate && !isNaN(parsedDate.getTime())
+        ? parsedDate.toISOString()
+        : new Date().toISOString();
+
       const raw = await env.POSTS.get('posts');
       const posts: Post[] = raw ? JSON.parse(raw) : [];
 
@@ -146,7 +206,10 @@ export default {
         id: Date.now().toString(36),
         title,
         content,
-        date: new Date().toISOString(),
+        date,
+        ...(fm.tags?.length && { tags: fm.tags }),
+        ...(fm.slug && { slug: fm.slug }),
+        ...(fm.description && { description: fm.description }),
       };
 
       posts.unshift(post);
