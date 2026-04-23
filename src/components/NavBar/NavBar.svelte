@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
   import { dictionaries, rememberLocale, swapLocaleInPath, SUPPORTED_LOCALES, type Locale } from '$lib/i18n';
-  import { activeSection } from '$lib/stores';
+  import { activeSection, theme } from '$lib/stores';
   import { magnetic } from '$lib/actions';
 
   let { lang }: { lang: Locale } = $props();
@@ -93,6 +93,21 @@
         {t.cvLabel}
       </a>
 
+      <button
+        type="button"
+        class="theme-toggle"
+        onclick={() => theme.update(t => t === 'dark' ? 'light' : 'dark')}
+        aria-label={$theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+      >
+        {#if $theme === 'dark'}
+          <!-- sun -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        {:else}
+          <!-- moon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        {/if}
+      </button>
+
       <a href="mailto:{CONTACT_EMAIL}" class="nav-cta" use:magnetic onclick={() => (mobileMenuOpen = false)}>
         {t.ctaContact} <span class="arrow">→</span>
       </a>
@@ -181,6 +196,26 @@
   }
 
   .nav-actions { display: flex; align-items: center; gap: 8px; }
+
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    color: var(--fg-muted);
+    cursor: pointer;
+    transition:
+      color var(--dur-base) var(--ease-out-quart),
+      border-color var(--dur-base) var(--ease-out-quart),
+      background var(--dur-base) var(--ease-out-quart);
+  }
+
+  .theme-toggle :global(svg) { width: 14px; height: 14px; }
+  .theme-toggle:hover { color: var(--neon-yellow); border-color: var(--neon-yellow); background: rgba(254, 228, 64, 0.06); }
 
   .lang-switch {
     display: inline-flex;
