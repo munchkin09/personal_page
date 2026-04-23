@@ -651,7 +651,7 @@
      ═══════════════════════════════════════════════════════════════ */
   @page {
     size: A4;
-    margin: 12mm 12mm 12mm 12mm;
+    margin: 10mm 12mm 10mm 12mm;
   }
   @media print {
     :global(html), :global(body) {
@@ -670,7 +670,8 @@
       border: none;
       border-radius: 0;
       box-shadow: none;
-      font-size: 9.8pt;
+      font-size: 9pt;
+      line-height: 1.45;
     }
     .sheet::before { display: none; }
 
@@ -741,9 +742,45 @@
     }
 
     a { color: inherit; text-decoration: none; }
-    .job, .skill-group, .callout { break-inside: avoid; page-break-inside: avoid; }
+
+    /* ── Grid → float layout para evitar espacios en blanco entre páginas ── */
+    .grid {
+      display: block;
+      overflow: hidden;
+    }
+    .col-side {
+      float: right;
+      width: 31%;
+      margin-left: 1.6rem;
+    }
+    .col-main {
+      float: left;
+      width: calc(69% - 1.6rem);
+    }
+    .foot {
+      clear: both;
+    }
+
+    /* ── Romper dentro de trabajos largos está permitido ── */
+    .job { break-inside: auto; page-break-inside: auto; }
+    .job-head { break-inside: avoid; page-break-inside: avoid; }
+
+    /* ── Elementos pequeños que no deben partirse ── */
+    .skill-group, .callout { break-inside: avoid; page-break-inside: avoid; }
     h2 { break-after: avoid; page-break-after: avoid; }
+    h3 { break-after: avoid; page-break-after: avoid; }
     .highlights { break-inside: avoid; page-break-inside: avoid; }
+
+    /* ── Huérfanas y viudas ── */
+    .lead { orphans: 3; widows: 3; }
+    .bullets li { orphans: 2; widows: 2; }
+    .context { orphans: 2; widows: 2; }
+
+    /* ── Reducir espaciado en print para aprovechar mejor la hoja ── */
+    .col-main section + section,
+    .col-side section + section { margin-top: 0.9rem; }
+    .job { margin-bottom: 0.85rem; }
+    .highlights { margin-bottom: 0.9rem; }
 
     * {
       -webkit-print-color-adjust: exact !important;
