@@ -8,5 +8,8 @@ export default {
     adapter: adapter({
       fallback: 'index.html', // SPA mode: Cloudflare Pages sirve index.html para rutas no encontradas
     }),
+    alias: {
+      $components: 'src/components',
+    },
   },
 };
