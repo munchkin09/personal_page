@@ -92,7 +92,7 @@
     { key: "ai", pct: 66, accent: "violet", category: "AI" },
     { key: "cloud", pct: 70, accent: "pink", category: "DevOps" },
     { key: "systemDesign", pct: 64, accent: "violet", category: "Architecture" },
-    { key: "data", pct: 51, accent: "cyan", category: "Data" },
+    { key: "qaAutomation", pct: 51, accent: "cyan", category: "Testing" },
     { key: "frontend", pct: 43, accent: "pink", category: "Frontend" },
     { key: "python", pct: 30, accent: "yellow", category: "Backend" },
   ] as const;
@@ -1675,36 +1675,6 @@
     margin: 0;
   }
 
-  /* ══ SKILLS ══ */
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-4);
-    margin-bottom: var(--space-8);
-  }
-  @media (max-width: 960px) { .skills-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 560px) { .skills-grid { grid-template-columns: 1fr; } }
-  .skill-card {
-    padding: var(--space-5);
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    transition:
-      transform var(--dur-base) var(--ease-out-quart),
-      border-color var(--dur-base) var(--ease-out-quart),
-      box-shadow var(--dur-base) var(--ease-out-quart);
-  }
-  .skill-card[data-accent="cyan"]   { --accent-on: var(--neon-cyan);   --accent-glow: var(--glow-cyan);   }
-  .skill-card[data-accent="violet"] { --accent-on: var(--neon-violet); --accent-glow: var(--glow-violet); }
-  .skill-card[data-accent="pink"]   { --accent-on: var(--neon-pink);   --accent-glow: var(--glow-pink);   }
-  .skill-card[data-accent="yellow"] { --accent-on: var(--neon-yellow); --accent-glow: var(--glow-yellow); }
-  .skill-card[data-accent="green"]  { --accent-on: var(--neon-green);  --accent-glow: var(--glow-green);  }
-  .skill-card:hover {
-    transform: translateY(-3px);
-    border-color: transparent;
-    box-shadow: var(--shadow-md), var(--accent-glow);
-  }
-  .skill-row {
   /* ══ SKILLS — polar radar chart ══ */
   .radar-layout {
     display: flex;
