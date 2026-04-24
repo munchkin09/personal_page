@@ -24,7 +24,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://carloslc.is-a.dev/{data.lang}" />
   <meta property="og:image" content="https://picsum.photos/seed/munchkin/1200/630" />
-  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={t.homeTitle} />
   <meta name="twitter:description" content={t.homeDescription} />
   <meta name="twitter:image" content="https://picsum.photos/seed/munchkin/1200/630" />
