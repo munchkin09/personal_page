@@ -23,7 +23,7 @@ interface FrontMatter {
   description?: string;
 }
 
-function parseFrontMatter(raw: string): { fm: FrontMatter; body: string } {
+export function parseFrontMatter(raw: string): { fm: FrontMatter; body: string } {
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
   if (!match) return { fm: {}, body: raw };
 
