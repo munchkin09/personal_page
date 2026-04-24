@@ -1,8 +1,16 @@
 <script lang="ts">
   import { dictionaries, type Locale } from '$lib/i18n';
+  import BackgroundLayers from '$components/BackgroundLayers/BackgroundLayers.svelte';
+  import Footer from '$components/Footer/Footer.svelte';
+  import { fadeIn, magnetic } from '$lib/actions';
 
   let { data }: { data: { lang: Locale } } = $props();
   const t = $derived(dictionaries[data.lang].now);
+
+  /** Split the title into a prefix + highlighted last word. */
+  const titleWords = $derived(t.title.split(' '));
+  const titlePrefix = $derived(titleWords.slice(0, -1).join(' '));
+  const titleAccent = $derived(titleWords[titleWords.length - 1] ?? t.title);
 </script>
 
 <svelte:head>
@@ -10,35 +18,50 @@
   <meta name="description" content={t.pageDescription} />
 </svelte:head>
 
+<BackgroundLayers />
+
 <div class="page">
-  <div class="bg-blob blob-violet" aria-hidden="true"></div>
-  <div class="bg-blob blob-cyan" aria-hidden="true"></div>
+  <!-- ── Pill nav ─────────────────────────────────────────────── -->
+  <div class="nav-wrap">
+    <nav class="pill-nav" aria-label="Now page navigation">
+      <a href="/{data.lang}" class="back-link" use:magnetic>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="mono">{t.back}</span>
+      </a>
 
-  <nav>
-    <a href="/{data.lang}" class="back-link">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-        <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      {t.back}
-    </a>
-    <a href="/{data.lang}" class="logo" aria-label="Carlos Ledesma">
-      <img src="/design/logo-mark.svg" alt="" class="logo-image" />
-    </a>
-  </nav>
+      <a href="/{data.lang}" class="logo-link" aria-label="Carlos Ledesma — ir al inicio">
+        <img src="/design/logo-mark.svg" alt="" class="logo-img" />
+        <span class="logo-name">Carlos Ledesma</span>
+      </a>
+    </nav>
+  </div>
 
+  <!-- ── Page body ────────────────────────────────────────────── -->
   <main class="container">
-    <header class="page-header">
+
+    <!-- Header -->
+    <header class="page-header" use:fadeIn>
       <p class="eyebrow">
         <span class="eyebrow-rule"></span>
         {t.eyebrow}
+        <span class="pulse-dot" aria-hidden="true"></span>
       </p>
-      <h1 class="page-title">{t.title}</h1>
-      <p class="updated">{t.updated}</p>
+      <h1 class="page-title">
+        {titlePrefix}&nbsp;<span class="gradient-text">{titleAccent}</span>
+      </h1>
+      <p class="updated mono">{t.updated}</p>
     </header>
 
-    <div class="grid">
-      {#each t.sections as section}
-        <section class="card">
+    <!-- Card grid -->
+    <div class="now-grid">
+      {#each t.sections as section, i}
+        <article
+          class="now-card"
+          use:fadeIn
+          style="transition-delay: {i * 80}ms"
+        >
           <div class="card-icon" aria-hidden="true">{section.icon}</div>
           <h2 class="card-title">{section.title}</h2>
           <ul class="card-list">
@@ -46,150 +69,126 @@
               <li>{@html item}</li>
             {/each}
           </ul>
-        </section>
+        </article>
       {/each}
     </div>
 
-    <footer class="page-footer">
-      <p class="footer-note">{t.footerNote}</p>
-      <a href="/{data.lang}" class="btn-back">{t.back}</a>
-    </footer>
+    <!-- CTA strip -->
+    <div class="cta-strip" use:fadeIn>
+      <p class="footer-note mono">{t.footerNote}</p>
+      <a href="/{data.lang}" class="btn btn-secondary" use:magnetic>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        {t.back}
+      </a>
+    </div>
+
   </main>
+
+  <Footer lang={data.lang} />
 </div>
 
 <style>
+  /* ── Shell ────────────────────────────────────────────────────── */
   .page {
     position: relative;
+    z-index: 1;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: var(--bg);
-    color: var(--fg);
-    overflow-x: hidden;
-    isolation: isolate;
   }
 
-  /* ── Blobs ────────────────────────────────────────────────────── */
-  .bg-blob {
-    position: fixed;
-    width: 60vw;
-    height: 60vw;
-    max-width: 720px;
-    max-height: 720px;
-    border-radius: 50%;
-    opacity: 0.15;
-    filter: blur(90px) saturate(1.2);
-    pointer-events: none;
-    z-index: 0;
-    will-change: transform;
-  }
-  .blob-violet {
-    top: -20%;
-    right: -18%;
-    background: radial-gradient(circle, var(--neon-violet), transparent 70%);
-    animation: drift-a 24s cubic-bezier(0.65, 0, 0.35, 1) infinite alternate;
-  }
-  .blob-cyan {
-    bottom: -20%;
-    left: -18%;
-    opacity: 0.1;
-    background: radial-gradient(circle, var(--neon-cyan), transparent 70%);
-    animation: drift-b 30s cubic-bezier(0.65, 0, 0.35, 1) infinite alternate;
-  }
-  @keyframes drift-a {
-    from { transform: translate3d(0, 0, 0) scale(1); }
-    to   { transform: translate3d(-4vw, 3vw, 0) scale(1.12); }
-  }
-  @keyframes drift-b {
-    from { transform: translate3d(0, 0, 0) scale(1); }
-    to   { transform: translate3d(5vw, -3vw, 0) scale(1.1); }
-  }
-
-  /* ── Nav ──────────────────────────────────────────────────────── */
-  nav {
+  /* ── Pill nav ─────────────────────────────────────────────────── */
+  .nav-wrap {
     position: sticky;
-    top: 0;
+    top: 14px;
     z-index: var(--z-sticky);
+    padding: 0 var(--gutter);
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .pill-nav {
+    pointer-events: all;
+    width: 100%;
+    max-width: var(--container-lg);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--space-4) var(--gutter);
-    background: var(--bg-overlay);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
+    padding: 10px 18px 10px 14px;
+    border-radius: var(--radius-pill);
+    background: rgba(10, 10, 15, 0.55);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
   }
 
   .back-link {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    font-family: var(--font-mono);
+    gap: 8px;
     font-size: var(--fs-caption);
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
     color: var(--fg-muted);
     transition: color var(--dur-base) var(--ease-out-quart);
   }
   .back-link:hover { color: var(--neon-violet); }
+  .back-link svg { flex-shrink: 0; }
 
-  .logo { display: inline-flex; align-items: center; }
-  .logo-image { width: 30px; height: 30px; display: block; }
-
-  /* ── Header ───────────────────────────────────────────────────── */
-  .page-header {
-    padding: var(--space-10) 0 var(--space-7);
-    text-align: center;
-  }
-
-  .eyebrow {
+  .logo-link {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
-    font-family: var(--font-mono);
-    font-size: var(--fs-micro);
-    letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--fg-subtle);
-    font-weight: 500;
-    margin: 0 0 var(--space-4);
+    gap: 10px;
+    color: var(--fg-muted);
+    transition: color var(--dur-base) var(--ease-out-quart);
   }
-  .eyebrow-rule {
-    width: 28px;
-    height: 1px;
-    background: var(--neon-violet);
-    box-shadow: 0 0 8px var(--neon-violet);
-    flex-shrink: 0;
+  .logo-link:hover { color: var(--fg); }
+
+  .logo-img { width: 28px; height: 28px; display: block; }
+
+  .logo-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--fs-caption);
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+
+  /* ── Page header ──────────────────────────────────────────────── */
+  .page-header {
+    padding: var(--space-10) 0 var(--space-8);
+    text-align: center;
   }
 
   .page-title {
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-size: var(--fs-display-lg);
     font-weight: 600;
     line-height: var(--lh-tight);
     letter-spacing: var(--tracking-tight);
+    color: var(--fg);
     margin: 0 0 var(--space-3);
-    background: linear-gradient(135deg, var(--fg) 30%, var(--neon-violet) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
   }
 
   .updated {
-    font-family: var(--font-mono);
     font-size: var(--fs-caption);
-    color: var(--fg-subtle);
+    color: var(--fg-whisper);
     margin: 0;
+    letter-spacing: 0.06em;
   }
 
-  /* ── Grid ─────────────────────────────────────────────────────── */
-  .grid {
+  /* ── Card grid ────────────────────────────────────────────────── */
+  .now-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: var(--space-5);
     padding-bottom: var(--space-9);
   }
 
-  .card {
+  .now-card {
     padding: var(--space-6);
     background: var(--bg-elevated);
     border: 1px solid var(--border);
@@ -199,14 +198,15 @@
       box-shadow var(--dur-base) var(--ease-out-quart),
       transform var(--dur-base) var(--ease-out-quart);
   }
-  .card:hover {
-    border-color: color-mix(in srgb, var(--neon-violet) 35%, transparent);
-    box-shadow: 0 0 32px color-mix(in srgb, var(--neon-violet) 10%, transparent);
+
+  .now-card:hover {
+    border-color: color-mix(in srgb, var(--neon-violet) 40%, transparent);
+    box-shadow: var(--glow-violet);
     transform: translateY(-2px);
   }
 
   .card-icon {
-    font-size: 1.75rem;
+    font-size: 1.875rem;
     margin-bottom: var(--space-3);
     line-height: 1;
   }
@@ -235,6 +235,7 @@
     position: relative;
     line-height: var(--lh-normal);
   }
+
   .card-list li::before {
     content: '→';
     position: absolute;
@@ -242,36 +243,32 @@
     color: var(--neon-violet);
     font-family: var(--font-mono);
     font-size: 11px;
-    top: 2px;
+    top: 3px;
   }
 
-  /* ── Footer ───────────────────────────────────────────────────── */
-  .page-footer {
-    text-align: center;
+  /* ── CTA strip ────────────────────────────────────────────────── */
+  .cta-strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
     padding: var(--space-7) 0 var(--space-10);
     border-top: 1px solid var(--border);
+    flex-wrap: wrap;
   }
 
   .footer-note {
-    font-size: var(--fs-body-sm);
+    font-size: var(--fs-caption);
     color: var(--fg-subtle);
-    margin: 0 0 var(--space-5);
+    margin: 0;
     font-style: italic;
+    letter-spacing: 0.04em;
   }
 
-  .btn-back {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 22px;
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius-pill);
-    font-family: var(--font-mono);
-    font-size: var(--fs-caption);
-    color: var(--fg-muted);
-    transition:
-      border-color var(--dur-base) var(--ease-out-quart),
-      color var(--dur-base) var(--ease-out-quart);
+  /* ── Responsive ───────────────────────────────────────────────── */
+  @media (max-width: 600px) {
+    .logo-name { display: none; }
+    .now-grid  { grid-template-columns: 1fr; }
+    .cta-strip { flex-direction: column; align-items: flex-start; }
   }
-  .btn-back:hover { border-color: var(--neon-violet); color: var(--neon-violet); }
 </style>
