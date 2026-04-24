@@ -161,6 +161,9 @@
     line-height: var(--lh-loose);
     margin: 0 0 var(--space-7);
   }
+  @media (max-width: 600px) {
+    .hero-subtitle { line-height: var(--lh-normal); }
+  }
 
   .hero-actions {
     display: flex;

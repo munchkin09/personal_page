@@ -296,7 +296,7 @@
 
   .menu-toggle :global(svg) { width: 22px; height: 22px; }
 
-  @media (max-width: 860px) {
+  @media (max-width: 1100px) {
     .menu-toggle { display: inline-flex; }
 
     .nav-content {
@@ -307,9 +307,10 @@
       flex-direction: column;
       gap: var(--space-4);
       padding: var(--space-5);
-      background: color-mix(in srgb, var(--bg) 96%, transparent);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--border);
+      background: var(--bg-glass);
+      backdrop-filter: blur(30px) saturate(1.5);
+      -webkit-backdrop-filter: blur(30px) saturate(1.5);
+      border: 1px solid var(--border-glass);
       border-radius: var(--radius-lg);
       max-height: 0;
       overflow: hidden;
