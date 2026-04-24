@@ -1,7 +1,7 @@
 <script lang="ts">
   import { dictionaries, type Locale } from '$lib/i18n';
   import { strengthIcons } from '$lib/constants';
-  import { observeSection, fadeIn } from '$lib/actions';
+  import { observeSection, fadeIn, spotlight } from '$lib/actions';
 
   let { lang }: { lang: Locale } = $props();
   const t = $derived(dictionaries[lang].strengths);
@@ -19,7 +19,7 @@
 
     <div class="strengths-grid">
       {#each t.items as s, i}
-        <div class="strength-card" use:fadeIn style="transition-delay: {i * 80}ms">
+        <div class="strength-card" use:fadeIn use:spotlight style="transition-delay: {i * 80}ms">
           <span class="card-num mono">§ {String(i + 1).padStart(2, '0')}</span>
           <div class="strength-icon" aria-hidden="true">{@html strengthIcons[i] ?? strengthIcons[0]}</div>
           <h3>{s.title}</h3>
@@ -43,9 +43,12 @@
   .strength-card {
     position: relative;
     padding: var(--space-6);
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
+    background: var(--bg-glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-glass);
     border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-glass);
     transition:
       transform var(--dur-slow) var(--ease-out-expo),
       border-color var(--dur-slow) var(--ease-out-quart),
@@ -70,6 +73,23 @@
   }
 
   .strength-card:hover::before { opacity: 1; }
+
+  .strength-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      color-mix(in srgb, var(--accent-on) 15%, transparent),
+      transparent 40%
+    );
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-out-quart);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .strength-card:hover::after { opacity: 1; }
+  .strength-card > * { position: relative; z-index: 1; }
 
   .card-num {
     font-size: 10.5px;

@@ -56,8 +56,9 @@
     height: 62vw;
     max-width: 900px;
     max-height: 900px;
-    opacity: 0.22;
-    filter: blur(90px) saturate(1.2);
+    opacity: 0.25;
+    filter: blur(90px) saturate(1.4);
+    mix-blend-mode: screen;
     will-change: transform;
     user-select: none;
   }
