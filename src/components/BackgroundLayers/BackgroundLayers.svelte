@@ -75,7 +75,7 @@
     top: 0; left: 0;
     width: 400px; height: 400px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 245, 212, 0.10), transparent 60%);
+    background: radial-gradient(circle, color-mix(in srgb, var(--neon-cyan) 10%, transparent), transparent 60%);
     pointer-events: none;
     z-index: 1;
     margin: -200px 0 0 -200px;
@@ -89,14 +89,14 @@
   .cursor-glow.trail-2 {
     width: 320px; height: 320px;
     margin: -160px 0 0 -160px;
-    background: radial-gradient(circle, rgba(155, 93, 229, 0.08), transparent 60%);
+    background: radial-gradient(circle, color-mix(in srgb, var(--neon-violet) 8%, transparent), transparent 60%);
     transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .cursor-glow.trail-3 {
     width: 220px; height: 220px;
     margin: -110px 0 0 -110px;
-    background: radial-gradient(circle, rgba(241, 91, 181, 0.07), transparent 60%);
+    background: radial-gradient(circle, color-mix(in srgb, var(--neon-pink) 7%, transparent), transparent 60%);
     transition: transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 

@@ -267,7 +267,7 @@
     border-color: var(--border-strong);
   }
   .btn.ghost:hover {
-    background: rgba(155, 93, 229, 0.06);
+    background: color-mix(in srgb, var(--neon-violet) 6%, transparent);
     border-color: var(--neon-violet);
     color: var(--neon-violet-hi);
   }
@@ -292,8 +292,8 @@
     padding: 18mm 18mm 16mm;
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.035),
-      rgba(255, 255, 255, 0.015)
+      color-mix(in srgb, var(--fg) 3.5%, transparent),
+      color-mix(in srgb, var(--fg) 1.5%, transparent)
     );
     color: var(--fg);
     border: 1px solid var(--border);
@@ -395,14 +395,14 @@
     flex-direction: column;
     gap: 0.1rem;
     padding: 0.6rem 0.8rem;
-    background: rgba(155, 93, 229, 0.05);
+    background: color-mix(in srgb, var(--neon-violet) 5%, transparent);
     border: 1px solid var(--border);
     border-left: 2px solid var(--neon-violet);
     border-radius: var(--radius-xs);
     transition: border-color var(--dur-base), background var(--dur-base);
   }
   .hl:hover {
-    background: rgba(155, 93, 229, 0.1);
+    background: color-mix(in srgb, var(--neon-violet) 10%, transparent);
     border-left-color: var(--neon-violet-hi);
   }
   .hl-n {
@@ -420,6 +420,9 @@
     letter-spacing: var(--tracking-eyebrow);
     font-weight: 500;
   }
+
+  /* Reset global section padding that adds 8rem top/bottom to every section */
+  section { padding: 0; }
 
   /* ── Grid body ────────────────────────────────────────────────── */
   .grid {
@@ -506,8 +509,8 @@
     font-size: 8.2pt;
     color: var(--neon-violet-hi);
     white-space: nowrap;
-    background: rgba(155, 93, 229, 0.08);
-    border: 1px solid rgba(155, 93, 229, 0.22);
+    background: color-mix(in srgb, var(--neon-violet) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--neon-violet) 22%, transparent);
     padding: 0.18rem 0.5rem;
     border-radius: var(--radius-xs);
   }
@@ -535,7 +538,7 @@
     height: 5px;
     border-radius: 50%;
     background: var(--neon-violet);
-    box-shadow: 0 0 6px rgba(155, 93, 229, 0.6);
+    box-shadow: 0 0 6px color-mix(in srgb, var(--neon-violet) 60%, transparent);
   }
   .bullets strong { color: var(--fg); font-weight: 600; }
 
@@ -553,7 +556,7 @@
     font-family: var(--font-mono);
     font-size: 8.2pt;
     padding: 0.2rem 0.55rem;
-    background: rgba(255, 255, 255, 0.03);
+    background: color-mix(in srgb, var(--fg) 3%, transparent);
     border: 1px solid var(--border);
     border-radius: var(--radius-xs);
     color: var(--fg-muted);
@@ -589,10 +592,10 @@
     padding: 0.85rem 0.95rem;
     background: linear-gradient(
       180deg,
-      rgba(155, 93, 229, 0.08),
-      rgba(155, 93, 229, 0.03)
+      color-mix(in srgb, var(--neon-violet) 8%, transparent),
+      color-mix(in srgb, var(--neon-violet) 3%, transparent)
     );
-    border: 1px solid rgba(155, 93, 229, 0.28);
+    border: 1px solid color-mix(in srgb, var(--neon-violet) 28%, transparent);
     border-radius: var(--radius-sm);
     position: relative;
     overflow: hidden;

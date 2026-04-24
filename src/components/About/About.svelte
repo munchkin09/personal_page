@@ -145,7 +145,7 @@
     text-transform: uppercase;
     color: var(--neon-cyan);
     white-space: nowrap;
-    box-shadow: 0 0 20px rgba(0, 245, 212, 0.25);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--neon-cyan) 25%, transparent);
   }
 
   .about-tags {
@@ -162,7 +162,7 @@
     color: var(--fg-muted);
     border: 1px solid var(--border);
     border-radius: var(--radius-pill);
-    background: rgba(255, 255, 255, 0.02);
+    background: color-mix(in srgb, var(--fg) 2%, transparent);
   }
 
   .about-text h2 {

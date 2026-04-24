@@ -60,7 +60,7 @@
 
   .exp-row:hover {
     padding-left: 10px;
-    background: linear-gradient(90deg, rgba(0, 245, 212, 0.05), transparent 60%);
+    background: linear-gradient(90deg, color-mix(in srgb, var(--neon-cyan) 5%, transparent), transparent 60%);
   }
 
   .exp-row:hover .exp-role { color: var(--neon-cyan); }

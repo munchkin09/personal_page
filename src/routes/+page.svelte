@@ -23,9 +23,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #050510;
-    color: #475569;
-    font-family: Inter, system-ui, sans-serif;
+    background: var(--bg-sunken);
+    color: var(--fg-whisper);
+    font-family: var(--font-sans);
     font-size: 0.9rem;
   }
 </style>

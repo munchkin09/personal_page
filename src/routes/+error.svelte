@@ -163,8 +163,8 @@
     padding: var(--space-8) var(--space-7);
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.04),
-      rgba(255, 255, 255, 0.02)
+      color-mix(in srgb, var(--fg) 4%, transparent),
+      color-mix(in srgb, var(--fg) 2%, transparent)
     );
     border: 1px solid var(--border);
     border-radius: var(--radius-xl);
@@ -226,9 +226,9 @@
     -webkit-background-clip: text;
     color: transparent;
   }
-  .d1 { background-image: linear-gradient(180deg, var(--neon-violet-hi), var(--neon-violet)); text-shadow: 0 0 60px rgba(155, 93, 229, 0.35); }
-  .d2 { background-image: linear-gradient(180deg, var(--neon-cyan-hi), var(--neon-cyan)); text-shadow: 0 0 60px rgba(0, 245, 212, 0.35); }
-  .d3 { background-image: linear-gradient(180deg, var(--neon-pink-hi), var(--neon-pink)); text-shadow: 0 0 60px rgba(241, 91, 181, 0.35); }
+  .d1 { background-image: linear-gradient(180deg, var(--neon-violet-hi), var(--neon-violet)); text-shadow: 0 0 60px color-mix(in srgb, var(--neon-violet) 35%, transparent); }
+  .d2 { background-image: linear-gradient(180deg, var(--neon-cyan-hi), var(--neon-cyan)); text-shadow: 0 0 60px color-mix(in srgb, var(--neon-cyan) 35%, transparent); }
+  .d3 { background-image: linear-gradient(180deg, var(--neon-pink-hi), var(--neon-pink)); text-shadow: 0 0 60px color-mix(in srgb, var(--neon-pink) 35%, transparent); }
 
   /* ── Headings + body ───────────────────────────────────────────── */
   .title {
@@ -250,8 +250,8 @@
   .detail {
     font-size: var(--fs-caption);
     color: var(--fg-subtle);
-    background: rgba(255, 77, 109, 0.06);
-    border: 1px solid rgba(255, 77, 109, 0.22);
+    background: color-mix(in srgb, var(--signal-error) 6%, transparent);
+    border: 1px solid color-mix(in srgb, var(--signal-error) 22%, transparent);
     border-left: 2px solid var(--signal-error);
     padding: var(--space-3) var(--space-4);
     border-radius: var(--radius-sm);
@@ -306,7 +306,7 @@
   .btn.ghost:hover {
     color: var(--neon-cyan);
     border-color: var(--neon-cyan);
-    background: rgba(0, 245, 212, 0.06);
+    background: color-mix(in srgb, var(--neon-cyan) 6%, transparent);
   }
 
   @media (max-width: 560px) {

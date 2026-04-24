@@ -131,7 +131,7 @@
     max-width: var(--container-lg);
     border-radius: var(--radius-pill);
     border: 1px solid var(--border);
-    background: rgba(10, 10, 15, 0.55);
+    background: var(--bg-overlay);
     backdrop-filter: blur(14px) saturate(1.2);
     -webkit-backdrop-filter: blur(14px) saturate(1.2);
     transition:
@@ -141,7 +141,7 @@
   }
 
   nav.scrolled {
-    background: rgba(10, 10, 15, 0.78);
+    background: var(--bg-overlay);
     border-color: var(--border-strong);
     box-shadow: var(--shadow-sm);
   }
@@ -157,7 +157,7 @@
     width: 34px;
     height: 34px;
     display: block;
-    filter: drop-shadow(0 0 10px rgba(0, 245, 212, 0.18));
+    filter: drop-shadow(0 0 10px color-mix(in srgb, var(--neon-cyan) 18%, transparent));
   }
 
   .nav-content {
@@ -192,7 +192,7 @@
   nav ul a:hover { color: var(--neon-cyan); }
   nav ul a.active {
     color: var(--neon-cyan);
-    background: rgba(0, 245, 212, 0.08);
+    background: color-mix(in srgb, var(--neon-cyan) 8%, transparent);
   }
 
   .nav-actions { display: flex; align-items: center; gap: 8px; }
@@ -215,7 +215,7 @@
   }
 
   .theme-toggle :global(svg) { width: 14px; height: 14px; }
-  .theme-toggle:hover { color: var(--neon-yellow); border-color: var(--neon-yellow); background: rgba(254, 228, 64, 0.06); }
+  .theme-toggle:hover { color: var(--neon-yellow); border-color: var(--neon-yellow); background: color-mix(in srgb, var(--neon-yellow) 6%, transparent); }
 
   .lang-switch {
     display: inline-flex;
@@ -307,7 +307,7 @@
       flex-direction: column;
       gap: var(--space-4);
       padding: var(--space-5);
-      background: rgba(10, 10, 15, 0.96);
+      background: color-mix(in srgb, var(--bg) 96%, transparent);
       backdrop-filter: blur(20px);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);

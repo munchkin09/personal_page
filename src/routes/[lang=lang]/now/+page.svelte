@@ -200,8 +200,8 @@
       transform var(--dur-base) var(--ease-out-quart);
   }
   .card:hover {
-    border-color: rgba(155, 93, 229, 0.35);
-    box-shadow: 0 0 32px rgba(155, 93, 229, 0.1);
+    border-color: color-mix(in srgb, var(--neon-violet) 35%, transparent);
+    box-shadow: 0 0 32px color-mix(in srgb, var(--neon-violet) 10%, transparent);
     transform: translateY(-2px);
   }
 
