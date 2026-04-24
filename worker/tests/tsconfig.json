@@ -4,8 +4,7 @@
     "module": "ES2020",
     "moduleResolution": "bundler",
     "strict": true,
-    "types": ["@cloudflare/workers-types"]
+    "types": ["node", "vitest/globals"]
   },
-  "include": ["src"],
-  "references": [{ "path": "./tests/tsconfig.json" }]
+  "include": ["./**/*.ts"]
 }

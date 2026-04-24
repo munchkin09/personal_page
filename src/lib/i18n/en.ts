@@ -342,4 +342,54 @@ export const en: Widen<typeof es> = {
       { title: 'Higher Technician in Computer Application Development', org: 'Madrid Chamber of Commerce', period: '2007 – 2009' },
     ],
   },
+  now: {
+    pageTitle: 'Now · Carlos Ledesma',
+    pageDescription: 'What I\'m doing right now: projects, learning, and personal focus.',
+    eyebrow: 'Snapshot · April 2026',
+    title: 'What am I doing now?',
+    updated: 'Updated April 2026 from Madrid',
+    back: '← Back to portfolio',
+    footerNote: 'This page is inspired by the /now movement by Derek Sivers.',
+    sections: [
+      {
+        icon: '💼',
+        title: 'Work',
+        items: [
+          'Quality & AI Solutions Architect at <strong>NTT DATA</strong>',
+          'Designing autonomous AI agents applied to the SDLC with LLMs',
+          'Leading the automated test-case generation platform',
+          'Training teams across Europe and LATAM',
+        ],
+      },
+      {
+        icon: '🚀',
+        title: 'Side projects',
+        items: [
+          'This portfolio — Svelte 5, Cloudflare Pages, blog via Telegram',
+          '<strong>Mammals</strong> — tickets + knowledge platform with AI and MCP',
+          '<strong>YACS</strong> — Skills and Agents collection for Claude Code',
+          'Exploring Workers AI and Analytics Engine on Cloudflare',
+        ],
+      },
+      {
+        icon: '📚',
+        title: 'Learning',
+        items: [
+          'Multi-agent architectures and LLM orchestration',
+          'Svelte 5 runes in depth',
+          'Cloudflare Workers AI and Vectorize',
+          'Evaluation and testing patterns for AI systems',
+        ],
+      },
+      {
+        icon: '🎮',
+        title: 'Outside work',
+        items: [
+          'Building a video game in Godot Engine — <strong>Gordots</strong> project',
+          'Reading about system design and software architecture',
+          'Hiking in the mountains around Madrid',
+        ],
+      },
+    ],
+  },
 };

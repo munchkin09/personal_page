@@ -12,6 +12,16 @@
   let loading = $state(true);
   let notFound = $state(false);
 
+  // ── Reading progress ────────────────────────────────────────────────────────
+  let scrollProgress = $state(0);
+
+  // ── Reading time ────────────────────────────────────────────────────────────
+  const readingTime = $derived(() => {
+    if (!post) return 0;
+    const words = post.content.trim().split(/\s+/).length;
+    return Math.max(1, Math.ceil(words / 200));
+  });
+
   const WORKER_URL = import.meta.env.VITE_BLOG_WORKER_URL ?? '';
 
   function renderMarkdown(raw: string): string {
@@ -39,6 +49,17 @@
       loading = false;
     }
   });
+
+  $effect(() => {
+    const onScroll = () => {
+      const doc = document.documentElement;
+      const scrolled = doc.scrollTop || document.body.scrollTop;
+      const total = doc.scrollHeight - doc.clientHeight;
+      scrollProgress = total > 0 ? Math.min(100, (scrolled / total) * 100) : 0;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  });
 </script>
 
 <svelte:head>
@@ -46,6 +67,11 @@
 </svelte:head>
 
 <div class="page">
+  <!-- Reading progress bar -->
+  <div class="read-progress" role="progressbar" aria-valuenow={scrollProgress} aria-valuemin={0} aria-valuemax={100} aria-label="Reading progress">
+    <div class="read-progress-bar" style="width: {scrollProgress}%"></div>
+  </div>
+
   <div class="bg-blob blob-cyan" aria-hidden="true"></div>
   <div class="bg-blob blob-violet" aria-hidden="true"></div>
 
@@ -83,6 +109,7 @@
           </p>
           <div class="post-meta">
             <time class="post-date mono" datetime={post.date}>{formatDate(post.date)}</time>
+            <span class="read-time mono">{readingTime()} {data.lang === 'es' ? 'min de lectura' : 'min read'}</span>
           </div>
           <h1 class="post-title">{post.title}</h1>
         </header>
@@ -98,6 +125,24 @@
 </div>
 
 <style>
+  /* ── Reading progress bar ────────────────────────────────────────────── */
+  .read-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--border);
+    z-index: calc(var(--z-sticky) + 1);
+  }
+  .read-progress-bar {
+    height: 100%;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 8px var(--neon-cyan);
+    transition: width 80ms linear;
+    transform-origin: left;
+  }
+
   /* Dominant neon for this view: CYAN */
   .page {
     position: relative;
@@ -182,7 +227,7 @@
     width: 34px;
     height: 34px;
     display: block;
-    filter: drop-shadow(0 0 10px rgba(0, 245, 212, 0.18));
+    filter: drop-shadow(0 0 10px color-mix(in srgb, var(--neon-cyan) 18%, transparent));
   }
 
   /* ── Main wrapper ─────────────────────────────────────────────── */
@@ -211,7 +256,7 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    border: 2px solid rgba(0, 245, 212, 0.18);
+    border: 2px solid color-mix(in srgb, var(--neon-cyan) 18%, transparent);
     border-top-color: var(--neon-cyan);
     animation: spin 0.8s linear infinite;
   }
@@ -236,7 +281,7 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    text-shadow: 0 0 40px rgba(0, 245, 212, 0.3);
+    text-shadow: 0 0 40px color-mix(in srgb, var(--neon-cyan) 30%, transparent);
   }
   .not-found h2 {
     font-family: var(--font-display);
@@ -294,9 +339,18 @@
     font-size: var(--fs-caption);
     color: var(--neon-cyan);
     padding: 0.25rem 0.6rem;
-    border: 1px solid rgba(0, 245, 212, 0.25);
+    border: 1px solid color-mix(in srgb, var(--neon-cyan) 25%, transparent);
     border-radius: var(--radius-xs);
-    background: rgba(0, 245, 212, 0.06);
+    background: color-mix(in srgb, var(--neon-cyan) 6%, transparent);
+  }
+
+  .read-time {
+    font-size: var(--fs-caption);
+    color: var(--fg-subtle);
+    padding: 0.25rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xs);
+    background: transparent;
   }
 
   .post-title {
@@ -321,8 +375,8 @@
     padding: var(--space-7);
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.03),
-      rgba(255, 255, 255, 0.015)
+      color-mix(in srgb, var(--fg) 3%, transparent),
+      color-mix(in srgb, var(--fg) 1.5%, transparent)
     );
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
@@ -385,7 +439,7 @@
     margin: 1.5em 0;
     padding: var(--space-4) var(--space-5);
     border-left: 3px solid var(--neon-violet);
-    background: rgba(155, 93, 229, 0.06);
+    background: color-mix(in srgb, var(--neon-violet) 6%, transparent);
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     color: var(--fg-muted);
     font-style: italic;
@@ -396,8 +450,8 @@
   .post-body :global(code) {
     font-family: var(--font-mono);
     font-size: 0.88em;
-    background: rgba(0, 245, 212, 0.08);
-    border: 1px solid rgba(0, 245, 212, 0.16);
+    background: color-mix(in srgb, var(--neon-cyan) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--neon-cyan) 16%, transparent);
     padding: 0.1em 0.4em;
     border-radius: var(--radius-xs);
     color: var(--neon-cyan-hi);
@@ -405,7 +459,7 @@
   .post-body :global(pre) {
     margin: 1.5em 0;
     padding: var(--space-5);
-    background: rgba(0, 0, 0, 0.4);
+    background: var(--bg-sunken);
     border: 1px solid var(--border-strong);
     border-radius: var(--radius-sm);
     overflow-x: auto;
@@ -444,7 +498,7 @@
   .post-body :global(a) {
     color: var(--neon-cyan);
     text-decoration: underline;
-    text-decoration-color: rgba(0, 245, 212, 0.3);
+    text-decoration-color: color-mix(in srgb, var(--neon-cyan) 30%, transparent);
     text-underline-offset: 4px;
     transition: color var(--dur-fast), text-decoration-color var(--dur-fast);
   }
@@ -463,7 +517,7 @@
     align-items: center;
     gap: var(--space-2);
     padding: var(--space-3) var(--space-5);
-    border: 1px solid rgba(0, 245, 212, 0.35);
+    border: 1px solid color-mix(in srgb, var(--neon-cyan) 35%, transparent);
     border-radius: var(--radius-sm);
     font-family: var(--font-mono);
     font-size: var(--fs-micro);
@@ -471,7 +525,7 @@
     text-transform: uppercase;
     letter-spacing: var(--tracking-eyebrow);
     color: var(--fg-muted);
-    background: rgba(0, 245, 212, 0.04);
+    background: color-mix(in srgb, var(--neon-cyan) 4%, transparent);
     transition:
       border-color var(--dur-base) var(--ease-out-quart),
       color var(--dur-base) var(--ease-out-quart),
@@ -481,8 +535,8 @@
   .btn-back:hover {
     border-color: var(--neon-cyan);
     color: var(--neon-cyan);
-    background: rgba(0, 245, 212, 0.1);
-    box-shadow: 0 0 24px rgba(0, 245, 212, 0.25);
+    background: color-mix(in srgb, var(--neon-cyan) 10%, transparent);
+    box-shadow: 0 0 24px color-mix(in srgb, var(--neon-cyan) 25%, transparent);
   }
   .btn-back:focus-visible {
     outline-color: var(--neon-cyan);

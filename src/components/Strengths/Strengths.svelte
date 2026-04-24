@@ -85,7 +85,7 @@
     display: grid;
     place-items: center;
     border-radius: var(--radius-md);
-    background: rgba(155, 93, 229, 0.08);
+    background: color-mix(in srgb, var(--neon-violet) 8%, transparent);
     color: var(--accent-on);
     border: 1px solid var(--border);
     transition: transform var(--dur-base) var(--ease-spring);

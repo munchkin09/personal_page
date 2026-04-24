@@ -68,8 +68,8 @@
         <svg viewBox="0 0 540 480" class="radar-svg" role="img" aria-label="Tech stack polar chart">
           <defs>
             <radialGradient id="radar-grad" cx="50%" cy="50%" r="50%">
-              <stop offset="0%"   stop-color="#9B5DE5" stop-opacity="0.30"/>
-              <stop offset="100%" stop-color="#9B5DE5" stop-opacity="0.04"/>
+              <stop offset="0%"   style="stop-color: var(--neon-violet); stop-opacity: 0.30"/>
+              <stop offset="100%" style="stop-color: var(--neon-violet); stop-opacity: 0.04"/>
             </radialGradient>
             <filter id="dot-glow" x="-80%" y="-80%" width="260%" height="260%">
               <feGaussianBlur stdDeviation="3.5" result="blur"/>
@@ -182,19 +182,19 @@
   .radar-chart-wrap { flex: 0 0 auto; width: min(440px, 100%); }
   .radar-svg { width: 100%; height: auto; overflow: visible; display: block; }
 
-  .radar-ring { fill: none; stroke: rgba(255, 255, 255, 0.12); stroke-width: 1; }
+  .radar-ring { fill: none; stroke: var(--fg-whisper); stroke-width: 1; }
 
   .radar-ring-lbl {
     font-family: var(--font-mono);
     font-size: 9px;
-    fill: rgba(255, 255, 255, 0.45);
+    fill: var(--fg-whisper);
     letter-spacing: 0.06em;
     pointer-events: none;
     user-select: none;
   }
 
   .radar-axis {
-    stroke: rgba(255, 255, 255, 0.09);
+    stroke: var(--border-strong);
     stroke-width: 1;
     transition: stroke var(--dur-base), stroke-width var(--dur-base);
   }
@@ -202,7 +202,7 @@
   .radar-axis.is-hovered {
     stroke: var(--neon-violet);
     stroke-width: 1.5;
-    filter: drop-shadow(0 0 4px rgba(155, 93, 229, 0.7));
+    filter: drop-shadow(0 0 4px color-mix(in srgb, var(--neon-violet) 70%, transparent));
   }
 
   .radar-data-group {
@@ -288,9 +288,9 @@
   .radar-legend-item--yellow { --li-accent: var(--neon-yellow); --li-glow: var(--glow-yellow); }
 
   .radar-legend-item.is-hovered {
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--bg-elevated);
     border-color: var(--border-strong);
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+    box-shadow: inset 0 0 0 1px var(--border);
   }
 
   .rli-dot {

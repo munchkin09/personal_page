@@ -328,4 +328,54 @@ export const es = {
       { title: 'Técnico Superior en Desarrollo de Aplicaciones Informáticas', org: 'Cámara de Comercio de Madrid', period: '2007 – 2009' },
     ],
   },
+  now: {
+    pageTitle: 'Ahora · Carlos Ledesma',
+    pageDescription: 'Qué estoy haciendo ahora mismo: proyectos, aprendizajes y foco personal.',
+    eyebrow: 'Snapshot · Abril 2026',
+    title: '¿Qué estoy haciendo ahora?',
+    updated: 'Actualizado en abril de 2026 desde Madrid',
+    back: '← Volver al portfolio',
+    footerNote: 'Esta página está inspirada en el movimiento /now de Derek Sivers.',
+    sections: [
+      {
+        icon: '💼',
+        title: 'Trabajo',
+        items: [
+          'Quality & AI Solutions Architect en <strong>NTT DATA</strong>',
+          'Diseñando agentes IA autónomos aplicados al SDLC con LLMs',
+          'Liderando la plataforma de generación automática de test cases',
+          'Formando a equipos en Europa y LATAM',
+        ],
+      },
+      {
+        icon: '🚀',
+        title: 'Proyectos personales',
+        items: [
+          'Este mismo portfolio — Svelte 5, Cloudflare Pages, blog vía Telegram',
+          '<strong>Mammals</strong> — plataforma de tickets + conocimiento con IA y MCP',
+          '<strong>YACS</strong> — colección de Skills y Agentes para Claude Code',
+          'Explorando Workers AI y Analytics Engine en Cloudflare',
+        ],
+      },
+      {
+        icon: '📚',
+        title: 'Aprendiendo',
+        items: [
+          'Arquitecturas multi-agente y orquestación de LLMs',
+          'Svelte 5 runes en profundidad',
+          'Cloudflare Workers AI y Vectorize',
+          'Patrones de evaluación y testing de sistemas de IA',
+        ],
+      },
+      {
+        icon: '🎮',
+        title: 'Fuera del trabajo',
+        items: [
+          'Desarrollando un videojuego en Godot Engine — proyecto <strong>Gordots</strong>',
+          'Leyendo sobre diseño de sistemas y arquitectura de software',
+          'Senderismo por la sierra de Madrid',
+        ],
+      },
+    ],
+  },
 } as const;
