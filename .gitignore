@@ -31,3 +31,4 @@ build/
 # Playwright
 playwright-report/
 test-results/
+static/fonts/*.woff2
