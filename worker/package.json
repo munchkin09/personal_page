@@ -8,10 +8,15 @@
     "secret:token": "wrangler secret put TELEGRAM_TOKEN",
     "secret:secret": "wrangler secret put TELEGRAM_SECRET",
     "secret:chatid": "wrangler secret put ALLOWED_CHAT_ID",
-    "kv:create": "wrangler kv namespace create POSTS"
+    "kv:create": "wrangler kv namespace create POSTS",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "4.20260423.1",
+    "@types/node": "^24.0.0",
+    "vitest": "^3.0.0",
     "wrangler": "4.84.1"
   }
 }
