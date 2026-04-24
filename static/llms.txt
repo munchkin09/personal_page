@@ -26,9 +26,9 @@ Tech Lead and Software Architect with 13+ years of experience across the full SD
 ## Key Skills
 
 - AI / LLM: Agentic AI, GenAI applied to code, OpenAI, Claude, Test Case Generation, Langchain/Langraph, CrewAI, n8n, mcp´s, skills, agents, orchestration
-- Languages: TypeScript/JavaScript (Expert), Python, Bash, PowerShell
-- QA & Testing: Selenium, Cucumber, WebdriverIO, Cypress, Jest, Playwright
-- Cloud & DevOps: Azure, GCP, AWS, Docker, Jenkins, GitLab CI
+- Languages: TypeScript/JavaScript (Expert), Python, Bash, PowerShell, PHP, VBasic, Java
+- QA & Testing: Selenium, Cucumber, WebdriverIO, Cypress, Jest, Playwright, Karate, Mocha, JUnit
+- Cloud & DevOps: Azure, GCP, AWS, Docker, Jenkins, GitLab CI, Github Actions
 - Architecture: Microservices, System Design, Legacy Modernisation, Agile/Scrum
 
 ## Site Structure

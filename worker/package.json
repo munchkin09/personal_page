@@ -11,7 +11,7 @@
     "kv:create": "wrangler kv namespace create POSTS"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "4.20240909.0",
-    "wrangler": "4.83.0"
+    "@cloudflare/workers-types": "4.20260423.1",
+    "wrangler": "4.84.1"
   }
 }

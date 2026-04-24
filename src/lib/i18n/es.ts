@@ -1,11 +1,11 @@
 export const es = {
   meta: {
-    homeTitle: 'Carlos Ledesma · Software Engineer',
+    homeTitle: 'Carlos Ledesma · Quality Engineering Architect · Tech Lead & IA',
     homeDescription:
-      'Carlos Ledesma — Tech Lead y Arquitecto de Calidad & IA. Construyendo soluciones elegantes con tecnologías web modernas.',
-    cvTitle: 'CV · Carlos Ledesma — Tech Lead QA & IA',
+      'Carlos Ledesma — Tech Lead y Arquitecto de Calidad que construye los frameworks, agentes IA y plataformas que equipos enteros usan para entregar software con confianza. +13 años en banca, IoT, consultoría y transformación digital.',
+    cvTitle: 'CV · Carlos Ledesma — Quality Engineering Architect · Tech Lead & IA',
     cvDescription:
-      'Currículum imprimible de Carlos Ledesma — Tech Lead, Arquitecto de Calidad & IA, Full Stack Senior.',
+      'Currículum imprimible de Carlos Ledesma — Quality Engineering Architect y Tech Lead especializado en calidad como responsabilidad compartida del SDLC y tooling de IA.',
     blogPostFallbackTitle: 'Blog · Carlos Ledesma',
   },
   nav: {
@@ -23,56 +23,58 @@ export const es = {
   },
   hero: {
     badge: 'Disponible para proyectos',
-    subtitleLine1: 'Tech Lead · Arquitecto de Calidad & IA · Full Stack Senior',
+    subtitleLine1: 'Tech Lead · Calidad como arquitectura · IA aplicada al SDLC',
     subtitleLine2:
-      '+13 años transformando ingeniería en impacto real — desde la banca hasta la IA generativa.',
+      '+13 años construyendo las plataformas y frameworks que equipos enteros usan para entregar con confianza — porque la calidad no es una fase, es un compromiso de todos.',
     viewProjects: 'Ver proyectos',
     letsTalk: 'Hablemos',
     printableCv: 'CV imprimible',
     stats: {
       yearsLabel: 'Años de experiencia',
       continentsLabel: 'Continentes impactados',
+      projectsLabel: 'Proyectos completados',
       bugsLabel: 'Bugs detectados antes',
+      uptimeLabel: 'Uptime en producción',
     },
     roles: [
-      'Tech Lead & Solution Architect',
-      'QA & AI Strategy Expert',
-      'Full Stack Senior Developer',
-      'GenAI Applied to Software',
-      'COBOL Modernization Lead',
+      'Quality Engineering Architect',
+      'Tech Lead · QA & AI Tooling',
+      'Framework & Platform Builder',
+      'Enabler de equipos de desarrollo',
+      'QA que entiende la arquitectura',
     ],
   },
   about: {
     label: 'Sobre mí',
-    titlePrefix: 'Tech Lead en la intersección de ',
-    titleHighlight: 'Calidad e IA',
-    tags: ['TypeScript', 'Python', 'Agentes IA', 'QA Architecture', 'Cloud', 'COBOL Migration'],
+    titlePrefix: 'Calidad como ',
+    titleHighlight: 'arquitectura compartida',
+    tags: ['TypeScript', 'Playwright', 'AI Agents', 'Platform Building', 'SDLC', 'Team Enablement'],
     paragraphs: [
-      'Soy Tech Lead y Arquitecto de Software con +13 años de experiencia en el ciclo completo del software (SDLC), especializado en la intersección entre <strong>Ingeniería de Calidad</strong>, <strong>Automatización</strong> e <strong>Inteligencia Artificial Generativa</strong>.',
-      'He liderado modernizaciones de ecosistemas legado —incluyendo migraciones de <strong>COBOL a tecnologías modernas</strong>— y el diseño de <strong>Agentes IA aplicados a calidad</strong> en grandes corporaciones bancarias como BBVA, con impacto directo en equipos de Europa y LATAM.',
-      'Mi diferencial: entiendo el problema de calidad <strong>desde la arquitectura</strong>, no solo desde el testing. Combino base técnica sólida con capacidad real de liderazgo, mentoring y traducción de necesidades de negocio en soluciones accionables.',
+      'Soy un <strong>Tech Lead y Arquitecto de Soluciones de Calidad</strong>: llevo +13 años no solo probando software, sino <strong>construyendo las plataformas, frameworks y agentes IA</strong> que equipos enteros usan para entregar con confianza. Mi terreno no es una disciplina sola — es todo el ciclo de vida del software.',
+      'Creo que <strong>la calidad es un compromiso de todas las capas del SDLC</strong>, no una fase al final del proceso. Por eso trabajo codo con codo con developers, POs y stakeholders: leo el código que valido, participo en code reviews y traduzco el riesgo técnico en decisiones de negocio.',
+      'Mi diferencial: <strong>combino base técnica sólida</strong> (JS/TS, Python, Cloud, CI/CD) con <strong>visión de arquitectura y tooling de IA</strong>, acompañando a los equipos en su crecimiento — porque confío en la intuición de mis compañeros y busco habilitarles, no sustituirles.',
     ],
   },
   strengths: {
     label: 'Qué me diferencia',
     titlePrefix: 'Mis puntos ',
     titleHighlight: 'fuertes',
-    subtitle: 'No solo escribo código. Construyo sistemas, lidero equipos y genero impacto.',
+    subtitle: 'Diseño los sistemas que hacen que los equipos entreguen software del que se sientan orgullosos.',
     items: [
-      { icon: '🧠', title: 'Pensamiento sistémico', desc: 'Capacidad para ver el panorama completo y diseñar soluciones escalables que resisten el paso del tiempo.' },
-      { icon: '⚡', title: 'Velocidad de ejecución', desc: 'De la idea al código en producción con criterio, sin sacrificar calidad por velocidad.' },
-      { icon: '🤝', title: 'Comunicación técnica', desc: 'Traduzco conceptos complejos a lenguaje claro, tanto para equipos técnicos como para stakeholders.' },
-      { icon: '🔁', title: 'Aprendizaje continuo', desc: 'Más de 20 años en la industria con mentalidad de principiante. Siempre actualizándome.' },
-      { icon: '🎯', title: 'Orientación a resultados', desc: 'Foco en el impacto real del producto, no solo en el código perfectamente elegante.' },
-      { icon: '🛡️', title: 'Código defensivo', desc: 'Escribo software robusto, seguro y mantenible. La deuda técnica me quita el sueño.' },
+      { icon: '🏗️', title: 'Calidad como arquitectura', desc: 'Entiendo el problema de calidad desde el diseño del sistema, no desde el test report. Diseño suites, frameworks y plataformas que escalan con el equipo.' },
+      { icon: '🔗', title: 'SDLC de extremo a extremo', desc: 'Desde el primer commit hasta el deploy en producción: conozco cada eslabón de la cadena y sé dónde la calidad puede fallar y dónde puede brillar.' },
+      { icon: '🌍', title: 'Amplitud de dominio', desc: 'Banca, IoT, campañas digitales, consultoría, videojuegos... He resuelto problemas de calidad en dominios muy distintos. La curiosidad es mi ventaja competitiva.' },
+      { icon: '🤖', title: 'IA aplicada al SDLC', desc: 'Uso agentes y LLMs para generar test cases, analizar cobertura, migrar legacy y eliminar boilerplate — sin perder de vista que la IA debe habilitar, no reemplazar, el criterio humano.' },
+      { icon: '🌱', title: 'Habilita a los equipos', desc: 'Confío en la intuición y el criterio de mis compañeros. Mi rol es acompañarles en su crecimiento, no ser el cuello de botella de la calidad.' },
+      { icon: '🗣️', title: 'Puente entre Dev y Negocio', desc: 'Leo código de producción, participo en code reviews y traduzco riesgo técnico a lenguaje de stakeholders. La calidad solo funciona cuando todos la entienden.' },
     ],
   },
   skills: {
     label: 'Toolkit',
     titlePrefix: 'Stack ',
     titleHighlight: 'técnico',
-    subtitle: 'Hover cada porción para ver el detalle de cada tecnología.',
-    totalLabel: 'Full Stack',
+    subtitle: 'El stack de un Quality Architect: TypeScript y frameworks de testing en el centro, IA y CI/CD alrededor. Hover cada porción para el detalle.',
+    totalLabel: 'Quality Architect',
     techNames: {
       typescript: 'TypeScript & Node.js',
       ai: 'AI / LLM',
@@ -81,6 +83,7 @@ export const es = {
       python: 'Python',
       cloud: 'Cloud & Infra',
       data: 'Data Management',
+      qaAutomation: 'QA Automation',
     },
     categories: {
       Frontend: 'Frontend',
@@ -89,6 +92,7 @@ export const es = {
       Backend: 'Backend',
       DevOps: 'DevOps',
       Data: 'Data',
+      Testing: 'Testing',
     },
   },
   projects: {
@@ -120,6 +124,10 @@ export const es = {
       {
         title: 'Asciicrappers (turbo-invention)',
         description: 'Genera skylines ASCII a partir de los tabs y espacios del código fuente de cualquier fichero remoto. Dale una URL con código y obtiene un skyline único en tu terminal.',
+      },
+      {
+        title: 'Request Mocker',
+        description: 'App de escritorio para mockear APIs al instante a partir de una especificación OpenAPI/YAML. Sirve endpoints en localhost, registra las peticiones en tiempo real y no requiere escribir ningún código de backend. Electron + TypeScript con parser YAML propio y sin dependencias externas.',
       },
     ],
   },
@@ -225,22 +233,22 @@ export const es = {
       website: 'carlosledesma.dev · Madrid, España',
     },
     availabilityBody:
-      'Abierto a nuevas oportunidades como Tech Lead / Solution Architect en entornos de QA + IA, modernización de legacy y plataformas Full Stack.',
+      'Abierto a roles como Quality Engineering Architect, Tech Lead en entornos QA + IA, plataformas de calidad asistida por IA y modernización de legacy. También consultoría estratégica de calidad en transformaciones digitales.',
     profile: {
       name: 'Carlos Ledesma Castejón',
-      title: 'Tech Lead · Arquitecto de Soluciones de Calidad & IA · Full Stack Senior',
+      title: 'Quality Engineering Architect · Tech Lead · IA aplicada al SDLC',
       location: 'Madrid, España',
       summary: [
-        'Tech Lead y Arquitecto de Software con +13 años de experiencia en el ciclo completo del software (SDLC), especializado en la intersección entre Ingeniería de Calidad, Automatización e Inteligencia Artificial Generativa.',
-        'He liderado la modernización de ecosistemas legado —incluyendo migraciones de COBOL a tecnologías modernas— y el diseño de Agentes IA aplicados a calidad en grandes corporaciones bancarias y tecnológicas, con impacto directo en equipos de Europa y LATAM.',
-        'Mi diferencial: entiendo el problema de calidad desde la arquitectura, no solo desde el testing.',
+        'Tech Lead y Arquitecto de Soluciones de Calidad con +13 años en el SDLC: no solo pruebo software, sino que construyo los frameworks, plataformas y agentes IA que equipos enteros usan para entregar con confianza. Mi base es técnica (JS/TS, Python, Cloud, CI/CD) y mi perspectiva es sistémica.',
+        'Creo en la calidad como responsabilidad compartida de todas las capas del SDLC. Trabajo codo con codo con developers, POs y stakeholders: leo el código que valido, participo en code reviews y traduzco riesgo técnico en decisiones de negocio. Una disciplina que he aplicado en banca, IoT, consultoría y transformación digital a escala corporativa.',
+        'Mi diferencial: expertise técnico + visión de arquitectura + tooling de IA, acompañando a los equipos en su crecimiento — porque confío en el criterio de mis compañeros y busco habilitarles, no sustituirles.',
       ],
     },
     highlights: [
       { n: '13+', l: 'años de experiencia' },
       { n: '2', l: 'continentes (EU & LATAM)' },
-      { n: 'BBVA', l: 'cliente bancario Top EU' },
       { n: 'LLMs', l: 'aplicados a QA y legacy' },
+      { n: 'SDLC', l: 'visión de extremo a extremo' },
     ],
     experience: [
       {
@@ -250,11 +258,11 @@ export const es = {
         period: 'Jun 2024 – Actualidad',
         context: 'Rol estratégico de innovación tecnológica aplicada al ciclo de vida del software en un contexto de transformación digital a gran escala.',
         bullets: [
-          { k: 'Agentes IA para Calidad', v: 'Diseño y desarrollo de agentes autónomos con LLMs orientados a la verificación, validación y análisis de calidad del software, reduciendo la intervención manual en procesos críticos del SDLC.' },
-          { k: 'Test Case Generation', v: 'Desarrollé una plataforma de generación automática de casos de prueba con IA, democratizando el acceso al testing para perfiles no técnicos y acelerando el tiempo de diseño.' },
+          { k: 'Agentes IA para Calidad', v: 'Diseño y desarrollo de agentes autónomos con LLMs orientados a la verificación, validación y análisis de calidad del software, combinando expertise de testing con tooling de IA para reducir la intervención manual en procesos críticos del SDLC.' },
+          { k: 'Test Case Generation', v: 'Desarrollé una plataforma de generación automática de casos de prueba con IA, democratizando el acceso al testing para perfiles no técnicos y eliminando el boilerplate del proceso de diseño.' },
           { k: 'Migración COBOL', v: 'Lidero proyectos de modernización de código legado COBOL con pipelines asistidos por IA para análisis, documentación y traducción a lenguajes mantenibles, reduciendo deuda técnica acumulada durante décadas.' },
           { k: 'Transferencia de conocimiento', v: 'Imparto cursos y talleres técnicos y lidero iniciativas de adopción de IA para equipos de calidad en Europa y LATAM, asegurando una implantación efectiva y sostenible.' },
-          { k: 'Estrategia transversal', v: 'Defino soluciones de análisis de calidad integradas en el SDLC que garantizan mantenibilidad, trazabilidad y eficiencia en el delivery a escala corporativa.' },
+          { k: 'Estrategia transversal', v: 'Defino soluciones de análisis de calidad integradas en pipelines CI/CD end-to-end que garantizan mantenibilidad, trazabilidad y eficiencia en el delivery a escala corporativa.' },
         ],
       },
       {
@@ -264,9 +272,9 @@ export const es = {
         period: 'Feb 2021 – Jun 2024',
         context: 'Liderazgo técnico en la evolución y estandarización de frameworks de automatización para uno de los mayores bancos de Europa.',
         bullets: [
-          { k: 'Arquitectura de frameworks', v: 'Diseñé e implementé soluciones de automatización con Selenium, Cucumber y WebdriverIO, aumentando la cobertura en flujos críticos de negocio.' },
-          { k: 'Integración SDLC', v: 'Desarrollé herramientas de control de calidad embebidas en el ciclo de vida, habilitando detección temprana de errores y reduciendo el coste del bug fixing.' },
-          { k: 'Legibilidad y adopción', v: 'Implementé capas de abstracción y reporting que hicieron las pruebas automatizadas comprensibles para stakeholders no técnicos, acelerando la aprobación de releases.' },
+          { k: 'Frameworks desde cero', v: 'Diseñé e implementé soluciones de automatización con Selenium, Cucumber y WebdriverIO codeando los frameworks desde cero — fixtures, custom reporters, helpers de API testing — y aumentando la cobertura en flujos críticos de negocio.' },
+          { k: 'Pipelines CI/CD end-to-end', v: 'Integré las suites en pipelines CI/CD end-to-end (GitLab CI, Jenkins) habilitando detección temprana de errores y reduciendo el coste del bug fixing.' },
+          { k: 'QA que habla Dev', v: 'Participé en code reviews leyendo el código que probaba e implementé capas de abstracción y reporting que hicieron las pruebas comprensibles para stakeholders no técnicos.' },
         ],
       },
       {
@@ -307,7 +315,7 @@ export const es = {
       { group: 'Liderazgo & Estrategia', items: ['Arquitectura de Software', 'Mentoring técnico', 'Modernización de Legado', 'Agile / Scrum', 'Gestión de Stakeholders'] },
       { group: 'IA & Modernización', items: ['Agentes IA', 'GenAI aplicada a código', 'LLMs (OpenAI, Claude)', 'Test Case Generation', 'Análisis estático', 'Migración COBOL'] },
       { group: 'Lenguajes', items: ['JavaScript / TypeScript (Experto)', 'Python', 'Bash', 'PowerShell', 'COBOL (análisis y migración)'] },
-      { group: 'QA & Testing', items: ['Selenium', 'Cucumber', 'WebdriverIO', 'Cypress', 'Jest', 'Playwright', 'ESLint'] },
+      { group: 'QA & Testing', items: ['Playwright (fixtures, custom reporters, API testing)', 'Selenium', 'Cucumber', 'WebdriverIO', 'Cypress', 'Jest', 'AI-assisted test generation', 'ESLint'] },
       { group: 'Cloud & DevOps', items: ['Azure (WebApps, Functions, LLM Foundry)', 'GCP', 'AWS (EC2, RDS, S3, Device Farm)', 'Docker', 'Jenkins', 'GitLab CI', 'Linux', 'Git'] },
       { group: 'Formación & Adopción', items: ['Diseño de cursos técnicos', 'Talleres de IA', 'Onboarding de equipos', 'Evangelización tecnológica'] },
     ],
