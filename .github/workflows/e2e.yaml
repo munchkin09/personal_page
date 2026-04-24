@@ -31,9 +31,6 @@ jobs:
       - name: Run E2E tests
         run: npm run test:e2e
 
-      - name: Run accessibility tests
-        run: npm run test:e2e -- e2e/accessibility.spec.ts
-
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
