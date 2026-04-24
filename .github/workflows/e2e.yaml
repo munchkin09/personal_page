@@ -37,6 +37,8 @@ jobs:
         run: node scripts/download-fonts.js
 
       - name: Build site
+        env:
+          VITE_BLOG_WORKER_URL: http://localhost:4173
         run: npm run build
 
       - name: Run E2E tests
