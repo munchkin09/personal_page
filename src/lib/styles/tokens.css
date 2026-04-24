@@ -162,7 +162,7 @@
   --container-md:  900px;
   --container-lg:  1200px;
   --container-xl:  1440px;
-  --gutter:        clamp(1rem, 3vw, 3rem);
+  --gutter:        clamp(1.5rem, 5vw, 3rem);
 
   /* ---------- Z-INDEX ---------- */
   --z-base:    0;
