@@ -62,7 +62,7 @@ for (const locale of LOCALES) {
     });
 
     test('Twitter Card meta tags are present', async ({ page }) => {
-      await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute('content', 'summary');
+      await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute('content', 'summary_large_image');
       await expect(page.locator('meta[name="twitter:title"]')).toHaveCount(1);
     });
 
