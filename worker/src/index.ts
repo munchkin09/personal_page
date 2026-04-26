@@ -133,8 +133,9 @@ ${items}
 
     // ── POST /telegram  (webhook de Telegram) ─────────────────────────────────
     if (url.pathname === '/telegram' && request.method === 'POST') {
-      // Verificar el secreto en el query string
-      if (url.searchParams.get('secret') !== env.TELEGRAM_SECRET) {
+      // Verificar el secreto en el header X-Telegram-Bot-Api-Secret-Token
+      // (nunca en query string: quedaría expuesto en logs de acceso y CDN)
+      if (request.headers.get('X-Telegram-Bot-Api-Secret-Token') !== env.TELEGRAM_SECRET) {
         return new Response('Unauthorized', { status: 401 });
       }
 

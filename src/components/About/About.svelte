@@ -19,7 +19,7 @@
           <div class="avatar">
             {#if !avatarError}
               <img
-                src="https://boletinstatics.blob.core.windows.net/personal/yo.jpg"
+                src="https://boletinstatics.blob.core.windows.net/personal/yo.jpeg"
                 alt="Carlos Ledesma"
                 onerror={() => (avatarError = true)}
               />

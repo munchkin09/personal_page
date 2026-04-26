@@ -11,5 +11,13 @@ export default {
     alias: {
       $components: 'src/components',
     },
+    prerender: {
+      // /api/* es servido por el Cloudflare Worker, no existe en el build estático.
+      // Ignoramos los 404 de esas rutas durante el prerender.
+      handleHttpError: ({ path, message }) => {
+        if (path.startsWith('/api/')) return;
+        throw new Error(message);
+      },
+    },
   },
 };
