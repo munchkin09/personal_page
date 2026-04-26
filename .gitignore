@@ -27,3 +27,8 @@ build/
 *.sw?
 .svelte-kit/
 .playwright-mcp/
+
+# Playwright
+playwright-report/
+test-results/
+static/fonts/*.woff2

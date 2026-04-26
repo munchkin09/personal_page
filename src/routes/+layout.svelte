@@ -1,6 +1,9 @@
 <script lang="ts">
   import '../app.css';
   import WebMCPTools from '$lib/WebMCPTools.svelte';
+  import CustomCursor from '$components/CustomCursor/CustomCursor.svelte';
+  import Konami from '$components/Konami/Konami.svelte';
+  import DigitalDouble from '$components/DigitalDouble/DigitalDouble.svelte';
   let { children } = $props();
 
   const personSchema = JSON.stringify({
@@ -26,6 +29,8 @@
 <svelte:head>
   <title>Carlos Ledesma · Software Engineer</title>
   <meta name="description" content="Carlos Ledesma — Tech Lead & Solution Architect. Specialised in QA, AI Strategy, and Full-Stack Engineering." />
+  <link rel="icon" href="/design/logo-mark.svg" type="image/svg+xml" />
+  <link rel="shortcut icon" href="/design/logo-mark.svg" type="image/svg+xml" />
 
   <!-- AI / agent discovery -->
   <link rel="llms-txt" href="/llms.txt" />
@@ -38,3 +43,8 @@
 
 {@render children()}
 <WebMCPTools />
+
+<!-- Global Features -->
+<CustomCursor />
+<Konami />
+<DigitalDouble />
