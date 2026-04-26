@@ -171,6 +171,9 @@
   --z-overlay: 500;
   --z-modal:   1000;
   --z-toast:   2000;
+
+  /* ---------- MISC ---------- */
+  --blend-glow: screen;
 }
 
 /* ---------- LIGHT MODE (optional override) ---------- */
@@ -208,6 +211,8 @@
   --shadow-md: 0 8px 24px rgba(10, 10, 15, 0.10);
   --shadow-lg: 0 24px 60px rgba(10, 10, 15, 0.14);
   --shadow-glass: inset 0 1px 1px rgba(255, 255, 255, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.4), 0 8px 32px rgba(10, 10, 15, 0.08);
+
+  --blend-glow: multiply;
 }
 
 /* =========================================================================
