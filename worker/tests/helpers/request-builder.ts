@@ -13,10 +13,11 @@ export function optionsRequest(path: string) {
 }
 
 export function telegramPost(body: object, secret = TEST_SECRET) {
-  const url = secret ? `${BASE}/telegram?secret=${secret}` : `${BASE}/telegram`;
-  return new Request(url, {
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  if (secret) headers['X-Telegram-Bot-Api-Secret-Token'] = secret;
+  return new Request(`${BASE}/telegram`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     body: JSON.stringify(body),
   });
 }

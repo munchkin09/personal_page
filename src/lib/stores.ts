@@ -2,6 +2,14 @@ import { browser } from '$app/environment';
 import { writable } from 'svelte/store';
 
 export const activeSection = writable('hero');
+export const cursorState = writable<'default' | 'pointer' | 'text'>('default');
+export const is8Bit = writable(false);
+
+is8Bit.subscribe((v) => {
+  if (!browser) return;
+  if (v) document.documentElement.setAttribute('data-theme-8bit', 'true');
+  else document.documentElement.removeAttribute('data-theme-8bit');
+});
 
 // ── Theme store ─────────────────────────────────────────────────────────────
 function initTheme(): 'dark' | 'light' {
