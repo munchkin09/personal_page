@@ -157,9 +157,10 @@
 
   .tech-tag {
     padding: 5px 11px;
-    font-size: 10.5px;
-    letter-spacing: 0.08em;
-    color: var(--fg-muted);
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-subtle);
     border: 1px solid var(--border);
     border-radius: var(--radius-pill);
     background: color-mix(in srgb, var(--fg) 2%, transparent);

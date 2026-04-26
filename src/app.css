@@ -195,7 +195,10 @@ section[data-accent="yellow"] { --accent-on: var(--neon-yellow); --accent-glow: 
   color: var(--fg-inverse);
   box-shadow: var(--glow-cyan);
 }
-.btn-primary:hover { transform: translateY(-2px); }
+.btn-primary:hover { 
+  transform: translateY(-2px) scale(1.02); 
+  box-shadow: 0 0 0 2px rgba(0, 245, 212, 0.4), 0 0 40px rgba(0, 245, 212, 0.5), 0 0 100px rgba(0, 245, 212, 0.3);
+}
 
 .btn-secondary {
   background: transparent;
@@ -220,7 +223,20 @@ section[data-accent="yellow"] { --accent-on: var(--neon-yellow); --accent-glow: 
   color: var(--fg-inverse);
   box-shadow: var(--glow-yellow);
 }
-.btn-yellow:hover { transform: translateY(-2px); }
+.btn-yellow:hover { 
+  transform: translateY(-2px) scale(1.02); 
+  box-shadow: 0 0 0 2px rgba(254, 228, 64, 0.45), 0 0 40px rgba(254, 228, 64, 0.6), 0 0 100px rgba(254, 228, 64, 0.4);
+}
+
+/* ── Glassmorphism Utility ── */
+.glass-panel {
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  box-shadow: var(--shadow-glass);
+  border-radius: var(--radius-xl);
+}
 
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
@@ -231,3 +247,4 @@ section[data-accent="yellow"] { --accent-on: var(--neon-yellow); --accent-glow: 
     transition: none !important;
   }
 }
+

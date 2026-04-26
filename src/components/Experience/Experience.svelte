@@ -1,6 +1,6 @@
 <script lang="ts">
   import { dictionaries, type Locale } from '$lib/i18n';
-  import { observeSection, fadeIn } from '$lib/actions';
+  import { observeSection, fadeIn, spotlight } from '$lib/actions';
 
   let { lang }: { lang: Locale } = $props();
   const t = $derived(dictionaries[lang].experience);
@@ -18,7 +18,7 @@
 
     <ol class="exp-list">
       {#each t.items as item, i}
-        <li class="exp-row" use:fadeIn style="transition-delay: {i * 90}ms">
+        <li class="exp-row" use:fadeIn use:spotlight style="transition-delay: {i * 90}ms">
           <span class="exp-year mono">{item.year}</span>
           <div class="exp-body">
             <h3 class="exp-role">{item.role}</h3>
@@ -53,15 +53,29 @@
     padding: var(--space-6) 0;
     border-bottom: 1px solid var(--border);
     align-items: start;
-    transition:
-      padding var(--dur-base) var(--ease-out-quart),
-      background var(--dur-base) var(--ease-out-quart);
+    position: relative;
+    overflow: hidden;
+    transition: padding var(--dur-base) var(--ease-out-quart);
   }
 
-  .exp-row:hover {
-    padding-left: 10px;
-    background: linear-gradient(90deg, color-mix(in srgb, var(--neon-cyan) 5%, transparent), transparent 60%);
+  .exp-row::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      color-mix(in srgb, var(--neon-cyan) 8%, transparent),
+      transparent 40%
+    );
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-out-quart);
+    pointer-events: none;
+    z-index: 0;
   }
+
+  .exp-row:hover { padding-left: 10px; }
+  .exp-row:hover::after { opacity: 1; }
+  .exp-row > * { position: relative; z-index: 1; }
 
   .exp-row:hover .exp-role { color: var(--neon-cyan); }
 
@@ -106,8 +120,9 @@
 
   .exp-tag {
     padding: 4px 10px;
-    font-size: 10px;
-    letter-spacing: 0.08em;
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     color: var(--fg-subtle);
     border: 1px solid var(--border);
     border-radius: var(--radius-pill);

@@ -54,15 +54,17 @@
   --bg-elevated:   var(--obsidian-800);
   --bg-sunken:     var(--obsidian-950);
   --bg-overlay:    rgba(10, 10, 15, 0.72);
+  --bg-glass:      rgba(16, 16, 24, 0.55);
 
   --fg:            var(--obsidian-50);     /* primary text */
-  --fg-muted:      var(--obsidian-200);    /* secondary text */
-  --fg-subtle:     var(--obsidian-300);    /* tertiary / captions */
+  --fg-muted:      rgba(255, 255, 255, 0.7); /* secondary text (translucent) */
+  --fg-subtle:     rgba(255, 255, 255, 0.5); /* tertiary / captions */
   --fg-whisper:    var(--obsidian-400);    /* dividers-as-type */
   --fg-inverse:    var(--obsidian-900);    /* text on neon bg */
 
   --border:        rgba(255, 255, 255, 0.08);
   --border-strong: rgba(255, 255, 255, 0.16);
+  --border-glass:  rgba(255, 255, 255, 0.12);
   --border-accent: var(--neon-cyan);
 
   --accent:        var(--neon-cyan);       /* the one you reach for */
@@ -98,8 +100,8 @@
   --lh-normal: 1.5;
   --lh-loose:  1.7;
 
-  --tracking-tight:    -0.03em;
-  --tracking-snug:     -0.015em;
+  --tracking-tight:    -0.04em;
+  --tracking-snug:     -0.02em;
   --tracking-normal:   0em;
   --tracking-wide:     0.04em;
   --tracking-eyebrow:  0.16em;
@@ -133,6 +135,7 @@
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
   --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.55);
   --shadow-xl: 0 40px 100px rgba(0, 0, 0, 0.65);
+  --shadow-glass: inset 0 1px 1px rgba(255, 255, 255, 0.12), inset 0 0 20px rgba(255, 255, 255, 0.03), 0 8px 32px rgba(0, 0, 0, 0.4);
 
   /* Signature neon glows — the 'amazing animations' hook */
   --glow-cyan:   0 0 0 1px rgba(0, 245, 212, 0.4), 0 0 32px rgba(0, 245, 212, 0.35), 0 0 80px rgba(0, 245, 212, 0.18);
@@ -159,7 +162,7 @@
   --container-md:  900px;
   --container-lg:  1200px;
   --container-xl:  1440px;
-  --gutter:        clamp(1rem, 3vw, 3rem);
+  --gutter:        clamp(1.5rem, 5vw, 3rem);
 
   /* ---------- Z-INDEX ---------- */
   --z-base:    0;
@@ -176,15 +179,17 @@
   --bg-elevated:   #FFFFFF;
   --bg-sunken:     #F0EFEA;
   --bg-overlay:    rgba(250, 250, 247, 0.82);
+  --bg-glass:      rgba(255, 255, 255, 0.65);
 
   --fg:            #0A0A0F;
-  --fg-muted:      #2A2A3D;
-  --fg-subtle:     #5A5A75;
+  --fg-muted:      rgba(10, 10, 15, 0.7);
+  --fg-subtle:     rgba(10, 10, 15, 0.5);
   --fg-whisper:    #8686A3;
   --fg-inverse:    #FAFAF7;
 
   --border:        rgba(10, 10, 15, 0.10);
   --border-strong: rgba(10, 10, 15, 0.20);
+  --border-glass:  rgba(255, 255, 255, 0.6);
 
   /* neons darken slightly to stay readable on light bg */
   --neon-cyan:    #00B89E;
@@ -202,6 +207,7 @@
   --shadow-sm: 0 2px 8px rgba(10, 10, 15, 0.08);
   --shadow-md: 0 8px 24px rgba(10, 10, 15, 0.10);
   --shadow-lg: 0 24px 60px rgba(10, 10, 15, 0.14);
+  --shadow-glass: inset 0 1px 1px rgba(255, 255, 255, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.4), 0 8px 32px rgba(10, 10, 15, 0.08);
 }
 
 /* =========================================================================

@@ -27,7 +27,7 @@
     property="og:image"
     content="https://picsum.photos/seed/munchkin/1200/630"
   />
-  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={t.homeTitle} />
   <meta name="twitter:description" content={t.homeDescription} />
   <meta

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
   import { dictionaries, localeDateFormat, type Locale } from '$lib/i18n';
-  import { observeSection, fadeIn } from '$lib/actions';
+  import { observeSection, fadeIn, spotlight } from '$lib/actions';
 
   let { lang }: { lang: Locale } = $props();
   const t = $derived(dictionaries[lang].blog);
@@ -80,6 +80,7 @@
             href="/{lang}/blog/{post.id}"
             class="blog-card"
             use:fadeIn
+            use:spotlight
             style="transition-delay: {i * 70}ms"
           >
             <div class="blog-meta">
@@ -106,10 +107,15 @@
   }
 
   .blog-card {
+    position: relative;
+    overflow: hidden;
     padding: var(--space-6);
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
+    background: var(--bg-glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-glass);
     border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-glass);
     color: inherit;
     display: flex;
     flex-direction: column;
@@ -120,11 +126,28 @@
       box-shadow var(--dur-base) var(--ease-out-quart);
   }
 
+  .blog-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      color-mix(in srgb, var(--neon-violet) 15%, transparent),
+      transparent 40%
+    );
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-out-quart);
+    pointer-events: none;
+    z-index: 0;
+  }
+
   .blog-card:hover {
     transform: translateY(-3px);
     border-color: transparent;
-    box-shadow: var(--shadow-md), var(--glow-violet);
+    box-shadow: var(--shadow-lg), var(--glow-violet);
   }
+  .blog-card:hover::after { opacity: 1; }
+  .blog-card > * { position: relative; z-index: 1; }
 
   .blog-meta {
     display: flex;

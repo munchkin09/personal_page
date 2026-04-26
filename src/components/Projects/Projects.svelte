@@ -1,7 +1,7 @@
 <script lang="ts">
   import { dictionaries, type Locale } from '$lib/i18n';
   import { projectsMeta, projectIcons } from '$lib/constants';
-  import { observeSection, fadeIn, magnetic } from '$lib/actions';
+  import { observeSection, fadeIn, magnetic, spotlight } from '$lib/actions';
 
   let { lang }: { lang: Locale } = $props();
   const t = $derived(dictionaries[lang].projects);
@@ -35,6 +35,7 @@
           data-accent={project.accent}
           use:fadeIn
           use:magnetic
+          use:spotlight
           style="transition-delay: {i * 90}ms"
         >
           <div class="project-topline mono">
@@ -74,8 +75,11 @@
     grid-template-rows: auto auto 1fr auto;
     gap: var(--space-3);
     padding: var(--space-6);
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
+    background: var(--bg-glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-glass);
+    box-shadow: var(--shadow-glass);
     border-radius: var(--radius-xl);
     color: inherit;
     overflow: hidden;
@@ -107,6 +111,23 @@
   }
 
   .project-card:hover::before { opacity: 1; }
+
+  .project-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      color-mix(in srgb, var(--accent-on) 15%, transparent),
+      transparent 40%
+    );
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-out-quart);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .project-card:hover::after { opacity: 1; }
+  .project-card > * { position: relative; z-index: 1; }
 
   .project-topline {
     display: flex;
@@ -159,8 +180,9 @@
 
   .project-tag {
     padding: 4px 10px;
-    font-size: 10px;
-    letter-spacing: 0.08em;
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     color: var(--fg-subtle);
     border: 1px solid var(--border-strong);
     border-radius: var(--radius-pill);

@@ -2,7 +2,7 @@
   import { dictionaries, type Locale } from '$lib/i18n';
   import BackgroundLayers from '$components/BackgroundLayers/BackgroundLayers.svelte';
   import Footer from '$components/Footer/Footer.svelte';
-  import { fadeIn, magnetic } from '$lib/actions';
+  import { fadeIn, magnetic, spotlight } from '$lib/actions';
 
   let { data }: { data: { lang: Locale } } = $props();
   const t = $derived(dictionaries[data.lang].now);
@@ -60,6 +60,7 @@
         <article
           class="now-card"
           use:fadeIn
+          use:spotlight
           style="transition-delay: {i * 80}ms"
         >
           <div class="card-icon" aria-hidden="true">{section.icon}</div>
@@ -189,21 +190,43 @@
   }
 
   .now-card {
+    position: relative;
+    overflow: hidden;
     padding: var(--space-6);
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
+    background: var(--bg-glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-glass);
     border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-glass);
     transition:
       border-color var(--dur-base) var(--ease-out-quart),
       box-shadow var(--dur-base) var(--ease-out-quart),
       transform var(--dur-base) var(--ease-out-quart);
   }
 
+  .now-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      color-mix(in srgb, var(--neon-violet) 15%, transparent),
+      transparent 40%
+    );
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-out-quart);
+    pointer-events: none;
+    z-index: 0;
+  }
+
   .now-card:hover {
-    border-color: color-mix(in srgb, var(--neon-violet) 40%, transparent);
-    box-shadow: var(--glow-violet);
+    border-color: transparent;
+    box-shadow: var(--shadow-lg), var(--glow-violet);
     transform: translateY(-2px);
   }
+  .now-card:hover::after { opacity: 1; }
+  .now-card > * { position: relative; z-index: 1; }
 
   .card-icon {
     font-size: 1.875rem;

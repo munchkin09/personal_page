@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { marked } from 'marked';
   import { dictionaries, localeDateFormat, type Locale } from '$lib/i18n';
+  import { spotlight } from '$lib/actions';
 
   let { data }: { data: { id: string; lang: Locale } } = $props();
 
@@ -113,7 +114,7 @@
           </div>
           <h1 class="post-title">{post.title}</h1>
         </header>
-        <div class="post-body">
+        <div class="post-body" use:spotlight>
           {@html renderMarkdown(post.content)}
         </div>
         <footer class="post-footer">
@@ -368,21 +369,36 @@
   }
 
   .post-body {
+    position: relative;
+    overflow: hidden;
     font-family: var(--font-sans);
     font-size: var(--fs-body-lg);
     line-height: var(--lh-loose);
     color: var(--fg-muted);
     padding: var(--space-7);
-    background: linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--fg) 3%, transparent),
-      color-mix(in srgb, var(--fg) 1.5%, transparent)
-    );
-    border: 1px solid var(--border);
+    background: var(--bg-glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-glass);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md), var(--shadow-inner);
-    position: relative;
+    box-shadow: var(--shadow-glass);
   }
+  .post-body::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      color-mix(in srgb, var(--neon-cyan) 5%, transparent),
+      transparent 40%
+    );
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-out-quart);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .post-body:hover::after { opacity: 1; }
+  .post-body > * { position: relative; z-index: 1; }
   .post-body::before {
     content: '';
     position: absolute;

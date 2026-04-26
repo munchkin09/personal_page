@@ -130,10 +130,10 @@
     width: calc(100% - 28px);
     max-width: var(--container-lg);
     border-radius: var(--radius-pill);
-    border: 1px solid var(--border);
-    background: var(--bg-overlay);
-    backdrop-filter: blur(14px) saturate(1.2);
-    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    border: 1px solid var(--border-glass);
+    background: var(--bg-glass);
+    backdrop-filter: blur(16px) saturate(1.2);
+    -webkit-backdrop-filter: blur(16px) saturate(1.2);
     transition:
       background var(--dur-base) var(--ease-out-quart),
       border-color var(--dur-base) var(--ease-out-quart),
@@ -141,9 +141,9 @@
   }
 
   nav.scrolled {
-    background: var(--bg-overlay);
+    background: var(--bg-glass);
     border-color: var(--border-strong);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-glass);
   }
 
   .logo {
@@ -296,7 +296,7 @@
 
   .menu-toggle :global(svg) { width: 22px; height: 22px; }
 
-  @media (max-width: 860px) {
+  @media (max-width: 1100px) {
     .menu-toggle { display: inline-flex; }
 
     .nav-content {
@@ -307,9 +307,10 @@
       flex-direction: column;
       gap: var(--space-4);
       padding: var(--space-5);
-      background: color-mix(in srgb, var(--bg) 96%, transparent);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--border);
+      background: var(--bg-glass);
+      backdrop-filter: blur(30px) saturate(1.5);
+      -webkit-backdrop-filter: blur(30px) saturate(1.5);
+      border: 1px solid var(--border-glass);
       border-radius: var(--radius-lg);
       max-height: 0;
       overflow: hidden;
