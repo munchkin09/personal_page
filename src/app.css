@@ -85,7 +85,7 @@ section[data-accent="yellow"] { --accent-on: var(--neon-yellow); --accent-glow: 
   gap: 12px;
   font-family: var(--font-mono);
   font-size: var(--fs-micro);
-  letter-spacing: var(--tracking-eyebrow);
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--fg-subtle);
   font-weight: 500;
@@ -114,10 +114,17 @@ section[data-accent="yellow"] { --accent-on: var(--neon-yellow); --accent-glow: 
 .mono { font-family: var(--font-mono); }
 
 .gradient-text {
-  background: linear-gradient(92deg, var(--neon-cyan), var(--neon-violet) 50%, var(--neon-pink));
+  background: linear-gradient(92deg, var(--neon-cyan), var(--neon-violet) 50%, var(--neon-pink), var(--neon-cyan));
+  background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  animation: text-shimmer 6s linear infinite;
+  text-shadow: 0 0 24px color-mix(in srgb, var(--neon-violet) 30%, transparent);
+}
+
+@keyframes text-shimmer {
+  to { background-position: 200% center; }
 }
 
 /* ── Section heading block ── */
@@ -150,17 +157,19 @@ section[data-accent="yellow"] { --accent-on: var(--neon-yellow); --accent-glow: 
   .section-head { grid-template-columns: 1fr; gap: var(--space-4); align-items: start; }
 }
 
-/* ── Fade-in animation utility ── */
 .fade-in {
   opacity: 0;
+  filter: blur(12px);
   transform: translateY(28px);
   transition:
     opacity 720ms var(--ease-out-expo),
+    filter 720ms var(--ease-out-expo),
     transform 720ms var(--ease-out-expo);
 }
 
 .fade-in.visible {
   opacity: 1;
+  filter: blur(0);
   transform: translateY(0);
 }
 
@@ -238,13 +247,20 @@ section[data-accent="yellow"] { --accent-on: var(--neon-yellow); --accent-glow: 
   border-radius: var(--radius-xl);
 }
 
+/* ── Ripple Animation ── */
+@keyframes ripple-effect {
+  to { transform: scale(4); opacity: 0; }
+}
+
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   .pulse-dot { animation: none !important; }
   .fade-in {
     opacity: 1 !important;
     transform: none !important;
+    filter: none !important;
     transition: none !important;
   }
+  .gradient-text { animation: none !important; }
 }
 

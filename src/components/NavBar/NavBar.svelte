@@ -3,7 +3,7 @@
   import { goto } from '$app/navigation';
   import { dictionaries, rememberLocale, swapLocaleInPath, SUPPORTED_LOCALES, type Locale } from '$lib/i18n';
   import { activeSection, theme } from '$lib/stores';
-  import { magnetic } from '$lib/actions';
+  import { magnetic, ripple } from '$lib/actions';
 
   let { lang }: { lang: Locale } = $props();
   const t = $derived(dictionaries[lang].nav);
@@ -78,6 +78,7 @@
             class="lang-btn"
             class:active={lang === loc}
             aria-pressed={lang === loc}
+            use:ripple
             onclick={() => { switchLocale(loc); mobileMenuOpen = false; }}
           >{loc.toUpperCase()}</button>
         {/each}
@@ -96,6 +97,7 @@
       <button
         type="button"
         class="theme-toggle"
+        use:ripple
         onclick={() => theme.update(t => t === 'dark' ? 'light' : 'dark')}
         aria-label={$theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
       >
@@ -108,7 +110,7 @@
         {/if}
       </button>
 
-      <a href="mailto:{CONTACT_EMAIL}" class="nav-cta" use:magnetic onclick={() => (mobileMenuOpen = false)}>
+      <a href="mailto:{CONTACT_EMAIL}" class="nav-cta" use:magnetic use:ripple onclick={() => (mobileMenuOpen = false)}>
         {t.ctaContact} <span class="arrow">→</span>
       </a>
     </div>

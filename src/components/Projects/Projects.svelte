@@ -1,7 +1,7 @@
 <script lang="ts">
   import { dictionaries, type Locale } from '$lib/i18n';
   import { projectsMeta, projectIcons } from '$lib/constants';
-  import { observeSection, fadeIn, magnetic, spotlight } from '$lib/actions';
+  import { observeSection, fadeIn, tilt } from '$lib/actions';
 
   let { lang }: { lang: Locale } = $props();
   const t = $derived(dictionaries[lang].projects);
@@ -34,8 +34,7 @@
           rel="noopener noreferrer"
           data-accent={project.accent}
           use:fadeIn
-          use:magnetic
-          use:spotlight
+          use:tilt
           style="transition-delay: {i * 90}ms"
         >
           <div class="project-topline mono">
@@ -133,7 +132,7 @@
     display: flex;
     justify-content: space-between;
     font-size: 10.5px;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--fg-whisper);
   }
@@ -181,7 +180,7 @@
   .project-tag {
     padding: 4px 10px;
     font-size: 9.5px;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--fg-subtle);
     border: 1px solid var(--border-strong);
