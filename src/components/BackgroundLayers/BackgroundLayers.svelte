@@ -58,7 +58,7 @@
     max-height: 900px;
     opacity: 0.25;
     filter: blur(90px) saturate(1.4);
-    mix-blend-mode: screen;
+    mix-blend-mode: var(--blend-glow, screen);
     will-change: transform;
     user-select: none;
   }
@@ -80,12 +80,12 @@
     pointer-events: none;
     z-index: 1;
     margin: -200px 0 0 -200px;
-    mix-blend-mode: screen;
+    mix-blend-mode: var(--blend-glow, screen);
     transition: transform 120ms var(--ease-out-quart), opacity 300ms var(--ease-out-quart);
     will-change: transform;
   }
 
-  .cursor-glow.trail { mix-blend-mode: screen; }
+  .cursor-glow.trail { mix-blend-mode: var(--blend-glow, screen); }
 
   .cursor-glow.trail-2 {
     width: 320px; height: 320px;
