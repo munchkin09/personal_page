@@ -6,7 +6,7 @@
   let { lang }: { lang: Locale } = $props();
   const t = $derived(dictionaries[lang].blog);
 
-  interface Post { id: string; title: string; content: string; date: string; }
+  interface Post { id: string; title: string; content: string; date: string; tags?: string[]; }
   let posts = $state<Post[]>([]);
   let postsLoading = $state(false);
 
@@ -88,6 +88,13 @@
               <span class="blog-id mono">#{post.id}</span>
             </div>
             <h3 class="blog-title">{post.title}</h3>
+            {#if post.tags?.length}
+              <div class="blog-tags">
+                {#each post.tags as tag}
+                  <span class="blog-tag">{tag}</span>
+                {/each}
+              </div>
+            {/if}
             <div class="blog-body">
               <p>{@html renderMarkdown(post.content)}</p>
             </div>
@@ -180,6 +187,22 @@
 
   .blog-body :global(a)    { color: var(--neon-violet); }
   .blog-body :global(code) { font-family: var(--font-mono); font-size: 12px; color: var(--neon-cyan); }
+
+  .blog-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .blog-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid color-mix(in srgb, var(--neon-violet) 30%, transparent);
+    border-radius: var(--radius-xs);
+    background: color-mix(in srgb, var(--neon-violet) 6%, transparent);
+    color: var(--neon-violet);
+  }
 
   .blog-read-more {
     margin-top: auto;

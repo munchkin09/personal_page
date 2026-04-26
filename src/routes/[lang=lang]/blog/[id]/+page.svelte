@@ -8,7 +8,7 @@
 
   const t = $derived(dictionaries[data.lang].blogDetail);
 
-  interface Post { id: string; title: string; content: string; date: string; }
+  interface Post { id: string; title: string; content: string; date: string; tags?: string[]; }
   let post = $state<Post | null>(null);
   let loading = $state(true);
   let notFound = $state(false);
@@ -113,6 +113,13 @@
             <span class="read-time mono">{readingTime()} {data.lang === 'es' ? 'min de lectura' : 'min read'}</span>
           </div>
           <h1 class="post-title">{post.title}</h1>
+          {#if post.tags?.length}
+            <div class="post-tags">
+              {#each post.tags as tag}
+                <span class="post-tag">{tag}</span>
+              {/each}
+            </div>
+          {/if}
         </header>
         <div class="post-body" use:spotlight>
           {@html renderMarkdown(post.content)}
@@ -298,6 +305,23 @@
     max-width: 42ch;
   }
 
+  /* ── Tags ────────────────────────────────────────────────────── */
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .post-tag {
+    font-family: var(--font-mono);
+    font-size: var(--fs-micro);
+    letter-spacing: 0.06em;
+    padding: 0.2rem 0.6rem;
+    border: 1px solid color-mix(in srgb, var(--neon-cyan) 30%, transparent);
+    border-radius: var(--radius-xs);
+    background: color-mix(in srgb, var(--neon-cyan) 6%, transparent);
+    color: var(--neon-cyan);
+  }
+
   /* ── Post ─────────────────────────────────────────────────────── */
   .post {
     display: flex;
@@ -398,7 +422,6 @@
     z-index: 0;
   }
   .post-body:hover::after { opacity: 1; }
-  .post-body > * { position: relative; z-index: 1; }
   .post-body::before {
     content: '';
     position: absolute;
