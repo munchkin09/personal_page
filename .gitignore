@@ -27,6 +27,12 @@ build/
 *.sw?
 .svelte-kit/
 .playwright-mcp/
+.azure/
+.aws/
+.gcp/
+.vercel/
+.wrangler/
+
 
 # Playwright
 playwright-report/
