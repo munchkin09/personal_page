@@ -1,0 +1,14 @@
+name = "blog-worker"
+main = "src/index.ts"
+compatibility_date = "2026-04-21"
+
+# Crea el namespace con: wrangler kv namespace create POSTS
+# Luego pega el id aquí
+[[kv_namespaces]]
+binding = "POSTS"
+id = "0863222091bb4cc380d21f2d00099021"
+
+
+[observability.logs]
+enabled = true
+

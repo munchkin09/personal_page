@@ -368,3 +368,50 @@ hr {
     animation-iteration-count: 1 !important;
   }
 }
+
+/* =========================================================================
+   8-BIT MODE (Konami Code)
+   ========================================================================= */
+:root[data-theme-8bit='true'] {
+  --font-display: 'Press Start 2P', var(--font-mono);
+  --font-sans: 'Press Start 2P', var(--font-mono);
+  
+  --tracking-tight: 0em;
+  --tracking-snug: 0em;
+  --tracking-wide: 0em;
+
+  --radius-xs: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-pill: 0px;
+
+  --shadow-xs: 2px 2px 0 var(--neon-cyan);
+  --shadow-sm: 4px 4px 0 var(--neon-cyan);
+  --shadow-md: 6px 6px 0 var(--neon-violet);
+  --shadow-lg: 8px 8px 0 var(--neon-pink);
+  --shadow-xl: 10px 10px 0 var(--neon-yellow);
+
+  --border: rgba(255, 255, 255, 0.4);
+  --border-strong: rgba(255, 255, 255, 0.8);
+
+  --glow-cyan: none;
+  --glow-violet: none;
+  --glow-pink: none;
+  --glow-yellow: none;
+  --glow-green: none;
+}
+
+:root[data-theme-8bit='true'] * {
+  text-transform: uppercase !important;
+}
+
+:root[data-theme-8bit='true'] body {
+  background-image: 
+    linear-gradient(45deg, var(--obsidian-850) 25%, transparent 25%, transparent 75%, var(--obsidian-850) 75%, var(--obsidian-850)), 
+    linear-gradient(45deg, var(--obsidian-850) 25%, transparent 25%, transparent 75%, var(--obsidian-850) 75%, var(--obsidian-850));
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+}

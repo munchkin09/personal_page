@@ -74,11 +74,9 @@ for (const locale of LOCALES) {
       const logo = page.locator('nav a.logo').first();
       // force:true bypasses intercept-by-overlay checks (hero bg layers can overlap)
       await logo.click({ force: true });
-      await page.waitForTimeout(600);
 
-      // Should be near the top of the page
-      const scrollY = await page.evaluate(() => window.scrollY);
-      expect(scrollY).toBeLessThan(500);
+      // Wait for smooth-scroll (scroll-behavior: smooth in app.css) to complete
+      await page.waitForFunction(() => window.scrollY < 500, { timeout: 5_000 });
     });
   });
 }

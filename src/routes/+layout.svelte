@@ -1,6 +1,9 @@
 <script lang="ts">
   import '../app.css';
   import WebMCPTools from '$lib/WebMCPTools.svelte';
+  import CustomCursor from '$components/CustomCursor/CustomCursor.svelte';
+  import Konami from '$components/Konami/Konami.svelte';
+  import DigitalDouble from '$components/DigitalDouble/DigitalDouble.svelte';
   let { children } = $props();
 
   const personSchema = JSON.stringify({
@@ -40,3 +43,8 @@
 
 {@render children()}
 <WebMCPTools />
+
+<!-- Global Features -->
+<CustomCursor />
+<Konami />
+<DigitalDouble />
