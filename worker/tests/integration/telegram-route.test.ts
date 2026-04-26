@@ -37,7 +37,7 @@ afterEach(() => {
 // ── Auth ──────────────────────────────────────────────────────────────────────
 
 describe('POST /telegram — autenticación', () => {
-  it('sin ?secret= retorna 401', async () => {
+  it('sin header X-Telegram-Bot-Api-Secret-Token retorna 401', async () => {
     const req = new Request('https://worker.test/telegram', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -48,7 +48,7 @@ describe('POST /telegram — autenticación', () => {
     expect(await res.text()).toBe('Unauthorized');
   });
 
-  it('?secret= incorrecto retorna 401', async () => {
+  it('header secret incorrecto retorna 401', async () => {
     const res = await worker.fetch(telegramPost({}, 'wrong-secret'), makeEnv() as any);
     expect(res.status).toBe(401);
   });
