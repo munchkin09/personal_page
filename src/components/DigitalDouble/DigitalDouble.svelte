@@ -165,8 +165,8 @@
   }
 
   .toggle-btn {
-    width: 60px;
-    height: 60px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
     background: var(--bg-elevated);
     color: var(--neon-cyan);
@@ -175,15 +175,34 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.3s var(--ease-spring), background 0.3s, color 0.3s;
+    transition: transform 0.3s var(--ease-spring), background 0.3s, color 0.3s, box-shadow 0.3s;
     cursor: none; /* handled by our global custom cursor */
   }
+
+  .toggle-btn:not(.open) {
+    animation: attention-pulse 2.5s infinite;
+  }
+
+  @keyframes attention-pulse {
+    0% {
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--neon-cyan) 60%, transparent), var(--shadow-md), var(--glow-cyan);
+    }
+    70% {
+      box-shadow: 0 0 0 20px color-mix(in srgb, var(--neon-cyan) 0%, transparent), var(--shadow-md), var(--glow-cyan);
+    }
+    100% {
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--neon-cyan) 0%, transparent), var(--shadow-md), var(--glow-cyan);
+    }
+  }
+
   .toggle-btn:hover {
     transform: scale(1.08) translateY(-4px);
     background: var(--neon-cyan);
     color: var(--obsidian-950);
+    animation: none;
+    box-shadow: var(--shadow-lg), 0 0 20px color-mix(in srgb, var(--neon-cyan) 80%, transparent);
   }
-  .toggle-btn svg { width: 26px; height: 26px; }
+  .toggle-btn svg { width: 28px; height: 28px; }
 
   .chat-window {
     width: 360px;
