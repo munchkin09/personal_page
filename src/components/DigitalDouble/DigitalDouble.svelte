@@ -16,7 +16,21 @@
 
   onMount(() => {
     const stored = localStorage.getItem('chat_message_count');
-    if (stored) messageCount = parseInt(stored, 10);
+    const expires = localStorage.getItem('chat_limit_expires');
+
+    if (expires && Date.now() > parseInt(expires, 10)) {
+      // Han pasado 24 horas, limpiar localStorage
+      localStorage.removeItem('chat_message_count');
+      localStorage.removeItem('chat_limit_expires');
+      messageCount = 0;
+    } else if (stored && !expires) {
+      // Para usuarios con el límite antiguo sin fecha de caducidad, lo reseteamos
+      // El backend validará de forma segura si todavía tienen límite activo.
+      localStorage.removeItem('chat_message_count');
+      messageCount = 0;
+    } else if (stored) {
+      messageCount = parseInt(stored, 10);
+    }
     
     if (messageCount >= MAX_MESSAGES) {
       messages.push({ 
@@ -31,6 +45,7 @@
     
     messageCount++;
     localStorage.setItem('chat_message_count', messageCount.toString());
+    localStorage.setItem('chat_limit_expires', (Date.now() + 86400000).toString());
 
     messages.push({ role: 'user', content: inputMessage });
     inputMessage = '';
@@ -56,6 +71,7 @@
         messages.push({ role: 'ai', content: data.response });
         messageCount = MAX_MESSAGES;
         localStorage.setItem('chat_message_count', MAX_MESSAGES.toString());
+        localStorage.setItem('chat_limit_expires', (Date.now() + 86400000).toString());
         return;
       }
 
@@ -67,6 +83,7 @@
       if (data.limit) {
          messageCount = data.limit;
          localStorage.setItem('chat_message_count', messageCount.toString());
+         localStorage.setItem('chat_limit_expires', (Date.now() + 86400000).toString());
       }
       
       if (messageCount >= MAX_MESSAGES) {
