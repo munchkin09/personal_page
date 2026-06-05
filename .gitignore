@@ -1,3 +1,5 @@
+docs/
+wrangler.toml
 # Logs
 logs
 *.log
