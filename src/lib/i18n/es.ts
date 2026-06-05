@@ -31,7 +31,7 @@ export const es = {
     printableCv: 'CV imprimible',
     stats: {
       yearsLabel: 'Años de experiencia',
-      continentsLabel: 'Continentes impactados',
+      continentsLabel: 'Países impactados',
       projectsLabel: 'Proyectos completados',
       bugsLabel: 'Bugs detectados antes',
       uptimeLabel: 'Uptime en producción',
@@ -94,6 +94,15 @@ export const es = {
       Data: 'Data',
       Testing: 'Testing',
     },
+    techDetails: {
+      typescript: 'Construcción de frameworks robustos de testing y herramientas internas. Automatización avanzada, custom reporters, fixtures y tipado estricto para garantizar fiabilidad en sistemas de alto impacto.',
+      ai: 'Diseño y desarrollo de agentes autónomos con LLMs orientados a la verificación, validación y análisis de calidad del software. Plataforma de generación automática de casos de prueba y modernización de código legado COBOL.',
+      cloud: 'Administración de recursos e infraestructura en Azure, AWS y GCP. Despliegues automatizados en contenedores Docker y configuraciones avanzadas integradas en pipelines CI/CD.',
+      systemDesign: 'Arquitectura de software con enfoque en escalabilidad, resiliencia y bajo acoplamiento. Diseño de suites y plataformas de calidad que escalan con el equipo y reducen la deuda técnica.',
+      qaAutomation: 'Liderazgo técnico en automatización de pruebas con Playwright, Selenium, Cucumber y WebdriverIO. Estrategias de testing E2E, integración y API con reporting para stakeholders.',
+      frontend: 'Desarrollo moderno y performante con Svelte 5, React y arquitecturas SPA/SSR. Creación de interfaces fluidas con animaciones avanzadas, accesibilidad y optimización de Core Web Vitals.',
+      python: 'Desarrollo de scripts de automatización, orquestación de llamadas a LLMs, procesamiento de vídeo con FFmpeg, APIs de backend y tratamiento de datos asistido por inteligencia artificial.',
+    },
   },
   projects: {
     label: 'Open Source',
@@ -119,7 +128,7 @@ export const es = {
       },
       {
         title: 'Gordots',
-        description: 'Proyecto de videojuego desarrollado con Godot Engine. Assets externos, sprites con ZzSprite y sistema de log con LogDuck.',
+        description: 'Videojuego de scroll lateral acerca de los viajes y su significado vital para el viajero y sus experiencias con los demás.',
       },
       {
         title: 'Asciicrappers (turbo-invention)',
@@ -246,7 +255,7 @@ export const es = {
     },
     highlights: [
       { n: '13+', l: 'años de experiencia' },
-      { n: '2', l: 'continentes (EU & LATAM)' },
+      { n: '+10', l: 'países (EU & LATAM)' },
       { n: 'LLMs', l: 'aplicados a QA y legacy' },
       { n: 'SDLC', l: 'visión de extremo a extremo' },
     ],
@@ -331,9 +340,9 @@ export const es = {
   now: {
     pageTitle: 'Ahora · Carlos Ledesma',
     pageDescription: 'Qué estoy haciendo ahora mismo: proyectos, aprendizajes y foco personal.',
-    eyebrow: 'Snapshot · Abril 2026',
+    eyebrow: 'Snapshot · Mayo 2026',
     title: '¿Qué estoy haciendo ahora?',
-    updated: 'Actualizado en abril de 2026 desde Madrid',
+    updated: 'Actualizado en mayo de 2026 desde Madrid',
     back: '← Volver al portfolio',
     footerNote: 'Esta página está inspirada en el movimiento /now de Derek Sivers.',
     sections: [
@@ -352,6 +361,7 @@ export const es = {
         title: 'Proyectos personales',
         items: [
           'Este mismo portfolio — Svelte 5, Cloudflare Pages, blog vía Telegram',
+          'Proyecto de interacción con agentes a través de interfaces alternativas',
           '<strong>Mammals</strong> — plataforma de tickets + conocimiento con IA y MCP',
           '<strong>YACS</strong> — colección de Skills y Agentes para Claude Code',
           'Explorando Workers AI y Analytics Engine en Cloudflare',
@@ -361,6 +371,7 @@ export const es = {
         icon: '📚',
         title: 'Aprendiendo',
         items: [
+          'Temas de arte y música con microtonalidad',
           'Arquitecturas multi-agente y orquestación de LLMs',
           'Svelte 5 runes en profundidad',
           'Cloudflare Workers AI y Vectorize',
@@ -372,6 +383,7 @@ export const es = {
         title: 'Fuera del trabajo',
         items: [
           'Desarrollando un videojuego en Godot Engine — proyecto <strong>Gordots</strong>',
+          'Leyendo un libro llamado: El reino de los espíritus hambrientos',
           'Leyendo sobre diseño de sistemas y arquitectura de software',
           'Senderismo por la sierra de Madrid',
         ],

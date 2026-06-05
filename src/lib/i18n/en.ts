@@ -45,7 +45,7 @@ export const en: Widen<typeof es> = {
     printableCv: 'Printable resume',
     stats: {
       yearsLabel: 'Years of experience',
-      continentsLabel: 'Continents impacted',
+      continentsLabel: 'Countries impacted',
       projectsLabel: 'Projects delivered',
       bugsLabel: 'Bugs caught early',
       uptimeLabel: 'Production uptime',
@@ -108,6 +108,15 @@ export const en: Widen<typeof es> = {
       Data: 'Data',
       Testing: 'Testing',
     },
+    techDetails: {
+      typescript: 'Building robust testing frameworks and internal tooling. Advanced automation, custom reporters, fixtures, and strict typing to guarantee reliability in high-impact systems.',
+      ai: 'Designing and developing autonomous LLM-powered agents for software verification, validation, and quality analysis. Automatic test-case generation platform and legacy COBOL modernization.',
+      cloud: 'Managing resources and infrastructure across Azure, AWS, and GCP. Automated containerized deployments with Docker and advanced CI/CD pipeline integrations.',
+      systemDesign: 'Software architecture focused on scalability, resilience, and loose coupling. Designing quality suites and platforms that scale with the team and reduce technical debt.',
+      qaAutomation: 'Technical leadership in test automation using Playwright, Selenium, Cucumber, and WebdriverIO. End-to-end, integration, and API testing strategies with business-oriented reporting.',
+      frontend: 'Modern and performant development with Svelte 5, React, and SPA/SSR architectures. Building fluid interfaces with advanced animations, accessibility, and Core Web Vitals optimization.',
+      python: 'Developing automation scripts, orchestrating LLM calls, video processing tools with FFmpeg, backend APIs, and AI-assisted data processing.',
+    },
   },
   projects: {
     label: 'Open Source',
@@ -133,7 +142,7 @@ export const en: Widen<typeof es> = {
       },
       {
         title: 'Gordots',
-        description: 'A video game project built with the Godot Engine. External assets, sprites via ZzSprite and logging with LogDuck.',
+        description: 'A side-scrolling video game about travel, its vital meaning for the traveler, and their experiences with others.',
       },
       {
         title: 'Asciicrappers (turbo-invention)',
@@ -260,7 +269,7 @@ export const en: Widen<typeof es> = {
     },
     highlights: [
       { n: '13+', l: 'years of experience' },
-      { n: '2', l: 'continents (EU & LATAM)' },
+      { n: '+10', l: 'countries (EU & LATAM)' },
       { n: 'LLMs', l: 'applied to QA and legacy' },
       { n: 'SDLC', l: 'end-to-end perspective' },
     ],
@@ -345,9 +354,9 @@ export const en: Widen<typeof es> = {
   now: {
     pageTitle: 'Now · Carlos Ledesma',
     pageDescription: 'What I\'m doing right now: projects, learning, and personal focus.',
-    eyebrow: 'Snapshot · April 2026',
+    eyebrow: 'Snapshot · May 2026',
     title: 'What am I doing now?',
-    updated: 'Updated April 2026 from Madrid',
+    updated: 'Updated May 2026 from Madrid',
     back: '← Back to portfolio',
     footerNote: 'This page is inspired by the /now movement by Derek Sivers.',
     sections: [
@@ -366,6 +375,7 @@ export const en: Widen<typeof es> = {
         title: 'Side projects',
         items: [
           'This portfolio — Svelte 5, Cloudflare Pages, blog via Telegram',
+          'Agent interaction project via alternative interfaces',
           '<strong>Mammals</strong> — tickets + knowledge platform with AI and MCP',
           '<strong>YACS</strong> — Skills and Agents collection for Claude Code',
           'Exploring Workers AI and Analytics Engine on Cloudflare',
@@ -375,6 +385,7 @@ export const en: Widen<typeof es> = {
         icon: '📚',
         title: 'Learning',
         items: [
+          'Art and music microtonality topics',
           'Multi-agent architectures and LLM orchestration',
           'Svelte 5 runes in depth',
           'Cloudflare Workers AI and Vectorize',
@@ -386,6 +397,7 @@ export const en: Widen<typeof es> = {
         title: 'Outside work',
         items: [
           'Building a video game in Godot Engine — <strong>Gordots</strong> project',
+          'Reading a book called: In the Realm of Hungry Ghosts',
           'Reading about system design and software architecture',
           'Hiking in the mountains around Madrid',
         ],

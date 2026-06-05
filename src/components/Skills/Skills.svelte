@@ -44,6 +44,7 @@
   );
 
   let hoveredSkillIdx = $state<number | null>(null);
+  let expandedSkillIdx = $state<number | null>(null);
 
   const extraTags = [
     'Git', 'CI/CD', 'WebSockets', 'REST', 'GraphQL', 'gRPC', 'Rust', 'Go',
@@ -93,7 +94,7 @@
             <line
               x1={RADAR.cx} y1={RADAR.cy} x2={ax.x} y2={ax.y}
               class="radar-axis"
-              class:is-hovered={hoveredSkillIdx === i}
+              class:is-hovered={hoveredSkillIdx === i || expandedSkillIdx === i}
             />
           {/each}
 
@@ -105,11 +106,13 @@
           {#each radarDots as dot, i}
             <circle
               cx={dot.x} cy={dot.y}
-              r={hoveredSkillIdx === i ? 7.5 : 5}
+              r={(hoveredSkillIdx === i || expandedSkillIdx === i) ? 7.5 : 5}
               class="radar-dot radar-dot--{dot.accent}"
               filter="url(#dot-glow)"
               onmouseenter={() => hoveredSkillIdx = i}
               onmouseleave={() => hoveredSkillIdx = null}
+              onclick={() => expandedSkillIdx = expandedSkillIdx === i ? null : i}
+              style="cursor: pointer;"
               role="presentation"
             />
           {/each}
@@ -118,14 +121,17 @@
             {@const lp = radarLabelPos[i]}
             {@const anchor = lp.x < RADAR.cx - 22 ? 'end' : lp.x > RADAR.cx + 22 ? 'start' : 'middle'}
             <!-- svelte-ignore a11y_no_static_element_interactions -->
+            <!-- svelte-ignore a11y_click_events_have_key_events -->
             <text
               x={lp.x} y={lp.y}
               class="radar-lbl"
-              class:radar-lbl--hovered={hoveredSkillIdx === i}
+              class:radar-lbl--hovered={hoveredSkillIdx === i || expandedSkillIdx === i}
               text-anchor={anchor}
               dominant-baseline="middle"
               onmouseenter={() => hoveredSkillIdx = i}
               onmouseleave={() => hoveredSkillIdx = null}
+              onclick={() => expandedSkillIdx = expandedSkillIdx === i ? null : i}
+              style="cursor: pointer;"
             >{skill.name}</text>
           {/each}
 
@@ -137,12 +143,23 @@
       <!-- Legend -->
       <ul class="radar-legend" role="list">
         {#each techStack as skill, i}
+          <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
           <li
             class="radar-legend-item radar-legend-item--{skill.accent}"
-            class:is-hovered={hoveredSkillIdx === i}
+            class:is-hovered={hoveredSkillIdx === i || expandedSkillIdx === i}
+            class:is-expanded={expandedSkillIdx === i}
             onmouseenter={() => hoveredSkillIdx = i}
             onmouseleave={() => hoveredSkillIdx = null}
-            role="listitem"
+            onclick={() => expandedSkillIdx = expandedSkillIdx === i ? null : i}
+            onkeydown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                expandedSkillIdx = expandedSkillIdx === i ? null : i;
+              }
+            }}
+            role="button"
+            tabindex="0"
+            aria-expanded={expandedSkillIdx === i}
             style="transition-delay: {i * 55}ms"
           >
             <span class="rli-dot" aria-hidden="true"></span>
@@ -150,6 +167,19 @@
             <span class="rli-name">{skill.name}</span>
             <span class="rli-cat mono">{skill.categoryLabel}</span>
             <span class="rli-pct mono">{skill.pct}%</span>
+            <span class="rli-chevron" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </span>
+
+            <!-- svelte-ignore a11y_click_events_have_key_events -->
+            <!-- svelte-ignore a11y_no_static_element_interactions -->
+            <div class="rli-details-wrapper" class:expanded={expandedSkillIdx === i} onclick={(e) => e.stopPropagation()}>
+              <div class="rli-details-content">
+                <p class="rli-desc">
+                  {t.techDetails[skill.key]}
+                </p>
+              </div>
+            </div>
           </li>
         {/each}
       </ul>
@@ -272,14 +302,19 @@
 
   .radar-legend-item {
     display: grid;
-    grid-template-columns: 8px 26px 1fr auto auto;
+    grid-template-columns: 8px 26px 1fr auto auto 16px;
     align-items: center;
     gap: var(--space-3);
     padding: 0.55rem var(--space-4);
     border-radius: var(--radius-md);
     border: 1px solid transparent;
-    cursor: default;
+    cursor: pointer;
     transition: background var(--dur-base), border-color var(--dur-base), box-shadow var(--dur-base);
+  }
+
+  .radar-legend-item:focus-visible {
+    outline: 2px solid var(--li-accent);
+    outline-offset: -2px;
   }
 
   .radar-legend-item--cyan   { --li-accent: var(--neon-cyan);   --li-glow: var(--glow-cyan);   }
@@ -287,7 +322,8 @@
   .radar-legend-item--pink   { --li-accent: var(--neon-pink);   --li-glow: var(--glow-pink);   }
   .radar-legend-item--yellow { --li-accent: var(--neon-yellow); --li-glow: var(--glow-yellow); }
 
-  .radar-legend-item.is-hovered {
+  .radar-legend-item.is-hovered,
+  .radar-legend-item.is-expanded {
     background: var(--bg-elevated);
     border-color: var(--border-strong);
     box-shadow: inset 0 0 0 1px var(--border);
@@ -302,11 +338,62 @@
     transition: box-shadow var(--dur-base);
   }
 
-  .radar-legend-item.is-hovered .rli-dot { box-shadow: 0 0 14px var(--li-accent); }
+  .radar-legend-item.is-hovered .rli-dot,
+  .radar-legend-item.is-expanded .rli-dot {
+    box-shadow: 0 0 14px var(--li-accent);
+  }
+
   .rli-idx { font-size: 10px; color: var(--fg-whisper); letter-spacing: 0.1em; }
   .rli-name { font-family: var(--font-display); font-size: 0.95rem; font-weight: 600; color: var(--fg); letter-spacing: -0.01em; }
   .rli-cat  { font-size: 10px; color: var(--fg-whisper); text-transform: uppercase; letter-spacing: 0.1em; }
   .rli-pct  { font-size: 11px; color: var(--li-accent); font-weight: 500; letter-spacing: 0.06em; }
+
+  .rli-chevron {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--fg-whisper);
+    transition: transform var(--dur-base) ease, color var(--dur-base) ease;
+  }
+
+  .radar-legend-item.is-hovered .rli-chevron {
+    color: var(--fg-subtle);
+  }
+
+  .radar-legend-item.is-expanded .rli-chevron {
+    transform: rotate(180deg);
+    color: var(--li-accent);
+  }
+
+  .rli-details-wrapper {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.38s cubic-bezier(0.25, 1, 0.5, 1), margin-top 0.38s ease, padding-top 0.38s ease;
+    overflow: hidden;
+  }
+
+  .rli-details-wrapper.expanded {
+    grid-template-rows: 1fr;
+    margin-top: var(--space-3);
+    border-top: 1px dashed var(--border);
+    padding-top: var(--space-3);
+  }
+
+  .rli-details-content {
+    min-height: 0;
+  }
+
+  .rli-desc {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--fg-muted);
+    margin: 0;
+    font-weight: 400;
+    text-align: left;
+  }
 
   .extra-skills {
     padding-top: var(--space-6);

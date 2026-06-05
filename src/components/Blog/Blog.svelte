@@ -44,6 +44,30 @@
     } finally {
       postsLoading = false;
       await tick();
+      if (typeof window !== 'undefined' && window.location.hash) {
+        const hash = window.location.hash;
+        const target = document.querySelector(hash);
+        if (target) {
+          // Compensate for layout shifts if the browser fell short of the target
+          [350, 800].forEach(delay => {
+            setTimeout(() => {
+              const html = document.documentElement;
+              const targetEl = target as HTMLElement;
+              if (targetEl) {
+                const absoluteTop = targetEl.getBoundingClientRect().top + window.scrollY;
+                if (window.scrollY < absoluteTop - 200) {
+                  const prevScrollBehavior = html.style.scrollBehavior;
+                  html.style.scrollBehavior = 'auto';
+                  targetEl.scrollIntoView({ behavior: 'auto' });
+                  requestAnimationFrame(() => {
+                    html.style.scrollBehavior = prevScrollBehavior;
+                  });
+                }
+              }
+            }, delay);
+          });
+        }
+      }
     }
   }
 

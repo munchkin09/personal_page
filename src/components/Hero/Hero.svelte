@@ -79,7 +79,7 @@
         <span class="stat-lbl">{t.stats.yearsLabel}</span>
       </div>
       <div class="stat">
-        <span class="stat-num">2</span>
+        <span class="stat-num">10<span class="unit">+</span></span>
         <span class="stat-lbl">{t.stats.continentsLabel}</span>
       </div>
       <div class="stat">
