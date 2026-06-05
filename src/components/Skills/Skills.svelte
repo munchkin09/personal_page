@@ -141,10 +141,10 @@
       </div>
 
       <!-- Legend -->
-      <ul class="radar-legend" role="list">
+      <div class="radar-legend">
         {#each techStack as skill, i}
           <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
-          <li
+          <div
             class="radar-legend-item radar-legend-item--{skill.accent}"
             class:is-hovered={hoveredSkillIdx === i || expandedSkillIdx === i}
             class:is-expanded={expandedSkillIdx === i}
@@ -180,9 +180,9 @@
                 </p>
               </div>
             </div>
-          </li>
+          </div>
         {/each}
-      </ul>
+      </div>
     </div>
 
     <div class="extra-skills" use:fadeIn>
